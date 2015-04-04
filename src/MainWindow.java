@@ -8,7 +8,7 @@ public class MainWindow extends JFrame {
     private LayerWindow layerWindow;
 
     MainWindow() {
-        setLocationRelativeTo(null);
+        //setLocationRelativeTo(null);
         setContentPane(rootPanel);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);

@@ -52,4 +52,12 @@ public class LayerFactory {
         }
         return copy;
     }
+
+    public static boolean[][] createEmptyLayer(int height, int width) {
+        return new boolean[height][width];
+    }
+
+    public static boolean[][] createEmptyLayer(int size) {
+        return new boolean[size][size];
+    }
 }

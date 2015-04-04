@@ -3,11 +3,17 @@ import java.awt.*;
 import java.util.List;
 
 public class LayerWindow extends JPanel {
-    public static final int pixelSize = 15;
+    public static final int pixelSize = 10;
     private boolean[][] layer;
     private List<Point> route;
 
+    public LayerWindow() {
+        super();
+        setLayer(LayerFactory.createEmptyLayer(10));
+    }
+
     private void drawLayer(Graphics2D g) {
+        if(layer == null) return;
         //Graphics2D g2d = (Graphics2D) g;
         for(int i=0; i<layer.length; i++) {
             for(int j=0; j<layer[i].length; j++) {
@@ -17,8 +23,7 @@ public class LayerWindow extends JPanel {
     }
 
     private void drawRoute(Graphics2D g) {
-        if(route == null)
-            return;
+        if(route == null) return;
 
         for(int i = 0; i<route.size() - 1; i++) {
             Point start = route.get(i);
