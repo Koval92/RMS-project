@@ -4,14 +4,15 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class LayerFactory {
-    public static boolean[][] createFromFile(String fileName) {
+    public static ArrayList<ArrayList<Boolean>> createFromFile(String fileName) {
         File file = new File(fileName);
         return createFromFile(file);
     }
 
-    public static boolean[][] createFromFile(File file) {
+    public static ArrayList<ArrayList<Boolean>> createFromFile(File file) {
         BufferedImage img = null;
         try {
             img = ImageIO.read(file);
@@ -24,41 +25,50 @@ public class LayerFactory {
             return null;
         }
 
-
         int width = img.getWidth();
         int height = img.getHeight();
 
-        boolean[][] imgArray = new boolean[height][width];
+        ArrayList<ArrayList<Boolean>> imgArray = new ArrayList<>(height);
         for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++)
-                imgArray[i][j] = img.getRGB(j, i) != -1;
+            imgArray.add(new ArrayList<>(width));
+            for (int j = 0; j < width; j++) {
+                imgArray.get(i).add(img.getRGB(j, i) != -1);
+            }
         }
-
         return imgArray;
     }
 
-    public static void printLayer(boolean[][] imgArray) {
-        for (boolean[] anImgArray : imgArray) {
-            for (int j = 0; j < imgArray.length; j++) {
-                System.out.print((anImgArray[j] ? 'x' : ' ') + " ");
+    public static void printLayer(ArrayList<ArrayList<Boolean>> imgArray) {
+        for (ArrayList<Boolean> row : imgArray) {
+            for (Boolean point : row) {
+                System.out.print((point ? 'x' : ' ') + " ");
             }
             System.out.println();
         }
     }
 
-    public static boolean[][] copyFromLayer(boolean[][] layerToCopy) {
-        boolean[][] copy = new boolean[layerToCopy.length][];
-        for (int i = 0; i < copy.length; i++) {
-            copy[i] = layerToCopy[i].clone();
+    public static ArrayList<ArrayList<Boolean>> copyFromLayer(ArrayList<ArrayList<Boolean>> layerToCopy) {
+        ArrayList<ArrayList<Boolean>> copy = new ArrayList<>(layerToCopy.size());
+        for (ArrayList<Boolean> row : layerToCopy) {
+            copy.add(new ArrayList<>(row));
         }
         return copy;
     }
 
-    public static boolean[][] createEmptyLayer(int height, int width) {
-        return new boolean[height][width];
+    public static ArrayList<ArrayList<Boolean>> createEmptyLayer(int height, int width) {
+        ArrayList<ArrayList<Boolean>> layer = new ArrayList<>(height);
+
+        for (int i = 0; i < height; i++) {
+            layer.add(new ArrayList<>(width));
+            for (int j = 0; j < width; j++) {
+                layer.get(i).add(false);
+            }
+        }
+
+        return layer;
     }
 
-    public static boolean[][] createEmptyLayer(int size) {
-        return new boolean[size][size];
+    public static ArrayList<ArrayList<Boolean>> createEmptyLayer(int size) {
+        return createEmptyLayer(size, size);
     }
 }

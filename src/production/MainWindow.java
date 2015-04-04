@@ -2,12 +2,14 @@ package production;
 
 import javax.swing.*;
 import java.io.File;
+import java.util.ArrayList;
 
 public class MainWindow extends JFrame {
     private JTextField fileNameField;
     private JButton loadButton;
     private JPanel rootPanel;
-    private JPanel layerPanel;
+    private JPanel layerPanelAsJPanel;
+    private LayerPanel layerPanel;
 
     MainWindow() {
         //setLocationRelativeTo(null);
@@ -54,10 +56,9 @@ public class MainWindow extends JFrame {
             String fileName = fileNameField.getText();
             File file = new File(fileName);
             if (file.exists()) {
-                boolean[][] layer = LayerFactory.createFromFile(fileName);
-                //LayerFactory.printLayer(layer);
-                //layerWindow.setLayer(layer);
-                ((LayerPanel) layerPanel).setLayer(layer);
+                ArrayList<ArrayList<Boolean>> layer = LayerFactory.createFromFile(fileName);
+                layerPanel.setLayer(layer);
+
                 pack();
             } else {
                 JOptionPane.showMessageDialog(this, "Incorrect file name/path to file!");
@@ -69,6 +70,7 @@ public class MainWindow extends JFrame {
     }
 
     private void createUIComponents() {
-        layerPanel = new LayerPanel();
+        layerPanelAsJPanel = new LayerPanel();
+        layerPanel = (LayerPanel) layerPanelAsJPanel;
     }
 }

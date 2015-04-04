@@ -1,11 +1,8 @@
 package test;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import production.MoveCostCalculator;
-
-import java.awt.*;
 
 public class MoveCostCalculatorTest {
 

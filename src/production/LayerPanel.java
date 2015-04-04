@@ -2,11 +2,12 @@ package production;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class LayerPanel extends JPanel {
     public static final int pixelSize = 10;
-    private boolean[][] layer;
+    private ArrayList<ArrayList<Boolean>> layer;
     private List<Point> route;
 
     public LayerPanel() {
@@ -18,8 +19,8 @@ public class LayerPanel extends JPanel {
         if (layer == null) return;
 
         //Graphics2D g2d = (Graphics2D) g;
-        for (int i = 0; i < layer.length; i++) {
-            for (int j = 0; j < layer[i].length; j++) {
+        for (int i = 0; i < layer.size(); i++) {
+            for (int j = 0; j < layer.get(i).size(); j++) {
                 drawPixel(g, i, j);
             }
         }
@@ -47,7 +48,7 @@ public class LayerPanel extends JPanel {
     }
 
     private void drawPixel(Graphics2D g, int i, int j) {
-        if (layer[i][j])
+        if (layer.get(i).get(j))
             g.fillRect(j * pixelSize, i * pixelSize, pixelSize, pixelSize);
     }
 
@@ -59,10 +60,10 @@ public class LayerPanel extends JPanel {
         drawRoute((Graphics2D) g);
     }
 
-    public void setLayer(boolean[][] layer) {
+    public void setLayer(ArrayList<ArrayList<Boolean>> layer) {
         this.layer = layer;
-        if (layer.length > 0) {
-            this.setPreferredSize(new Dimension(pixelSize * layer[0].length, pixelSize * layer.length));
+        if (layer.size() > 0) {
+            this.setPreferredSize(new Dimension(pixelSize * layer.get(0).size(), pixelSize * layer.size()));
             this.repaint();
             this.revalidate();
         }

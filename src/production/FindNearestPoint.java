@@ -1,6 +1,7 @@
 package production;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 enum NearestPointFinderType {
     DISTANCE, TIME, ENERGY
@@ -8,12 +9,12 @@ enum NearestPointFinderType {
 
 public class FindNearestPoint {
     public static NearestPointFinderType type = NearestPointFinderType.DISTANCE;
-    private static boolean[][] layer;
+    private static ArrayList<ArrayList<Boolean>> layer;
 
     private FindNearestPoint() {
     }
 
-    public static void setLayer(boolean[][] layer) {
+    public static void setLayer(ArrayList<ArrayList<Boolean>> layer) {
         FindNearestPoint.layer = layer;
     }
 
