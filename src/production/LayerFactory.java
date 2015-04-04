@@ -7,12 +7,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class LayerFactory {
-    public static ArrayList<ArrayList<Boolean>> createFromFile(String fileName) {
+    public static Layer create(ArrayList<ArrayList<Boolean>> array) {
+        return new Layer(array);
+    }
+
+    public static Layer create(boolean[][] array) {
+        // TODO Create from boolean[][]
+        return null;
+    }
+
+    public static Layer createFromFile(String fileName) {
         File file = new File(fileName);
         return createFromFile(file);
     }
 
-    public static ArrayList<ArrayList<Boolean>> createFromFile(File file) {
+    public static Layer createFromFile(File file) {
         BufferedImage img = null;
         try {
             img = ImageIO.read(file);
@@ -35,40 +44,31 @@ public class LayerFactory {
                 imgArray.get(i).add(img.getRGB(j, i) != -1);
             }
         }
-        return imgArray;
+        return new Layer(imgArray);
     }
 
-    public static void printLayer(ArrayList<ArrayList<Boolean>> imgArray) {
-        for (ArrayList<Boolean> row : imgArray) {
-            for (Boolean point : row) {
-                System.out.print((point ? 'x' : ' ') + " ");
-            }
-            System.out.println();
-        }
-    }
-
-    public static ArrayList<ArrayList<Boolean>> copyFromLayer(ArrayList<ArrayList<Boolean>> layerToCopy) {
-        ArrayList<ArrayList<Boolean>> copy = new ArrayList<>(layerToCopy.size());
-        for (ArrayList<Boolean> row : layerToCopy) {
+    public static Layer copyFromLayer(Layer layerToCopy) {
+        ArrayList<ArrayList<Boolean>> copy = new ArrayList<>(layerToCopy.getArray().size());
+        for (ArrayList<Boolean> row : layerToCopy.getArray()) {
             copy.add(new ArrayList<>(row));
         }
-        return copy;
+        return new Layer(copy);
     }
 
-    public static ArrayList<ArrayList<Boolean>> createEmptyLayer(int height, int width) {
-        ArrayList<ArrayList<Boolean>> layer = new ArrayList<>(height);
+    public static Layer createEmptyLayer(int height, int width) {
+        ArrayList<ArrayList<Boolean>> array = new ArrayList<>(height);
 
         for (int i = 0; i < height; i++) {
-            layer.add(new ArrayList<>(width));
+            array.add(new ArrayList<>(width));
             for (int j = 0; j < width; j++) {
-                layer.get(i).add(false);
+                array.get(i).add(false);
             }
         }
 
-        return layer;
+        return new Layer(array);
     }
 
-    public static ArrayList<ArrayList<Boolean>> createEmptyLayer(int size) {
+    public static Layer createEmptyLayer(int size) {
         return createEmptyLayer(size, size);
     }
 }

@@ -2,7 +2,6 @@ package production;
 
 import javax.swing.*;
 import java.io.File;
-import java.util.ArrayList;
 
 public class MainWindow extends JFrame {
     private JTextField fileNameField;
@@ -30,7 +29,7 @@ public class MainWindow extends JFrame {
 //        route.add(new Point(6, 6));
 //        route.add(new Point(9, 6));
 //
-//        layerWindow.setRoute(route);
+//        layerPanel.setRoute(route);
     }
 
     public static void main(String[] args) {
@@ -56,7 +55,7 @@ public class MainWindow extends JFrame {
             String fileName = fileNameField.getText();
             File file = new File(fileName);
             if (file.exists()) {
-                ArrayList<ArrayList<Boolean>> layer = LayerFactory.createFromFile(fileName);
+                Layer layer = LayerFactory.createFromFile(fileName);
                 layerPanel.setLayer(layer);
 
                 pack();
