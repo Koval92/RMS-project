@@ -1,3 +1,5 @@
+package production;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
@@ -29,9 +31,10 @@ public class LayerPanel extends JPanel {
         for(int i = 0; i<route.size() - 1; i++) {
             Point start = route.get(i);
             Point end = route.get(i+1);
-            if(arePointsAdjacent(start, end))
+            if(MoveCostCalculator.arePointsAdjacent(start, end))
                 g.setColor(Color.GREEN);
-            else g.setColor(Color.RED);
+            else
+                g.setColor(Color.RED);
             g.setStroke(new BasicStroke(pixelSize/3, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL));
 
 
@@ -68,9 +71,5 @@ public class LayerPanel extends JPanel {
         this.route = route;
         this.repaint();
         this.revalidate();
-    }
-
-    private boolean arePointsAdjacent(Point p1, Point p2) {
-        return !(Math.abs(p1.x - p2.x) > 1 || Math.abs(p1.y - p2.y) > 1);
     }
 }

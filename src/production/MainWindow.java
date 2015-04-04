@@ -1,3 +1,5 @@
+package production;
+
 import javax.swing.*;
 import java.io.File;
 
