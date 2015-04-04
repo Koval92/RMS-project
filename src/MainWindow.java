@@ -5,7 +5,7 @@ public class MainWindow extends JFrame {
     private JTextField fileNameField;
     private JButton loadButton;
     private JPanel rootPanel;
-    private LayerWindow layerWindow;
+    private JPanel layerPanel;
 
     MainWindow() {
         //setLocationRelativeTo(null);
@@ -37,7 +37,8 @@ public class MainWindow extends JFrame {
             if (file.exists()) {
                 boolean[][] layer = LayerFactory.createFromFile(fileName);
                 //LayerFactory.printLayer(layer);
-                layerWindow.setLayer(layer);
+                //layerWindow.setLayer(layer);
+                ((LayerPanel) layerPanel).setLayer(layer);
                 pack();
             } else {
                 JOptionPane.showMessageDialog(this, "Incorrect file name/path to file!");
@@ -63,5 +64,9 @@ public class MainWindow extends JFrame {
         } catch (ClassNotFoundException | InstantiationException | UnsupportedLookAndFeelException | IllegalAccessException e) {
             e.printStackTrace();
         }
+    }
+
+    private void createUIComponents() {
+        layerPanel = new LayerPanel();
     }
 }

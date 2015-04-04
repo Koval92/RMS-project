@@ -2,18 +2,19 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class LayerWindow extends JPanel {
+public class LayerPanel extends JPanel {
     public static final int pixelSize = 10;
     private boolean[][] layer;
     private List<Point> route;
 
-    public LayerWindow() {
+    public LayerPanel() {
         super();
         setLayer(LayerFactory.createEmptyLayer(10));
     }
 
     private void drawLayer(Graphics2D g) {
         if(layer == null) return;
+
         //Graphics2D g2d = (Graphics2D) g;
         for(int i=0; i<layer.length; i++) {
             for(int j=0; j<layer[i].length; j++) {
