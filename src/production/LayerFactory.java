@@ -19,7 +19,7 @@ public class LayerFactory {
             System.out.println(e.toString());
         }
 
-        if(img==null) {
+        if (img == null) {
             System.out.println("File doesn't exist or it's not an image");
             return null;
         }
@@ -48,8 +48,7 @@ public class LayerFactory {
 
     public static boolean[][] copyFromLayer(boolean[][] layerToCopy) {
         boolean[][] copy = new boolean[layerToCopy.length][];
-        for(int i=0; i< copy.length; i++)
-        {
+        for (int i = 0; i < copy.length; i++) {
             copy[i] = layerToCopy[i].clone();
         }
         return copy;
