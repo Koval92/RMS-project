@@ -47,4 +47,21 @@ public class MainWindow extends JFrame {
 
         // executing algorithms
     }
+
+    public static void main(String[] args) {
+        setLookAndFeel();
+
+        SwingUtilities.invokeLater(() -> {
+            MainWindow app = new MainWindow();
+        });
+    }
+
+    private static void setLookAndFeel() {
+        try {
+            UIManager.setLookAndFeel(
+                    UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException | UnsupportedLookAndFeelException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
 }
