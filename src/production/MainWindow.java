@@ -7,7 +7,6 @@ import java.awt.*;
 import java.io.File;
 import java.util.List;
 
-// test commit
 public class MainWindow extends JFrame implements PathPlanningListener {
     private JTextField fileNameField;
     private JButton loadButton;
