@@ -11,13 +11,11 @@ public class MainWindow extends JFrame implements PathPlanningListener {
     private JTextField fileNameField;
     private JButton loadButton;
     private JPanel rootPanel;
-    private JPanel layerPanelAsJPanel;
     private JPanel algorithmPanel;
     private JTextField costTextField;
     private JTextField calcTimeTextField;
+    private JPanel layerPanelAsJPanel;
     private LayerPanel layerPanel;
-
-    private PathPlanningListener listener = this;
 
     MainWindow() {
         this.setTitle("Pathfinder");
@@ -73,17 +71,20 @@ public class MainWindow extends JFrame implements PathPlanningListener {
     }
 
     private void createAlgorithmPanel() {
-        // TODO add buttons for invoking algorithms
+        add(new testAlgorithm(layerPanel.getLayer(), this));
+        // add other algorithms
+    }
 
-        JButton testAlgorithmButton = new JButton("test");
+    private void add(PathPlanner algorithm) {
+        JButton testAlgorithmButton = new JButton(algorithm.getName());
         testAlgorithmButton.addActionListener(e ->
-                new testAlgorithm(layerPanel.getLayer(), listener).invoke());
+                algorithm.invoke());
         algorithmPanel.add(testAlgorithmButton);
     }
 
     @Override
     public void setProgress(double progress) {
-
+        System.out.println("Current progress: " + progress);
     }
 
     @Override

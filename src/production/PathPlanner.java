@@ -27,9 +27,9 @@ public abstract class PathPlanner {
             listener.setCost(cost);
     }
 
-    protected void sendCalculationTimeToListener(double calcTime) {
+    protected void sendCalculationTimeToListener(double calcTimeinNano) {
         if (listener != null)
-            listener.setCalcTime(calcTime);
+            listener.setCalcTime(calcTimeinNano);
     }
 
     protected void sendCurrentProgressToListener(double progress) {
@@ -56,4 +56,6 @@ public abstract class PathPlanner {
     }
 
     protected abstract List<Point> planPath();
+
+    protected abstract String getName();
 }
