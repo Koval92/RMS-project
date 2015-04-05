@@ -1,21 +1,29 @@
 package production;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.File;
+import java.util.List;
 
-public class MainWindow extends JFrame {
+public class MainWindow extends JFrame implements PathPlanningListener {
     private JTextField fileNameField;
     private JButton loadButton;
     private JPanel rootPanel;
     private JPanel layerPanelAsJPanel;
+    private JPanel algorithmPanel;
+    private JTextField costTextField;
+    private JTextField calcTimeTextField;
     private LayerPanel layerPanel;
 
     MainWindow() {
+        this.setTitle("Pathfinder");
         //setLocationRelativeTo(null);
         setContentPane(rootPanel);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
-        setActionListeners();
+        configureLoadButton();
+        createAlgorithmPanel();
+
         pack();
 
 //        ArrayList<Point> route = new ArrayList<>();
@@ -49,7 +57,7 @@ public class MainWindow extends JFrame {
         }
     }
 
-    private void setActionListeners() {
+    private void configureLoadButton() {
         // loading layer
         loadButton.addActionListener(e -> {
             String fileName = fileNameField.getText();
@@ -64,12 +72,36 @@ public class MainWindow extends JFrame {
             }
         });
         fileNameField.addActionListener(loadButton.getActionListeners()[0]);
-
-        // executing algorithms
     }
 
     private void createUIComponents() {
         layerPanelAsJPanel = new LayerPanel();
         layerPanel = (LayerPanel) layerPanelAsJPanel;
+
+        algorithmPanel = new JPanel(new GridLayout(0, 3, 5, 5));
+    }
+
+    private void createAlgorithmPanel() {
+        // TODO add buttons for invoking algorithms
+    }
+
+    @Override
+    public void setProgress(double progress) {
+
+    }
+
+    @Override
+    public void setCalcTime(double calcTime) {
+        calcTimeTextField.setText(Double.toString(calcTime));
+    }
+
+    @Override
+    public void setCost(double cost) {
+        costTextField.setText(Double.toString(cost));
+    }
+
+    @Override
+    public void setRoute(List<Point> route) {
+        layerPanel.setRoute(route);
     }
 }
