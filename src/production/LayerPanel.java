@@ -65,6 +65,7 @@ public class LayerPanel extends JPanel {
 
     public void setLayer(Layer layer) {
         this.layer = layer;
+        this.route = null;
         this.setPreferredSize(new Dimension(pixelSize * layer.getWidth(), pixelSize * layer.getHeight()));
         this.repaint();
         this.revalidate();
