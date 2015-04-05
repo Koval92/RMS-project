@@ -36,7 +36,7 @@ public class Layer {
     public void print() {
         for (ArrayList<Boolean> row : array) {
             for (Boolean point : row) {
-                System.out.print((point ? 'x' : ' ') + " ");
+                System.out.print((point ? 'x' : '_') + " ");
             }
             System.out.println();
         }
