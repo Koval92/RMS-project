@@ -59,6 +59,10 @@ public class LayerPanel extends JPanel {
         drawRoute((Graphics2D) g);
     }
 
+    public Layer getLayer() {
+        return layer;
+    }
+
     public void setLayer(Layer layer) {
         this.layer = layer;
         this.setPreferredSize(new Dimension(pixelSize * layer.getWidth(), pixelSize * layer.getHeight()));
