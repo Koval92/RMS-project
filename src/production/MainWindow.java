@@ -71,7 +71,7 @@ public class MainWindow extends JFrame implements PathPlanningListener {
     }
 
     private void createAlgorithmPanel() {
-        add(new testAlgorithm(layerPanel.getLayer(), this));
+        add(new testAlgorithm(layerPanel.getLayer(), CostFunctionType.ENERGY, this));
         // add other algorithms
     }
 
@@ -94,7 +94,7 @@ public class MainWindow extends JFrame implements PathPlanningListener {
 
     @Override
     public void setCost(double cost) {
-        costTextField.setText(Double.toString(cost));
+        costTextField.setText(String.format("%.2f", cost));
     }
 
     @Override
