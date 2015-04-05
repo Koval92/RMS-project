@@ -4,9 +4,9 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public abstract class PathPlanner {
-    private final PathPlanningListener listener;
-    private final Layer desiredLayer;
-    private final MoveCostCalculator costCalculator;
+    protected final PathPlanningListener listener;
+    protected final Layer desiredLayer;
+    protected final MoveCostCalculator costCalculator;
 
     public PathPlanner(Layer desiredLayer) {
         this(desiredLayer, null);
