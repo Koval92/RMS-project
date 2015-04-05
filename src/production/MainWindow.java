@@ -1,5 +1,7 @@
 package production;
 
+import test.testAlgorithm;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -15,6 +17,8 @@ public class MainWindow extends JFrame implements PathPlanningListener {
     private JTextField calcTimeTextField;
     private LayerPanel layerPanel;
 
+    private PathPlanningListener listener = this;
+
     MainWindow() {
         this.setTitle("Pathfinder");
         //setLocationRelativeTo(null);
@@ -25,19 +29,6 @@ public class MainWindow extends JFrame implements PathPlanningListener {
         createAlgorithmPanel();
 
         pack();
-
-//        ArrayList<Point> route = new ArrayList<>();
-//        route.add(new Point(0, 0));
-//        route.add(new Point(0, 1));
-//        route.add(new Point(1, 2));
-//        route.add(new Point(0, 2));
-//        route.add(new Point(1, 1));
-//        route.add(new Point(2, 3));
-//        route.add(new Point(2, 2));
-//        route.add(new Point(6, 6));
-//        route.add(new Point(9, 6));
-//
-//        layerPanel.setRoute(route);
     }
 
     public static void main(String[] args) {
@@ -78,11 +69,16 @@ public class MainWindow extends JFrame implements PathPlanningListener {
         layerPanelAsJPanel = new LayerPanel();
         layerPanel = (LayerPanel) layerPanelAsJPanel;
 
-        algorithmPanel = new JPanel(new GridLayout(0, 3, 5, 5));
+        algorithmPanel = new JPanel(new GridLayout(0, 1, 5, 5));
     }
 
     private void createAlgorithmPanel() {
         // TODO add buttons for invoking algorithms
+
+        JButton testAlgorithmButton = new JButton("test");
+        testAlgorithmButton.addActionListener(e ->
+                new testAlgorithm(layerPanel.getLayer(), listener).invoke());
+        algorithmPanel.add(testAlgorithmButton);
     }
 
     @Override
@@ -91,8 +87,8 @@ public class MainWindow extends JFrame implements PathPlanningListener {
     }
 
     @Override
-    public void setCalcTime(double calcTime) {
-        calcTimeTextField.setText(Double.toString(calcTime));
+    public void setCalcTime(double calcTimeInNano) {
+        calcTimeTextField.setText(Double.toString(calcTimeInNano / 1000) + " ms");
     }
 
     @Override

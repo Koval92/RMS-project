@@ -1,19 +1,20 @@
 package production;
 
-import java.util.ArrayList;
+import java.awt.*;
+import java.util.List;
 
 public class Layer {
-    ArrayList<ArrayList<Boolean>> array;
+    List<List<Boolean>> array;
 
-    public Layer(ArrayList<ArrayList<Boolean>> array) {
+    public Layer(List<List<Boolean>> array) {
         this.array = array;
     }
 
-    public ArrayList<ArrayList<Boolean>> getArray() {
+    public List<List<Boolean>> getArray() {
         return array;
     }
 
-    public void setArray(ArrayList<ArrayList<Boolean>> array) {
+    public void setArray(List<List<Boolean>> array) {
         this.array = array;
     }
 
@@ -33,8 +34,12 @@ public class Layer {
         return array.get(i).get(j);
     }
 
+    public List<Point> toPoints() {
+        return null;
+    }
+
     public void print() {
-        for (ArrayList<Boolean> row : array) {
+        for (List<Boolean> row : array) {
             for (Boolean point : row) {
                 System.out.print((point ? 'x' : '_') + " ");
             }

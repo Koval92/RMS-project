@@ -1,7 +1,7 @@
 package production;
 
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.List;
 
 public abstract class PathPlanner {
     protected final PathPlanningListener listener;
@@ -37,14 +37,14 @@ public abstract class PathPlanner {
             listener.setProgress(progress);
     }
 
-    protected void sendRouteToListener(ArrayList<Point> route) {
+    protected void sendRouteToListener(List<Point> route) {
         if (listener != null)
             listener.setRoute(route);
     }
 
     public void invoke() {
         long startTime = System.nanoTime();
-        ArrayList<Point> route = planPath();
+        List<Point> route = planPath();
         long endTime = System.nanoTime();
 
         long durationInNano = endTime - startTime;
@@ -55,5 +55,5 @@ public abstract class PathPlanner {
         sendRouteToListener(route);
     }
 
-    protected abstract ArrayList<Point> planPath();
+    protected abstract List<Point> planPath();
 }

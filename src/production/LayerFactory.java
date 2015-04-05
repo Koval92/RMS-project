@@ -5,9 +5,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class LayerFactory {
-    public static Layer create(ArrayList<ArrayList<Boolean>> array) {
+    public static Layer create(List<List<Boolean>> array) {
         return new Layer(array);
     }
 
@@ -37,7 +38,7 @@ public class LayerFactory {
         int width = img.getWidth();
         int height = img.getHeight();
 
-        ArrayList<ArrayList<Boolean>> imgArray = new ArrayList<>(height);
+        List<List<Boolean>> imgArray = new ArrayList<>(height);
         for (int i = 0; i < height; i++) {
             imgArray.add(new ArrayList<>(width));
             for (int j = 0; j < width; j++) {
@@ -48,15 +49,15 @@ public class LayerFactory {
     }
 
     public static Layer copyFromLayer(Layer layerToCopy) {
-        ArrayList<ArrayList<Boolean>> copy = new ArrayList<>(layerToCopy.getArray().size());
-        for (ArrayList<Boolean> row : layerToCopy.getArray()) {
+        List<List<Boolean>> copy = new ArrayList<>(layerToCopy.getArray().size());
+        for (List<Boolean> row : layerToCopy.getArray()) {
             copy.add(new ArrayList<>(row));
         }
         return new Layer(copy);
     }
 
     public static Layer createEmptyLayer(int height, int width) {
-        ArrayList<ArrayList<Boolean>> array = new ArrayList<>(height);
+        List<List<Boolean>> array = new ArrayList<>(height);
 
         for (int i = 0; i < height; i++) {
             array.add(new ArrayList<>(width));
