@@ -1,15 +1,20 @@
 package production;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
+import java.util.List;
 
 import static java.lang.Math.abs;
 import static java.lang.Math.max;
 
 public class MoveCostCalculator {
+    CostFunctionType type;
+
+    public MoveCostCalculator(CostFunctionType type) {
+        this.type = type;
+    }
+
     public static double distance(Point p1, Point p2) {
-        new Point2D.Double();
-        return Point2D.distance(p1.x, p1.y, p2.x, p2.y);
+        return Point.distance(p1.x, p1.y, p2.x, p2.y);
     }
 
     public static double time(Point p1, Point p2) {
@@ -38,5 +43,35 @@ public class MoveCostCalculator {
 
     public static boolean arePointsAdjacent(int x1, int y1, int x2, int y2) {
         return arePointsAdjacent(new Point(x1, y1), new Point(x2, y2));
+    }
+
+    public static double calculate(Point p1, Point p2, CostFunctionType type) {
+        switch (type) {
+            case DISTANCE:
+                return distance(p1, p2);
+            case TIME:
+                return time(p1, p2);
+            case ENERGY:
+                return energy(p1, p2);
+            default:
+                return distance(p1, p2);
+        }
+    }
+
+    public static double calculate(int x1, int y1, int x2, int y2, CostFunctionType type) {
+        return calculate(new Point(x1, y1), new Point(x2, y2), type);
+    }
+
+    public static double calculate(List<Point> route, CostFunctionType type) {
+        // TODO iterate through route and calculate cost
+        return 0;
+    }
+
+    public double calculate(Point p1, Point p2) {
+        return MoveCostCalculator.calculate(p1, p2, type);
+    }
+
+    public double calculate(List<Point> route) {
+        return MoveCostCalculator.calculate(route, type);
     }
 }
