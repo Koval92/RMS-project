@@ -17,7 +17,7 @@ public abstract class PathPlanner {
     }
 
     public PathPlanner(Layer desiredLayer, CostFunctionType costFunctionType, PathPlanningListener listener) {
-        this.desiredLayer = desiredLayer;
+        this.desiredLayer = LayerFactory.copyFromLayer(desiredLayer);
         this.listener = listener;
         this.costCalculator = new MoveCostCalculator(costFunctionType);
     }
