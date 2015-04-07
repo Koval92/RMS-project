@@ -24,7 +24,6 @@ public class MainWindow extends JFrame implements PathPlanningListener {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
         configureLoadButton();
-        createAlgorithmPanel();
 
         pack();
     }
@@ -54,7 +53,8 @@ public class MainWindow extends JFrame implements PathPlanningListener {
             if (file.exists()) {
                 Layer layer = LayerFactory.createFromFile(fileName);
                 layerPanel.setLayer(layer);
-
+                algorithmPanel.removeAll();
+                addAlgorithms();
                 pack();
             } else {
                 JOptionPane.showMessageDialog(this, "Incorrect file name/path to file!");
@@ -70,16 +70,16 @@ public class MainWindow extends JFrame implements PathPlanningListener {
         algorithmPanel = new JPanel(new GridLayout(0, 1, 5, 5));
     }
 
-    private void createAlgorithmPanel() {
+    private void addAlgorithms() {
         add(new testAlgorithm(layerPanel.getLayer(), CostFunctionType.ENERGY, this));
         // add other algorithms
     }
 
     private void add(PathPlanner algorithm) {
-        JButton testAlgorithmButton = new JButton(algorithm.getName());
-        testAlgorithmButton.addActionListener(e ->
+        JButton algorithmButton = new JButton(algorithm.getName());
+        algorithmButton.addActionListener(e ->
                 algorithm.invoke());
-        algorithmPanel.add(testAlgorithmButton);
+        algorithmPanel.add(algorithmButton);
     }
 
     @Override
