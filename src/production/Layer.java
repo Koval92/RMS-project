@@ -1,6 +1,7 @@
 package production;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Layer {
@@ -35,15 +36,30 @@ public class Layer {
     }
 
     public List<Point> toPoints() {
-        return null;
+        List<Point> list = new ArrayList<>();
+        for (int i = 0; i < array.size(); i++) {
+            for (int j = 0; j < array.get(i).size(); j++) {
+                if (get(i, j)) {
+                    list.add(new Point(i, j));
+                }
+            }
+        }
+        return list;
     }
 
-    public void print() {
+    public void printAsTable() {
         for (List<Boolean> row : array) {
             for (Boolean point : row) {
                 System.out.print((point ? 'x' : '_') + " ");
             }
             System.out.println();
+        }
+    }
+
+    public void printAsPoints() {
+        List<Point> list = this.toPoints();
+        for (Point point : list) {
+            System.out.println("(" + point.x + ", " + point.y + ")");
         }
     }
 }
