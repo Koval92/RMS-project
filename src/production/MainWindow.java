@@ -1,5 +1,6 @@
 package production;
 
+import production.algorithms.LeftToRight;
 import test.testAlgorithm;
 
 import javax.swing.*;
@@ -15,6 +16,7 @@ public class MainWindow extends JFrame implements PathPlanningListener {
     private JTextField costTextField;
     private JTextField calcTimeTextField;
     private JPanel layerPanelAsJPanel;
+    private JTextField sizeTextField;
     private LayerPanel layerPanel;
 
     MainWindow() {
@@ -55,6 +57,7 @@ public class MainWindow extends JFrame implements PathPlanningListener {
                 layerPanel.setLayer(layer);
                 algorithmPanel.removeAll();
                 addAlgorithms();
+                sizeTextField.setText(String.valueOf(layer.toPoints().size()));
                 pack();
             } else {
                 JOptionPane.showMessageDialog(this, "Incorrect file name/path to file!");
@@ -72,6 +75,7 @@ public class MainWindow extends JFrame implements PathPlanningListener {
 
     private void addAlgorithms() {
         add(new testAlgorithm(layerPanel.getLayer(), CostFunctionType.ENERGY, this));
+        add(new LeftToRight(layerPanel.getLayer(), this));
         // add other algorithms
     }
 

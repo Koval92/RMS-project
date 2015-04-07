@@ -20,6 +20,7 @@ public abstract class PathPlanner {
         this.desiredLayer = LayerFactory.copyFromLayer(desiredLayer);
         this.listener = listener;
         this.costCalculator = new MoveCostCalculator(costFunctionType);
+        System.out.println("New instance of " + getName() + " algorithm created");
     }
 
     protected void sendCostToListener(double cost) {
@@ -43,6 +44,7 @@ public abstract class PathPlanner {
     }
 
     public void invoke() {
+        System.out.println(getName() + " algorithm invoked");
         long startTime = System.nanoTime();
         List<Point> route = planPath();
         long endTime = System.nanoTime();
