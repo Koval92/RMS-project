@@ -46,7 +46,7 @@ public class MoveCostCalculatorTest {
         Assert.assertTrue(MoveCostCalculator.arePointsAdjacent(2, 2, 3, 2));
         Assert.assertTrue(MoveCostCalculator.arePointsAdjacent(2, 2, 3, 3));
 
-        Assert.assertFalse(MoveCostCalculator.arePointsAdjacent(2, 2, 0, 0));
-        Assert.assertFalse(MoveCostCalculator.arePointsAdjacent(2, 2, 1, 4));
+        Assert.assertFalse(MoveCostCalculator.arePointsAdjacent(3, 2, 0, 0));
+        Assert.assertFalse(MoveCostCalculator.arePointsAdjacent(3, 2, 1, 4));
     }
 }
