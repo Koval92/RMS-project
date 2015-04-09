@@ -17,7 +17,9 @@ public class MainWindow extends JFrame implements PathPlanningListener {
     private JTextField calcTimeTextField;
     private JPanel layerPanelAsJPanel;
     private JTextField sizeTextField;
+
     private LayerPanel layerPanel;
+    private CostFunctionType costFunctionType = CostFunctionType.DISTANCE;
 
     MainWindow() {
         this.setTitle("Pathfinder");
@@ -74,12 +76,13 @@ public class MainWindow extends JFrame implements PathPlanningListener {
     }
 
     private void addAlgorithms() {
-        add(new testAlgorithm(layerPanel.getLayer(), CostFunctionType.ENERGY, this));
-        add(new LeftToRight(layerPanel.getLayer(), this));
+        add(new testAlgorithm());
+        add(new LeftToRight());
         // add other algorithms
     }
 
     private void add(PathPlanner algorithm) {
+        algorithm.setListener(this);
         JButton algorithmButton = new JButton(algorithm.getName());
         algorithmButton.addActionListener(e ->
                 algorithm.invoke());
@@ -104,5 +107,25 @@ public class MainWindow extends JFrame implements PathPlanningListener {
     @Override
     public void setRoute(List<Point> route) {
         layerPanel.setRoute(route);
+    }
+
+    @Override
+    public CostFunctionType getCostFunctionType() {
+        return costFunctionType;
+    }
+
+    @Override
+    public List<Point> getCopyOfLayerAsList() {
+        return LayerFactory.copy(layerPanel.getLayer()).toPoints();
+    }
+
+    @Override
+    public List<List<Boolean>> getCopyOfLayerAsTable() {
+        return LayerFactory.copy(layerPanel.getLayer()).getArray();
+    }
+
+    @Override
+    public Layer getCopyOfLayer() {
+        return LayerFactory.copy(layerPanel.getLayer());
     }
 }

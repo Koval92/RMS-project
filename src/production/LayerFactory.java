@@ -48,7 +48,7 @@ public class LayerFactory {
         return new Layer(imgArray);
     }
 
-    public static Layer copyFromLayer(Layer layerToCopy) {
+    public static Layer copy(Layer layerToCopy) {
         List<List<Boolean>> copy = new ArrayList<>(layerToCopy.getArray().size());
         for (List<Boolean> row : layerToCopy.getArray()) {
             copy.add(new ArrayList<>(row));

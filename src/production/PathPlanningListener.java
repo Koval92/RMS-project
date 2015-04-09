@@ -11,4 +11,12 @@ public interface PathPlanningListener {
     void setCost(double cost);
 
     void setRoute(List<Point> route);
+
+    CostFunctionType getCostFunctionType();
+
+    List<Point> getCopyOfLayerAsList();
+
+    List<List<Boolean>> getCopyOfLayerAsTable();
+
+    Layer getCopyOfLayer();
 }

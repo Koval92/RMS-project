@@ -4,53 +4,48 @@ import java.awt.*;
 import java.util.List;
 
 public abstract class PathPlanner {
-    protected final PathPlanningListener listener;
-    protected final Layer desiredLayer;
-    protected final MoveCostCalculator costCalculator;
+    protected PathPlanningListener listener = null;
 
-    public PathPlanner(Layer desiredLayer) {
-        this(desiredLayer, null);
-    }
-
-    public PathPlanner(Layer desiredLayer, PathPlanningListener listener) {
-        this(desiredLayer, CostFunctionType.DISTANCE, listener);
-    }
-
-    public PathPlanner(Layer desiredLayer, CostFunctionType costFunctionType, PathPlanningListener listener) {
-        this.desiredLayer = LayerFactory.copyFromLayer(desiredLayer);
-        this.listener = listener;
-        this.costCalculator = new MoveCostCalculator(costFunctionType);
+    public PathPlanner() {
         System.out.println("New instance of " + getName() + " algorithm created");
     }
 
-    protected void sendCostToListener(double cost) {
+    final public PathPlanningListener getListener() {
+        return listener;
+    }
+
+    final public void setListener(PathPlanningListener listener) {
+        this.listener = listener;
+    }
+
+    final protected void sendCostToListener(double cost) {
         if (listener != null)
             listener.setCost(cost);
     }
 
-    protected void sendCalculationTimeToListener(double calcTimeinNano) {
+    final protected void sendCalculationTimeToListener(double calcTimeinNano) {
         if (listener != null)
             listener.setCalcTime(calcTimeinNano);
     }
 
-    protected void sendCurrentProgressToListener(double progress) {
+    final protected void sendCurrentProgressToListener(double progress) {
         if (listener != null)
             listener.setProgress(progress);
     }
 
-    protected void sendRouteToListener(List<Point> route) {
+    final protected void sendRouteToListener(List<Point> route) {
         if (listener != null)
             listener.setRoute(route);
     }
 
-    public void invoke() {
+    final public void invoke() {
         System.out.println(getName() + " algorithm invoked");
         long startTime = System.nanoTime();
         List<Point> route = planPath();
         long endTime = System.nanoTime();
 
         long durationInNano = endTime - startTime;
-        double cost = costCalculator.calculate(route);
+        double cost = MoveCostCalculator.calculate(route, listener.getCostFunctionType());
 
         sendCostToListener(cost);
         sendCalculationTimeToListener(durationInNano);
