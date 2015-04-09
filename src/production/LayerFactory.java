@@ -8,15 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LayerFactory {
-    public static Layer create(List<List<Boolean>> array) {
-        return new Layer(array);
-    }
-
-    public static Layer create(boolean[][] array) {
-        // TODO Create from boolean[][]
-        return null;
-    }
-
     public static Layer createFromFile(String fileName) {
         File file = new File(fileName);
         return createFromFile(file);
