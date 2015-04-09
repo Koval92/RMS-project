@@ -116,12 +116,12 @@ public class MainWindow extends JFrame implements PathPlanningListener {
 
     @Override
     public List<Point> getCopyOfLayerAsList() {
-        return LayerFactory.copy(layerPanel.getLayer()).toPoints();
+        return layerPanel.getLayer().toPoints();
     }
 
     @Override
     public List<List<Boolean>> getCopyOfLayerAsTable() {
-        return LayerFactory.copy(layerPanel.getLayer()).getArray();
+        return layerPanel.getLayer().toTable();
     }
 
     @Override

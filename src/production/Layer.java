@@ -47,6 +47,10 @@ public class Layer {
         return list;
     }
 
+    public List<List<Boolean>> toTable() {
+        return LayerFactory.copy(this).getArray();
+    }
+
     public void printAsTable() {
         for (List<Boolean> row : array) {
             for (Boolean point : row) {
