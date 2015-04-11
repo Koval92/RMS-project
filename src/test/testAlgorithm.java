@@ -1,29 +1,12 @@
 package test;
 
-import production.*;
+import production.PathPlanner;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class testAlgorithm extends PathPlanner {
-    public testAlgorithm(Layer desiredLayer) {
-        super(desiredLayer);
-    }
-
-    public testAlgorithm(Layer desiredLayer, PathPlanningListener listener) {
-        super(desiredLayer, listener);
-    }
-
-    public testAlgorithm(Layer desiredLayer, CostFunctionType costFunctionType, PathPlanningListener listener) {
-        super(desiredLayer, costFunctionType, listener);
-    }
-
-    public static void main(String[] args) {
-        PathPlanner planner = new testAlgorithm(LayerFactory.createEmptyLayer(10));
-        planner.invoke();
-    }
-
     @Override
     protected List<Point> planPath() {
         //desiredLayer.print();

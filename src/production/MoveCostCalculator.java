@@ -63,6 +63,7 @@ public class MoveCostCalculator {
     }
 
     public static double calculate(List<Point> route, CostFunctionType type) {
+        if (route == null || route.size() == 0) return 0;
         double cost = 0;
         Point previous = route.get(0);
         for (Point current : route) {

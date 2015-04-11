@@ -1,5 +1,6 @@
 package production;
 
+import production.algorithms.LeftToRight;
 import test.testAlgorithm;
 
 import javax.swing.*;
@@ -17,7 +18,10 @@ public class MainWindow extends JFrame implements PathPlanningListener {
     private JTextField costTextField;
     private JTextField calcTimeTextField;
     private JPanel layerPanelAsJPanel;
+    private JTextField sizeTextField;
+
     private LayerPanel layerPanel;
+    private CostFunctionType costFunctionType = CostFunctionType.DISTANCE;
 
     MainWindow() {
         this.setTitle("Pathfinder");
@@ -26,7 +30,6 @@ public class MainWindow extends JFrame implements PathPlanningListener {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
         configureLoadButton();
-        createAlgorithmPanel();
 
         pack();
     }
@@ -56,7 +59,9 @@ public class MainWindow extends JFrame implements PathPlanningListener {
             if (file.exists()) {
                 Layer layer = LayerFactory.createFromFile(fileName);
                 layerPanel.setLayer(layer);
-
+                algorithmPanel.removeAll();
+                addAlgorithms();
+                sizeTextField.setText(String.valueOf(layer.toPoints().size()));
                 pack();
             } else {
                 JOptionPane.showMessageDialog(this, "Incorrect file name/path to file!");
@@ -72,16 +77,18 @@ public class MainWindow extends JFrame implements PathPlanningListener {
         algorithmPanel = new JPanel(new GridLayout(0, 1, 5, 5));
     }
 
-    private void createAlgorithmPanel() {
-        add(new testAlgorithm(layerPanel.getLayer(), CostFunctionType.ENERGY, this));
+    private void addAlgorithms() {
+        add(new testAlgorithm());
+        add(new LeftToRight());
         // add other algorithms
     }
 
     private void add(PathPlanner algorithm) {
-        JButton testAlgorithmButton = new JButton(algorithm.getName());
-        testAlgorithmButton.addActionListener(e ->
+        algorithm.setListener(this);
+        JButton algorithmButton = new JButton(algorithm.getName());
+        algorithmButton.addActionListener(e ->
                 algorithm.invoke());
-        algorithmPanel.add(testAlgorithmButton);
+        algorithmPanel.add(algorithmButton);
     }
 
     @Override
@@ -102,5 +109,25 @@ public class MainWindow extends JFrame implements PathPlanningListener {
     @Override
     public void setRoute(List<Point> route) {
         layerPanel.setRoute(route);
+    }
+
+    @Override
+    public CostFunctionType getCostFunctionType() {
+        return costFunctionType;
+    }
+
+    @Override
+    public List<Point> getCopyOfLayerAsList() {
+        return layerPanel.getLayer().toPoints();
+    }
+
+    @Override
+    public List<List<Boolean>> getCopyOfLayerAsTable() {
+        return layerPanel.getLayer().toTable();
+    }
+
+    @Override
+    public Layer getCopyOfLayer() {
+        return LayerFactory.copy(layerPanel.getLayer());
     }
 }
