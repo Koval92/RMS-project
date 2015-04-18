@@ -14,7 +14,7 @@ public interface PathPlanningConnection {
 
     CostFunctionType getCostFunctionType();
 
-    List<Point> getCopyOfLayerAsList();
+    List<Point> getCopyOfLayerAsListOfPoints();
 
     List<List<Boolean>> getCopyOfLayerAsTable();
 

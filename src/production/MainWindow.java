@@ -114,7 +114,7 @@ public class MainWindow extends JFrame implements PathPlanningConnection {
     }
 
     @Override
-    public List<Point> getCopyOfLayerAsList() {
+    public List<Point> getCopyOfLayerAsListOfPoints() {
         return layerPanel.getLayer().toListOfPoints();
     }
 
