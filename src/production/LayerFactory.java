@@ -39,14 +39,6 @@ public class LayerFactory {
         return new Layer(imgArray);
     }
 
-    public static Layer copy(Layer layerToCopy) {
-        List<List<Boolean>> copy = new ArrayList<>(layerToCopy.getArray().size());
-        for (List<Boolean> row : layerToCopy.getArray()) {
-            copy.add(new ArrayList<>(row));
-        }
-        return new Layer(copy);
-    }
-
     public static Layer createEmptyLayer(int height, int width) {
         List<List<Boolean>> array = new ArrayList<>(height);
 

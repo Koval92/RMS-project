@@ -5,10 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Layer {
+    // TODO think about moving back to boolean[][]
     List<List<Boolean>> array;
 
     public Layer(List<List<Boolean>> array) {
         this.array = array;
+    }
+
+    public Layer(Layer layerToCopy) {
+        this.array = layerToCopy.toTable();
     }
 
     public List<List<Boolean>> getArray() {
@@ -48,13 +53,29 @@ public class Layer {
     }
 
     public List<List<Boolean>> toTable() {
-        return LayerFactory.copy(this).getArray();
+        return new Layer(this).getArray();
+    }
+
+    public boolean[][] toSimpleTable() {
+        boolean[][] simpleTable = new boolean[array.size()][];
+        int i = 0;
+        for (List<Boolean> row : array) {
+            simpleTable[i] = new boolean[row.size()];
+            int j = 0;
+            for (Boolean pixel : row) {
+                simpleTable[i][j] = pixel;
+                j++;
+            }
+            i++;
+        }
+        return simpleTable;
     }
 
     public void printAsTable() {
-        for (List<Boolean> row : array) {
-            for (Boolean point : row) {
-                System.out.print((point ? 'x' : '_') + " ");
+        boolean[][] table = this.toSimpleTable();
+        for (boolean[] row : table) {
+            for (boolean pixel : row) {
+                System.out.print((pixel ? 'x' : '_') + " ");
             }
             System.out.println();
         }

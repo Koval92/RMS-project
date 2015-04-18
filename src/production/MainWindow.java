@@ -50,7 +50,6 @@ public class MainWindow extends JFrame implements PathPlanningListener {
     }
 
     private void configureLoadButton() {
-        // loading layer
         loadButton.addActionListener(e -> {
             String fileName = fileNameField.getText();
             File file = new File(fileName);
@@ -58,8 +57,8 @@ public class MainWindow extends JFrame implements PathPlanningListener {
                 Layer layer = LayerFactory.createFromFile(fileName);
                 layerPanel.setLayer(layer);
                 algorithmPanel.removeAll();
-                addAlgorithms();
                 sizeTextField.setText(String.valueOf(layer.toPoints().size()));
+                addAlgorithms();
                 pack();
             } else {
                 JOptionPane.showMessageDialog(this, "Incorrect file name/path to file!");
@@ -125,7 +124,12 @@ public class MainWindow extends JFrame implements PathPlanningListener {
     }
 
     @Override
+    public boolean[][] getCopyOfLayerAsSimpleTable() {
+        return layerPanel.getLayer().toSimpleTable();
+    }
+
+    @Override
     public Layer getCopyOfLayer() {
-        return LayerFactory.copy(layerPanel.getLayer());
+        return new Layer(layerPanel.getLayer());
     }
 }

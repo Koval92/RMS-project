@@ -18,5 +18,7 @@ public interface PathPlanningListener {
 
     List<List<Boolean>> getCopyOfLayerAsTable();
 
+    boolean[][] getCopyOfLayerAsSimpleTable();
+
     Layer getCopyOfLayer();
 }
