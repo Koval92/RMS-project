@@ -9,7 +9,7 @@ import java.util.List;
 public class LeftToRight extends PathPlanner {
     @Override
     protected List<Point> planPath() {
-        boolean[][] layer = listener.getCopyOfLayerAsSimpleTable();
+        boolean[][] layer = connection.getCopyOfLayerAsSimpleTable();
         List<Point> route = new ArrayList<>();
 
         for (int i = 0; i < layer.length; i++) {

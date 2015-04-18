@@ -4,38 +4,38 @@ import java.awt.*;
 import java.util.List;
 
 public abstract class PathPlanner {
-    protected PathPlanningListener listener = null;
+    protected PathPlanningConnection connection = null;
 
     public PathPlanner() {
         System.out.println("New instance of " + getName() + " algorithm created");
     }
 
-    final public PathPlanningListener getListener() {
-        return listener;
+    final public PathPlanningConnection getConnection() {
+        return connection;
     }
 
-    final public void setListener(PathPlanningListener listener) {
-        this.listener = listener;
+    final public void setConnection(PathPlanningConnection connection) {
+        this.connection = connection;
     }
 
     final protected void sendCostToListener(double cost) {
-        if (listener != null)
-            listener.setCost(cost);
+        if (connection != null)
+            connection.setCost(cost);
     }
 
     final protected void sendCalculationTimeToListener(double calcTimeinNano) {
-        if (listener != null)
-            listener.setCalcTime(calcTimeinNano);
+        if (connection != null)
+            connection.setCalcTime(calcTimeinNano);
     }
 
     final protected void sendCurrentProgressToListener(double progress) {
-        if (listener != null)
-            listener.setProgress(progress);
+        if (connection != null)
+            connection.setProgress(progress);
     }
 
     final protected void sendRouteToListener(List<Point> route) {
-        if (listener != null)
-            listener.setRoute(route);
+        if (connection != null)
+            connection.setRoute(route);
     }
 
     final public void invoke() {
@@ -45,7 +45,7 @@ public abstract class PathPlanner {
         long endTime = System.nanoTime();
 
         long durationInNano = endTime - startTime;
-        double cost = MoveCostCalculator.calculate(route, listener.getCostFunctionType());
+        double cost = MoveCostCalculator.calculate(route, connection.getCostFunctionType());
 
         sendCostToListener(cost);
         sendCalculationTimeToListener(durationInNano);

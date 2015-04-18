@@ -3,7 +3,7 @@ package production;
 import java.awt.*;
 import java.util.List;
 
-public interface PathPlanningListener {
+public interface PathPlanningConnection {
     void setProgress(double progress);
 
     void setCalcTime(double calcTimeInNano);

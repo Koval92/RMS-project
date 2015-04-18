@@ -8,7 +8,7 @@ import java.awt.*;
 import java.io.File;
 import java.util.List;
 
-public class MainWindow extends JFrame implements PathPlanningListener {
+public class MainWindow extends JFrame implements PathPlanningConnection {
     private JTextField fileNameField;
     private JButton loadButton;
     private JPanel rootPanel;
@@ -81,7 +81,7 @@ public class MainWindow extends JFrame implements PathPlanningListener {
     }
 
     private void add(PathPlanner algorithm) {
-        algorithm.setListener(this);
+        algorithm.setConnection(this);
         JButton algorithmButton = new JButton(algorithm.getName());
         algorithmButton.addActionListener(e ->
                 algorithm.invoke());
