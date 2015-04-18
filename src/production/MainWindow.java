@@ -57,7 +57,7 @@ public class MainWindow extends JFrame implements PathPlanningListener {
                 Layer layer = LayerFactory.createFromFile(fileName);
                 layerPanel.setLayer(layer);
                 algorithmPanel.removeAll();
-                sizeTextField.setText(String.valueOf(layer.toPoints().size()));
+                sizeTextField.setText(String.valueOf(layer.toListOfPoints().size()));
                 addAlgorithms();
                 pack();
             } else {
@@ -115,7 +115,7 @@ public class MainWindow extends JFrame implements PathPlanningListener {
 
     @Override
     public List<Point> getCopyOfLayerAsList() {
-        return layerPanel.getLayer().toPoints();
+        return layerPanel.getLayer().toListOfPoints();
     }
 
     @Override

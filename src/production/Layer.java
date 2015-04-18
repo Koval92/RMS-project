@@ -16,12 +16,8 @@ public class Layer {
         this.array = layerToCopy.toTable();
     }
 
-    public List<List<Boolean>> getArray() {
+    private List<List<Boolean>> getArray() {
         return array;
-    }
-
-    public void setArray(List<List<Boolean>> array) {
-        this.array = array;
     }
 
     public int getWidth() {
@@ -40,7 +36,7 @@ public class Layer {
         return array.get(i).get(j);
     }
 
-    public List<Point> toPoints() {
+    public List<Point> toListOfPoints() {
         List<Point> list = new ArrayList<>();
         for (int i = 0; i < array.size(); i++) {
             for (int j = 0; j < array.get(i).size(); j++) {
@@ -82,7 +78,7 @@ public class Layer {
     }
 
     public void printAsPoints() {
-        List<Point> list = this.toPoints();
+        List<Point> list = this.toListOfPoints();
         for (Point point : list) {
             System.out.println("(" + point.x + ", " + point.y + ")");
         }
