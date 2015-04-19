@@ -3,6 +3,21 @@ package production;
 import java.awt.*;
 import java.util.List;
 
+/*
+ * IMPORTANT!
+ * All child classes must implement two methods:
+ * getName - returning name of algorithm)
+ * planPath - doing all calculations
+ *
+ * There is also a possibility to override empty setUp method,
+ * to set up all variables, asking user for algorithm parameters,
+ * getting a layer to print and so on...
+ * Remember that you shouldn't use default values for variables,
+ * because user can invoke algorithm more times using the same algorithm's object.
+ * Therefore you should do all constructor's work in this method,
+ * because it's the only way to revert to algorithm's initial state.
+ */
+
 public abstract class PathPlanner {
     protected PathPlanningConnection connection = null;
 
@@ -23,9 +38,9 @@ public abstract class PathPlanner {
             connection.setCost(cost);
     }
 
-    final protected void sendCalculationTimeToListener(double calcTimeinNano) {
+    final protected void sendCalculationTimeToListener(double calcTimeInNano) {
         if (connection != null)
-            connection.setCalcTime(calcTimeinNano);
+            connection.setCalcTime(calcTimeInNano);
     }
 
     final protected void sendCurrentProgressToListener(double progress) {
