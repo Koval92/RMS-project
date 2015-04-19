@@ -40,9 +40,14 @@ public abstract class PathPlanner {
 
     final public void invoke() {
         System.out.println(getName() + " algorithm invoked");
+        System.out.println("\tSetting up algorithm");
+        setUp();
+        System.out.println("\tSetting up completed");
+        System.out.println("\tAlgorithm starting");
         long startTime = System.nanoTime();
         List<Point> route = planPath();
         long endTime = System.nanoTime();
+        System.out.println("\tAlgorithm finished");
 
         long durationInNano = endTime - startTime;
         double cost = MoveCostCalculator.calculate(route, connection.getCostFunctionType());
@@ -50,6 +55,9 @@ public abstract class PathPlanner {
         sendCostToListener(cost);
         sendCalculationTimeToListener(durationInNano);
         sendRouteToListener(route);
+    }
+
+    protected void setUp() {
     }
 
     protected abstract List<Point> planPath();
