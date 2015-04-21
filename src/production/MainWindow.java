@@ -12,20 +12,19 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainWindow extends JFrame implements PathPlanningConnection {
+public class MainWindow extends JFrame {
+    protected JTextField costTextField;
+    protected JTextField calcTimeTextField;
+    protected LayerPanel layerPanel;
+    protected CostFunctionType costFunctionType = CostFunctionType.DISTANCE;
     List<PathPlanner> algorithms;
+    Connection connection = new Connection(this);
     private JTextField fileNameField;
     private JButton loadButton;
     private JPanel rootPanel;
     private JPanel algorithmPanel;
-    private JTextField costTextField;
-    private JTextField calcTimeTextField;
     private JPanel layerPanelAsJPanel;
-
     private JTextField sizeTextField;
-    private LayerPanel layerPanel;
-
-    private CostFunctionType costFunctionType = CostFunctionType.DISTANCE;
 
     MainWindow() {
         $$$setupUI$$$();
@@ -84,7 +83,6 @@ public class MainWindow extends JFrame implements PathPlanningConnection {
         algorithmPanel.removeAll();
         algorithms = new ArrayList<>();
         addAlgorithms();
-        log("New instances of algorithms created");
         for (PathPlanner algorithm : algorithms)
             add(algorithm);
     }
@@ -97,61 +95,11 @@ public class MainWindow extends JFrame implements PathPlanningConnection {
     }
 
     private void add(PathPlanner algorithm) {
-        algorithm.setConnection(this);
+        algorithm.setConnection(connection);
         JButton algorithmButton = new JButton(algorithm.getName());
         algorithmButton.addActionListener(e ->
                 algorithm.invoke());
         algorithmPanel.add(algorithmButton);
-    }
-
-    @Override
-    public void setProgress(double progress) {
-        log("Current progress: " + progress);
-    }
-
-    @Override
-    public void setCalcTime(double calcTimeInNano) {
-        calcTimeTextField.setText(Double.toString(calcTimeInNano / 1000) + " ms");
-    }
-
-    @Override
-    public void setCost(double cost) {
-        costTextField.setText(String.format("%.2f", cost));
-    }
-
-    @Override
-    public void setRoute(List<Point> route) {
-        layerPanel.setRoute(route);
-    }
-
-    @Override
-    public CostFunctionType getCostFunctionType() {
-        return costFunctionType;
-    }
-
-    @Override
-    public List<Point> getCopyOfLayerAsListOfPoints() {
-        return layerPanel.getLayer().toListOfPoints();
-    }
-
-    @Override
-    public List<List<Boolean>> getCopyOfLayerAsTable() {
-        return layerPanel.getLayer().toTable();
-    }
-
-    @Override
-    public boolean[][] getCopyOfLayerAsSimpleTable() {
-        return layerPanel.getLayer().toSimpleTable();
-    }
-
-    @Override
-    public Layer getCopyOfLayer() {
-        return new Layer(layerPanel.getLayer());
-    }
-
-    @Override
-    public void log(String s) {
-        System.out.println(s);
     }
 
     /**
@@ -226,3 +174,57 @@ public class MainWindow extends JFrame implements PathPlanningConnection {
         return rootPanel;
     }
 }
+
+class Connection implements PathPlanningConnection {
+    MainWindow mainWindow;
+
+    Connection(MainWindow mainWindow) {
+        this.mainWindow = mainWindow;
+    }
+
+    @Override
+    public void setProgress(double progress) {
+        Logger.log("Current progress: " + progress);
+    }
+
+    @Override
+    public void setCalcTime(double calcTimeInNano) {
+        mainWindow.calcTimeTextField.setText(Double.toString(calcTimeInNano / 1000) + " ms");
+    }
+
+    @Override
+    public void setCost(double cost) {
+        mainWindow.costTextField.setText(String.format("%.2f", cost));
+    }
+
+    @Override
+    public void setRoute(List<Point> route) {
+        mainWindow.layerPanel.setRoute(route);
+    }
+
+    @Override
+    public CostFunctionType getCostFunctionType() {
+        return mainWindow.costFunctionType;
+    }
+
+    @Override
+    public List<Point> getCopyOfLayerAsListOfPoints() {
+        return mainWindow.layerPanel.getLayer().toListOfPoints();
+    }
+
+    @Override
+    public List<List<Boolean>> getCopyOfLayerAsTable() {
+        return mainWindow.layerPanel.getLayer().toTable();
+    }
+
+    @Override
+    public boolean[][] getCopyOfLayerAsSimpleTable() {
+        return mainWindow.layerPanel.getLayer().toSimpleTable();
+    }
+
+    @Override
+    public Layer getCopyOfLayer() {
+        return new Layer(mainWindow.layerPanel.getLayer());
+    }
+}
+
