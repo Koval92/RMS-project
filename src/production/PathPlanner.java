@@ -22,7 +22,7 @@ public abstract class PathPlanner {
     protected PathPlanningConnection connection = null;
 
     public PathPlanner() {
-        System.out.println("New instance of " + getName() + " algorithm created");
+        connection.log("New instance of " + getName() + " algorithm created");
     }
 
     final public PathPlanningConnection getConnection() {
@@ -54,15 +54,15 @@ public abstract class PathPlanner {
     }
 
     final public void invoke() {
-        System.out.println(getName() + " algorithm invoked");
-        System.out.println("\tSetting up algorithm");
+        connection.log(getName() + " algorithm invoked");
+        connection.log("\tSetting up algorithm");
         setUp();
-        System.out.println("\tSetting up completed");
-        System.out.println("\tAlgorithm starting");
+        connection.log("\tSetting up completed");
+        connection.log("\tAlgorithm starting");
         long startTime = System.nanoTime();
         List<Point> route = planPath();
         long endTime = System.nanoTime();
-        System.out.println("\tAlgorithm finished");
+        connection.log("\tAlgorithm finished");
 
         long durationInNano = endTime - startTime;
         double cost = MoveCostCalculator.calculate(route, connection.getCostFunctionType());

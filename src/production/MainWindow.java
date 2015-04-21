@@ -94,7 +94,7 @@ public class MainWindow extends JFrame implements PathPlanningConnection {
 
     @Override
     public void setProgress(double progress) {
-        System.out.println("Current progress: " + progress);
+        log("Current progress: " + progress);
     }
 
     @Override
@@ -135,6 +135,11 @@ public class MainWindow extends JFrame implements PathPlanningConnection {
     @Override
     public Layer getCopyOfLayer() {
         return new Layer(layerPanel.getLayer());
+    }
+
+    @Override
+    public void log(String s) {
+        System.out.println(s);
     }
 
     /**
