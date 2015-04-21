@@ -4,7 +4,7 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import production.algorithms.LeftToRight;
-import test.testAlgorithm;
+import test.TestAlgorithm;
 
 import javax.swing.*;
 import java.awt.*;
@@ -60,7 +60,7 @@ public class MainWindow extends JFrame {
 
     private void addAlgorithms() {
         // remember to add new algorithms here (and new instances of them)
-        algorithms.add(new testAlgorithm());
+        algorithms.add(new TestAlgorithm());
         algorithms.add(new LeftToRight());
         // add other algorithms below
     }
