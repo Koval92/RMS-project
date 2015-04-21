@@ -4,7 +4,6 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import production.algorithms.LeftToRight;
-import production.algorithms.Spiral;
 import test.testAlgorithm;
 
 import javax.swing.*;
