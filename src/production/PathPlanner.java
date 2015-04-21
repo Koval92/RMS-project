@@ -38,22 +38,22 @@ public abstract class PathPlanner {
         this.logger = logger;
     }
 
-    final protected void sendCostToListener(double cost) {
+    final protected void sendCost(double cost) {
         if (connection != null)
             connection.setCost(cost);
     }
 
-    final protected void sendCalculationTimeToListener(double calcTimeInNano) {
+    final protected void sendCalculationTime(double calcTimeInNano) {
         if (connection != null)
             connection.setCalcTime(calcTimeInNano);
     }
 
-    final protected void sendCurrentProgressToListener(double progress) {
+    final protected void sendCurrentProgress(double progress) {
         if (connection != null)
             connection.setProgress(progress);
     }
 
-    final protected void sendRouteToListener(List<Point> route) {
+    final protected void sendRoute(List<Point> route) {
         if (connection != null)
             connection.setRoute(route);
     }
@@ -72,9 +72,9 @@ public abstract class PathPlanner {
         long durationInNano = endTime - startTime;
         double cost = MoveCostCalculator.calculate(route, connection.getCostFunctionType());
 
-        sendCostToListener(cost);
-        sendCalculationTimeToListener(durationInNano);
-        sendRouteToListener(route);
+        sendCost(cost);
+        sendCalculationTime(durationInNano);
+        sendRoute(route);
     }
 
     protected void setUp() {
