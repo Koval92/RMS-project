@@ -22,7 +22,7 @@ public abstract class PathPlanner {
     protected PathPlanningConnection connection = null;
 
     public PathPlanner() {
-        connection.log("New instance of " + getName() + " algorithm created");
+        System.out.println("New instance of " + getName() + " algorithm created");
     }
 
     final public PathPlanningConnection getConnection() {
