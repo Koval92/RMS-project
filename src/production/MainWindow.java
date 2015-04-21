@@ -9,9 +9,11 @@ import test.testAlgorithm;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainWindow extends JFrame implements PathPlanningConnection {
+    List<PathPlanner> algorithms;
     private JTextField fileNameField;
     private JButton loadButton;
     private JPanel rootPanel;
@@ -19,9 +21,10 @@ public class MainWindow extends JFrame implements PathPlanningConnection {
     private JTextField costTextField;
     private JTextField calcTimeTextField;
     private JPanel layerPanelAsJPanel;
-    private JTextField sizeTextField;
 
+    private JTextField sizeTextField;
     private LayerPanel layerPanel;
+
     private CostFunctionType costFunctionType = CostFunctionType.DISTANCE;
 
     MainWindow() {
@@ -53,6 +56,13 @@ public class MainWindow extends JFrame implements PathPlanningConnection {
         }
     }
 
+    private void addAlgorithms() {
+        // remember to add new algorithms here (and new instances of them)
+        algorithms.add(new testAlgorithm());
+        algorithms.add(new LeftToRight());
+        // add other algorithms below
+    }
+
     private void configureLoadButton() {
         loadButton.addActionListener(e -> {
             String fileName = fileNameField.getText();
@@ -60,9 +70,8 @@ public class MainWindow extends JFrame implements PathPlanningConnection {
             if (file.exists()) {
                 Layer layer = LayerFactory.createFromFile(fileName);
                 layerPanel.setLayer(layer);
-                algorithmPanel.removeAll();
                 sizeTextField.setText(String.valueOf(layer.toListOfPoints().size()));
-                addAlgorithms();
+                resetAlgorithms();
                 pack();
             } else {
                 JOptionPane.showMessageDialog(this, "Incorrect file name/path to file!");
@@ -71,17 +80,20 @@ public class MainWindow extends JFrame implements PathPlanningConnection {
         fileNameField.addActionListener(loadButton.getActionListeners()[0]);
     }
 
+    private void resetAlgorithms() {
+        algorithmPanel.removeAll();
+        algorithms = new ArrayList<>();
+        addAlgorithms();
+        log("New instances of algorithms created");
+        for (PathPlanner algorithm : algorithms)
+            add(algorithm);
+    }
+
     private void createUIComponents() {
         layerPanelAsJPanel = new LayerPanel();
         layerPanel = (LayerPanel) layerPanelAsJPanel;
 
         algorithmPanel = new JPanel(new GridLayout(0, 1, 5, 5));
-    }
-
-    private void addAlgorithms() {
-        add(new testAlgorithm());
-        add(new LeftToRight());
-        // add other algorithms
     }
 
     private void add(PathPlanner algorithm) {
