@@ -49,7 +49,17 @@ public class Layer {
     }
 
     public List<List<Boolean>> toTable() {
-        return new Layer(this).getArray();
+        List<List<Boolean>> table = new ArrayList<>(array.size());
+
+        for (List<Boolean> row : array) {
+            List<Boolean> rowCopy = new ArrayList<>(row.size());
+            for (Boolean pixel : row) {
+                rowCopy.add(pixel);
+            }
+            table.add(rowCopy);
+        }
+
+        return table;
     }
 
     public boolean[][] toSimpleTable() {
