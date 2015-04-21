@@ -13,7 +13,7 @@ public class Layer {
     }
 
     public Layer(Layer layerToCopy) {
-        this.array = layerToCopy.toTable();
+        this.array = layerToCopy.getArray();
     }
 
     private List<List<Boolean>> getArray() {
