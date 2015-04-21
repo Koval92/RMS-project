@@ -4,6 +4,7 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import production.algorithms.LeftToRight;
+import production.algorithms.Spiral;
 import test.testAlgorithm;
 
 import javax.swing.*;
@@ -11,13 +12,7 @@ import java.awt.*;
 import java.io.File;
 import java.util.List;
 
-<<<<<<< HEAD
-
-//commit test
-public class MainWindow extends JFrame implements PathPlanningListener {
-=======
 public class MainWindow extends JFrame implements PathPlanningConnection {
->>>>>>> dac9324c30a04f70b981e48e87ad6cb85c194fda
     private JTextField fileNameField;
     private JButton loadButton;
     private JPanel rootPanel;
