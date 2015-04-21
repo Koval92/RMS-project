@@ -19,10 +19,11 @@ import java.util.List;
  */
 
 public abstract class PathPlanner {
-    protected PathPlanningConnection connection = null;
+    protected PathPlanningConnection connection;
+    protected Logger logger = new Logger(); // TODO maybe make logger a singleton?
 
     public PathPlanner() {
-        Logger.log("New instance of " + getName() + " algorithm created");
+        logger.log("New instance of " + getName() + " algorithm created");
     }
 
     final public PathPlanningConnection getConnection() {
@@ -31,6 +32,10 @@ public abstract class PathPlanner {
 
     final public void setConnection(PathPlanningConnection connection) {
         this.connection = connection;
+    }
+
+    final public void setLogger(Logger logger) {
+        this.logger = logger;
     }
 
     final protected void sendCostToListener(double cost) {
@@ -54,15 +59,15 @@ public abstract class PathPlanner {
     }
 
     final public void invoke() {
-        Logger.log(getName() + " algorithm invoked");
-        Logger.log("\tSetting up algorithm");
+        logger.log(getName() + " algorithm invoked");
+        logger.log("\tSetting up algorithm");
         setUp();
-        Logger.log("\tSetting up completed");
-        Logger.log("\tAlgorithm starting");
+        logger.log("\tSetting up completed");
+        logger.log("\tAlgorithm starting");
         long startTime = System.nanoTime();
         List<Point> route = planPath();
         long endTime = System.nanoTime();
-        Logger.log("\tAlgorithm finished");
+        logger.log("\tAlgorithm finished");
 
         long durationInNano = endTime - startTime;
         double cost = MoveCostCalculator.calculate(route, connection.getCostFunctionType());

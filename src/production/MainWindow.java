@@ -17,8 +17,11 @@ public class MainWindow extends JFrame {
     protected JTextField calcTimeTextField;
     protected LayerPanel layerPanel;
     protected CostFunctionType costFunctionType = CostFunctionType.DISTANCE;
+
     List<PathPlanner> algorithms;
     Connection connection = new Connection(this);
+    Logger logger = new Logger();
+
     private JTextField fileNameField;
     private JButton loadButton;
     private JPanel rootPanel;
@@ -95,7 +98,8 @@ public class MainWindow extends JFrame {
     }
 
     private void add(PathPlanner algorithm) {
-        algorithm.setConnection(connection);
+        algorithm.setLogger(this.logger);
+        algorithm.setConnection(this.connection);
         JButton algorithmButton = new JButton(algorithm.getName());
         algorithmButton.addActionListener(e ->
                 algorithm.invoke());
@@ -177,6 +181,7 @@ public class MainWindow extends JFrame {
 
 class Connection implements PathPlanningConnection {
     MainWindow mainWindow;
+    Logger logger = new Logger();
 
     Connection(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
@@ -184,7 +189,7 @@ class Connection implements PathPlanningConnection {
 
     @Override
     public void setProgress(double progress) {
-        Logger.log("Current progress: " + progress);
+        logger.log("Current progress: " + progress);
     }
 
     @Override
