@@ -4,25 +4,31 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import production.algorithms.LeftToRight;
+import production.algorithms.Snake;
 import test.testAlgorithm;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
-public class MainWindow extends JFrame implements PathPlanningConnection {
+public class MainWindow extends JFrame {
+    protected JTextField costTextField;
+    protected JTextField calcTimeTextField;
+    protected LayerPanel layerPanel;
+    protected CostFunctionType costFunctionType = CostFunctionType.DISTANCE;
+
+    List<PathPlanner> algorithms;
+    Connection connection = new Connection(this);
+    Logger logger = new Logger();
+
     private JTextField fileNameField;
     private JButton loadButton;
     private JPanel rootPanel;
     private JPanel algorithmPanel;
-    private JTextField costTextField;
-    private JTextField calcTimeTextField;
     private JPanel layerPanelAsJPanel;
     private JTextField sizeTextField;
-
-    private LayerPanel layerPanel;
-    private CostFunctionType costFunctionType = CostFunctionType.DISTANCE;
 
     MainWindow() {
         $$$setupUI$$$();
@@ -53,6 +59,14 @@ public class MainWindow extends JFrame implements PathPlanningConnection {
         }
     }
 
+    private void addAlgorithms() {
+        // remember to add new algorithms here (and new instances of them)
+        algorithms.add(new testAlgorithm());
+        algorithms.add(new LeftToRight());
+        algorithms.add(new Snake());
+        // add other algorithms below
+    }
+
     private void configureLoadButton() {
         loadButton.addActionListener(e -> {
             String fileName = fileNameField.getText();
@@ -60,15 +74,22 @@ public class MainWindow extends JFrame implements PathPlanningConnection {
             if (file.exists()) {
                 Layer layer = LayerFactory.createFromFile(fileName);
                 layerPanel.setLayer(layer);
-                algorithmPanel.removeAll();
                 sizeTextField.setText(String.valueOf(layer.toListOfPoints().size()));
-                addAlgorithms();
+                resetAlgorithms();
                 pack();
             } else {
                 JOptionPane.showMessageDialog(this, "Incorrect file name/path to file!");
             }
         });
         fileNameField.addActionListener(loadButton.getActionListeners()[0]);
+    }
+
+    private void resetAlgorithms() {
+        algorithmPanel.removeAll();
+        algorithms = new ArrayList<>();
+        addAlgorithms();
+        for (PathPlanner algorithm : algorithms)
+            add(algorithm);
     }
 
     private void createUIComponents() {
@@ -78,63 +99,13 @@ public class MainWindow extends JFrame implements PathPlanningConnection {
         algorithmPanel = new JPanel(new GridLayout(0, 1, 5, 5));
     }
 
-    private void addAlgorithms() {
-        add(new testAlgorithm());
-        add(new LeftToRight());
-        // add other algorithms
-    }
-
     private void add(PathPlanner algorithm) {
-        algorithm.setConnection(this);
+        algorithm.setLogger(this.logger);
+        algorithm.setConnection(this.connection);
         JButton algorithmButton = new JButton(algorithm.getName());
         algorithmButton.addActionListener(e ->
                 algorithm.invoke());
         algorithmPanel.add(algorithmButton);
-    }
-
-    @Override
-    public void setProgress(double progress) {
-        System.out.println("Current progress: " + progress);
-    }
-
-    @Override
-    public void setCalcTime(double calcTimeInNano) {
-        calcTimeTextField.setText(Double.toString(calcTimeInNano / 1000) + " ms");
-    }
-
-    @Override
-    public void setCost(double cost) {
-        costTextField.setText(String.format("%.2f", cost));
-    }
-
-    @Override
-    public void setRoute(List<Point> route) {
-        layerPanel.setRoute(route);
-    }
-
-    @Override
-    public CostFunctionType getCostFunctionType() {
-        return costFunctionType;
-    }
-
-    @Override
-    public List<Point> getCopyOfLayerAsListOfPoints() {
-        return layerPanel.getLayer().toListOfPoints();
-    }
-
-    @Override
-    public List<List<Boolean>> getCopyOfLayerAsTable() {
-        return layerPanel.getLayer().toTable();
-    }
-
-    @Override
-    public boolean[][] getCopyOfLayerAsSimpleTable() {
-        return layerPanel.getLayer().toSimpleTable();
-    }
-
-    @Override
-    public Layer getCopyOfLayer() {
-        return new Layer(layerPanel.getLayer());
     }
 
     /**
@@ -209,3 +180,58 @@ public class MainWindow extends JFrame implements PathPlanningConnection {
         return rootPanel;
     }
 }
+
+class Connection implements PathPlanningConnection {
+    MainWindow mainWindow;
+    Logger logger = new Logger();
+
+    Connection(MainWindow mainWindow) {
+        this.mainWindow = mainWindow;
+    }
+
+    @Override
+    public void setProgress(double progress) {
+        logger.log("Current progress: " + progress);
+    }
+
+    @Override
+    public void setCalcTime(double calcTimeInNano) {
+        mainWindow.calcTimeTextField.setText(Double.toString(calcTimeInNano / 1000) + " ms");
+    }
+
+    @Override
+    public void setCost(double cost) {
+        mainWindow.costTextField.setText(String.format("%.2f", cost));
+    }
+
+    @Override
+    public void setRoute(List<Point> route) {
+        mainWindow.layerPanel.setRoute(route);
+    }
+
+    @Override
+    public CostFunctionType getCostFunctionType() {
+        return mainWindow.costFunctionType;
+    }
+
+    @Override
+    public List<Point> getCopyOfLayerAsListOfPoints() {
+        return mainWindow.layerPanel.getLayer().toListOfPoints();
+    }
+
+    @Override
+    public List<List<Boolean>> getCopyOfLayerAsTable() {
+        return mainWindow.layerPanel.getLayer().toTable();
+    }
+
+    @Override
+    public boolean[][] getCopyOfLayerAsSimpleTable() {
+        return mainWindow.layerPanel.getLayer().toSimpleTable();
+    }
+
+    @Override
+    public Layer getCopyOfLayer() {
+        return new Layer(mainWindow.layerPanel.getLayer());
+    }
+}
+

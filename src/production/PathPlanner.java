@@ -19,10 +19,11 @@ import java.util.List;
  */
 
 public abstract class PathPlanner {
-    protected PathPlanningConnection connection = null;
+    protected PathPlanningConnection connection;
+    protected Logger logger = new Logger(); // TODO maybe make logger a singleton?
 
     public PathPlanner() {
-        System.out.println("New instance of " + getName() + " algorithm created");
+        logger.log("New instance of " + getName() + " algorithm created");
     }
 
     final public PathPlanningConnection getConnection() {
@@ -33,43 +34,47 @@ public abstract class PathPlanner {
         this.connection = connection;
     }
 
-    final protected void sendCostToListener(double cost) {
+    final public void setLogger(Logger logger) {
+        this.logger = logger;
+    }
+
+    final protected void sendCost(double cost) {
         if (connection != null)
             connection.setCost(cost);
     }
 
-    final protected void sendCalculationTimeToListener(double calcTimeInNano) {
+    final protected void sendCalculationTime(double calcTimeInNano) {
         if (connection != null)
             connection.setCalcTime(calcTimeInNano);
     }
 
-    final protected void sendCurrentProgressToListener(double progress) {
+    final protected void sendCurrentProgress(double progress) {
         if (connection != null)
             connection.setProgress(progress);
     }
 
-    final protected void sendRouteToListener(List<Point> route) {
+    final protected void sendRoute(List<Point> route) {
         if (connection != null)
             connection.setRoute(route);
     }
 
     final public void invoke() {
-        System.out.println(getName() + " algorithm invoked");
-        System.out.println("\tSetting up algorithm");
+        logger.log(getName() + " algorithm invoked");
+        logger.log("\tSetting up algorithm");
         setUp();
-        System.out.println("\tSetting up completed");
-        System.out.println("\tAlgorithm starting");
+        logger.log("\tSetting up completed");
+        logger.log("\tAlgorithm starting");
         long startTime = System.nanoTime();
         List<Point> route = planPath();
         long endTime = System.nanoTime();
-        System.out.println("\tAlgorithm finished");
+        logger.log("\tAlgorithm finished");
 
         long durationInNano = endTime - startTime;
         double cost = MoveCostCalculator.calculate(route, connection.getCostFunctionType());
 
-        sendCostToListener(cost);
-        sendCalculationTimeToListener(durationInNano);
-        sendRouteToListener(route);
+        sendCost(cost);
+        sendCalculationTime(durationInNano);
+        sendRoute(route);
     }
 
     protected void setUp() {
