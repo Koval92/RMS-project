@@ -6,7 +6,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class testAlgorithm extends PathPlanner {
+public class TestAlgorithm1 extends PathPlanner {
     @Override
     protected List<Point> planPath() {
         //desiredLayer.print();
@@ -27,6 +27,6 @@ public class testAlgorithm extends PathPlanner {
 
     @Override
     protected String getName() {
-        return "Test";
+        return "Test 1";
     }
 }
