@@ -36,6 +36,21 @@ public class Layer {
         return array.get(i).get(j);
     }
 
+    void transpose() {
+        List<List<Boolean>> rotatedArray = new ArrayList<>();
+
+        final int N = array.get(0).size();
+        for (int i = 0; i < N; i++) {
+            List<Boolean> col = new ArrayList<>();
+            for (List<Boolean> row : array) {
+                col.add(row.get(i));
+            }
+            rotatedArray.add(col);
+        }
+
+        array = rotatedArray;
+    }
+
     public List<Point> toListOfPoints() {
         List<Point> list = new ArrayList<>();
         for (int i = 0; i < array.size(); i++) {
