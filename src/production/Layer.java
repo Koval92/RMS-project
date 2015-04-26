@@ -5,18 +5,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Layer {
+    // TODO think about moving back to boolean[][]
     List<List<Boolean>> array;
 
     public Layer(List<List<Boolean>> array) {
         this.array = array;
     }
 
-    public List<List<Boolean>> getArray() {
-        return array;
+    public Layer(Layer layerToCopy) {
+        this.array = layerToCopy.getArray();
     }
 
-    public void setArray(List<List<Boolean>> array) {
-        this.array = array;
+    private List<List<Boolean>> getArray() {
+        return array;
     }
 
     public int getWidth() {
@@ -35,7 +36,7 @@ public class Layer {
         return array.get(i).get(j);
     }
 
-    public List<Point> toPoints() {
+    public List<Point> toListOfPoints() {
         List<Point> list = new ArrayList<>();
         for (int i = 0; i < array.size(); i++) {
             for (int j = 0; j < array.get(i).size(); j++) {
@@ -48,20 +49,46 @@ public class Layer {
     }
 
     public List<List<Boolean>> toTable() {
-        return LayerFactory.copy(this).getArray();
+        List<List<Boolean>> table = new ArrayList<>(array.size());
+
+        for (List<Boolean> row : array) {
+            List<Boolean> rowCopy = new ArrayList<>(row.size());
+            for (Boolean pixel : row) {
+                rowCopy.add(pixel);
+            }
+            table.add(rowCopy);
+        }
+
+        return table;
+    }
+
+    public boolean[][] toSimpleTable() {
+        boolean[][] simpleTable = new boolean[array.size()][];
+        int i = 0;
+        for (List<Boolean> row : array) {
+            simpleTable[i] = new boolean[row.size()];
+            int j = 0;
+            for (Boolean pixel : row) {
+                simpleTable[i][j] = pixel;
+                j++;
+            }
+            i++;
+        }
+        return simpleTable;
     }
 
     public void printAsTable() {
-        for (List<Boolean> row : array) {
-            for (Boolean point : row) {
-                System.out.print((point ? 'x' : '_') + " ");
+        boolean[][] table = this.toSimpleTable();
+        for (boolean[] row : table) {
+            for (boolean pixel : row) {
+                System.out.print((pixel ? 'x' : '_') + " ");
             }
             System.out.println();
         }
     }
 
     public void printAsPoints() {
-        List<Point> list = this.toPoints();
+        List<Point> list = this.toListOfPoints();
         for (Point point : list) {
             System.out.println("(" + point.x + ", " + point.y + ")");
         }
