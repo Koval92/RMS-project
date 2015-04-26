@@ -24,5 +24,7 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="forms_rt" level="project" />
+    <orderEntry type="library" name="com.intellij:forms_rt:7.0.3" level="project" />
+    <orderEntry type="library" name="forms_rt" level="project" />
   </component>
 </module>
