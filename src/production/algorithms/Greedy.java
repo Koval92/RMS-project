@@ -1,5 +1,7 @@
 package production.algorithms;
 
+import production.CostFunctionType;
+import production.MoveCostCalculator;
 import production.PathPlanner;
 import production.algorithms.route.PrintingTool;
 
@@ -7,7 +9,8 @@ import java.awt.*;
 
 public class Greedy extends PathPlanner {
 
-    PrintingTool printingTool;
+    private PrintingTool printingTool;
+    private final int NR_OF_THREADS = 10;
 
     @Override
     protected void setUp() {
@@ -16,10 +19,45 @@ public class Greedy extends PathPlanner {
 
     @Override
     protected java.util.List<Point> planPath() {
+        FindPathThread thread1 = new FindPathThread(printingTool);
+        thread1.thread.start();
+        try {
+            thread1.thread.join();
+        } catch(InterruptedException ex){
+            System.out.println("exception");
+        };
+        System.out.println(MoveCostCalculator.calculate(printingTool.getRoute(), CostFunctionType.DISTANCE));
+        return thread1.printingTool.getRoute();
+    }
+
+    @Override
+    protected String getName() {
+        return "Greedy";
+    }
+}
+
+class FindPathThread implements Runnable {
+
+    PrintingTool printingTool;
+    Thread thread;
+
+    //Point startingPoint;
+    public FindPathThread(PrintingTool printingTool) {
+        //add properties for current threat
+        //this.startingPoint = startingPoint;
+        this.printingTool = printingTool;
+        thread = new Thread();
+
+    }
+
+
+    @Override
+    public void run() {
+        //Find Path
         findStartingPoint();
         while (printingTool.getNumberOfPoints() > 0)
             findNextPoint();
-        return printingTool.getRoute();
+        System.out.println(MoveCostCalculator.calculate(printingTool.getRoute(), CostFunctionType.DISTANCE));
     }
 
     private void findStartingPoint() {
@@ -30,11 +68,11 @@ public class Greedy extends PathPlanner {
     private void findNextPoint() {
         Point currentPoint = printingTool.getCurrentPosition();
         Point nextPoint;
-        int distance;
+        double distance;
 
         Point bestPoint = printingTool.getPointFromList(0);
-        int currentDistance = calcDistance(currentPoint, bestPoint);
-        if (currentDistance == 1) {
+        double currentDistance = calcDistance(currentPoint, bestPoint);
+        if (currentDistance < 1.00001 ) {
             printingTool.print(bestPoint);
             return;
         }
@@ -53,12 +91,7 @@ public class Greedy extends PathPlanner {
         printingTool.print(bestPoint);
     }
 
-    private int calcDistance(Point first, Point second) {
-        return (int) Math.sqrt(Math.pow(second.getX() - first.getX(), 2) + Math.pow(second.getY() - first.getY(), 2));
-    }
-
-    @Override
-    protected String getName() {
-        return "Greedy";
+    private double calcDistance(Point first, Point second) {
+        return Math.sqrt(Math.pow(second.getX() - first.getX(), 2) + Math.pow(second.getY() - first.getY(), 2));
     }
 }
