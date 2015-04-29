@@ -6,7 +6,21 @@ import java.util.List;
 
 public class Layer {
     // TODO think about moving back to boolean[][]
-    List<List<Boolean>> array;
+    private List<List<Boolean>> array;
+
+    public Layer(boolean[][] simpleArray) {
+        List<List<Boolean>> array = new ArrayList<>();
+
+        for (boolean[] row : simpleArray) {
+            List<Boolean> newRow = new ArrayList<>();
+            for (boolean pixel : row) {
+                newRow.add(pixel);
+            }
+            array.add(newRow);
+        }
+
+        this.array = array;
+    }
 
     public Layer(List<List<Boolean>> array) {
         this.array = array;
@@ -14,10 +28,6 @@ public class Layer {
 
     public Layer(Layer layerToCopy) {
         this.array = layerToCopy.toTable();
-    }
-
-    private List<List<Boolean>> getArray() {
-        return array;
     }
 
     public int getWidth() {
