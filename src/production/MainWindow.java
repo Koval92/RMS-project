@@ -39,6 +39,8 @@ public class MainWindow extends JFrame {
         setVisible(true);
         configureLoadButton();
 
+        layerPanel.setLogger(this.logger);
+
         pack();
     }
 
