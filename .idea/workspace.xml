@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fee62aa8-e270-4aec-bb7d-0bca7a224d28" name="Default" comment="Added Layer(boolean[][] simpleArray) constructor">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/production/Layer.java" afterPath="$PROJECT_DIR$/src/production/Layer.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/production/LayerPanel.java" afterPath="$PROJECT_DIR$/src/production/LayerPanel.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="RSM-project.iws" />
@@ -50,7 +50,7 @@
         <entry file="file://$PROJECT_DIR$/src/production/PathPlanningConnection.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="12" column="9" selection-start-line="12" selection-start-column="9" selection-end-line="12" selection-end-column="9" />
+              <caret line="24" column="38" selection-start-line="24" selection-start-column="38" selection-end-line="24" selection-end-column="38" />
               <folding />
             </state>
           </provider>
@@ -60,13 +60,17 @@
         <entry file="file://$PROJECT_DIR$/src/production/MainWindow.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="76" column="68" selection-start-line="76" selection-start-column="68" selection-end-line="76" selection-end-column="68" />
+              <caret line="241" column="5" selection-start-line="241" selection-start-column="5" selection-end-line="241" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="docComment;method#$$$setupUI$$$#0;class#MainWindow#0" expanded="false" />
                 <element signature="docComment;method#$$$getRootComponent$$$#0;class#MainWindow#0" expanded="false" />
-                <element signature="e#10651#10652#0" expanded="true" />
-                <element signature="e#10704#10705#0" expanded="true" />
+                <element signature="e#10232#10233#0" expanded="true" />
+                <element signature="e#10291#10292#0" expanded="true" />
+                <element signature="e#10513#10514#0" expanded="true" />
+                <element signature="e#10590#10591#0" expanded="true" />
+                <element signature="e#11293#11294#0" expanded="true" />
+                <element signature="e#11359#11360#0" expanded="true" />
                 <element signature="e#11421#11422#0" expanded="true" />
                 <element signature="e#11448#11449#0" expanded="true" />
               </folding>
@@ -88,7 +92,7 @@
         <entry file="file://$PROJECT_DIR$/src/production/algorithms/LeftToRight.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+              <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -108,11 +112,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LayerPanel.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="LayerPanel.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/production/LayerPanel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="71" column="44" selection-start-line="71" selection-start-column="44" selection-end-line="71" selection-end-column="44" />
+            <state vertical-scroll-proportion="0.74242425">
+              <caret line="118" column="21" selection-start-line="118" selection-start-column="21" selection-end-line="118" selection-end-column="21" />
               <folding>
                 <element signature="e#629#630#0" expanded="true" />
                 <element signature="e#665#666#0" expanded="true" />
@@ -131,10 +135,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Layer.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Layer.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/production/Layer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.39666668">
+            <state vertical-scroll-proportion="0.0">
               <caret line="16" column="34" selection-start-line="16" selection-start-column="34" selection-end-line="16" selection-end-column="34" />
               <folding>
                 <element signature="e#612#613#0" expanded="true" />
@@ -206,13 +210,13 @@
         <option value="$PROJECT_DIR$/src/test/TestAlgorithm1.java" />
         <option value="$PROJECT_DIR$/src/production/Main.java" />
         <option value="$PROJECT_DIR$/src/production/A.java" />
-        <option value="$PROJECT_DIR$/src/production/PathPlanningConnection.java" />
         <option value="$PROJECT_DIR$/src/production/PathPlanner.java" />
         <option value="$PROJECT_DIR$/src/production/algorithms/Snake.java" />
-        <option value="$PROJECT_DIR$/src/production/LayerPanel.java" />
-        <option value="$PROJECT_DIR$/src/production/algorithms/LeftToRight.java" />
-        <option value="$PROJECT_DIR$/src/production/MainWindow.java" />
         <option value="$PROJECT_DIR$/src/production/Layer.java" />
+        <option value="$PROJECT_DIR$/src/production/LayerPanel.java" />
+        <option value="$PROJECT_DIR$/src/production/PathPlanningConnection.java" />
+        <option value="$PROJECT_DIR$/src/production/MainWindow.java" />
+        <option value="$PROJECT_DIR$/src/production/algorithms/LeftToRight.java" />
       </list>
     </option>
   </component>
@@ -762,13 +766,7 @@
       <workItem from="1430075768625" duration="3086000" />
       <workItem from="1430079238028" duration="1810000" />
       <workItem from="1430249338263" duration="2887000" />
-      <workItem from="1430329034756" duration="7678000" />
-    </task>
-    <task id="LOCAL-00004" summary="Classes moved to package and added MoveCostCalculator with tests">
-      <created>1428172176441</created>
-      <option name="number" value="00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1428172176441</updated>
+      <workItem from="1430329034756" duration="7989000" />
     </task>
     <task id="LOCAL-00005" summary="Reformatting and rearranging of code">
       <created>1428173480371</created>
@@ -1058,11 +1056,17 @@
       <option name="project" value="LOCAL" />
       <updated>1430334763272</updated>
     </task>
-    <option name="localTasksCounter" value="53" />
+    <task id="LOCAL-00053" summary="Added Layer(boolean[][] simpleArray) constructor">
+      <created>1430336720849</created>
+      <option name="number" value="00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1430336720849</updated>
+    </task>
+    <option name="localTasksCounter" value="54" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="82169000" />
+    <option name="totallyTimeSpent" value="82480000" />
   </component>
   <component name="TodoView" selected-index="4">
     <todo-panel id="selected-file">
@@ -1079,13 +1083,13 @@
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32900432" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32034633" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32034633" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32900432" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32683983" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32683983" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32900432" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16257995" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -1224,8 +1228,12 @@
             <element signature="imports" expanded="true" />
             <element signature="docComment;method#$$$setupUI$$$#0;class#MainWindow#0" expanded="false" />
             <element signature="docComment;method#$$$getRootComponent$$$#0;class#MainWindow#0" expanded="false" />
-            <element signature="e#10651#10652#0" expanded="true" />
-            <element signature="e#10704#10705#0" expanded="true" />
+            <element signature="e#10232#10233#0" expanded="true" />
+            <element signature="e#10291#10292#0" expanded="true" />
+            <element signature="e#10513#10514#0" expanded="true" />
+            <element signature="e#10590#10591#0" expanded="true" />
+            <element signature="e#11293#11294#0" expanded="true" />
+            <element signature="e#11359#11360#0" expanded="true" />
             <element signature="e#11421#11422#0" expanded="true" />
             <element signature="e#11448#11449#0" expanded="true" />
           </folding>
@@ -1292,8 +1300,12 @@
             <element signature="imports" expanded="true" />
             <element signature="docComment;method#$$$setupUI$$$#0;class#MainWindow#0" expanded="false" />
             <element signature="docComment;method#$$$getRootComponent$$$#0;class#MainWindow#0" expanded="false" />
-            <element signature="e#10651#10652#0" expanded="true" />
-            <element signature="e#10704#10705#0" expanded="true" />
+            <element signature="e#10232#10233#0" expanded="true" />
+            <element signature="e#10291#10292#0" expanded="true" />
+            <element signature="e#10513#10514#0" expanded="true" />
+            <element signature="e#10590#10591#0" expanded="true" />
+            <element signature="e#11293#11294#0" expanded="true" />
+            <element signature="e#11359#11360#0" expanded="true" />
             <element signature="e#11421#11422#0" expanded="true" />
             <element signature="e#11448#11449#0" expanded="true" />
           </folding>
@@ -1353,8 +1365,12 @@
             <element signature="imports" expanded="true" />
             <element signature="docComment;method#$$$setupUI$$$#0;class#MainWindow#0" expanded="false" />
             <element signature="docComment;method#$$$getRootComponent$$$#0;class#MainWindow#0" expanded="false" />
-            <element signature="e#10651#10652#0" expanded="true" />
-            <element signature="e#10704#10705#0" expanded="true" />
+            <element signature="e#10232#10233#0" expanded="true" />
+            <element signature="e#10291#10292#0" expanded="true" />
+            <element signature="e#10513#10514#0" expanded="true" />
+            <element signature="e#10590#10591#0" expanded="true" />
+            <element signature="e#11293#11294#0" expanded="true" />
+            <element signature="e#11359#11360#0" expanded="true" />
             <element signature="e#11421#11422#0" expanded="true" />
             <element signature="e#11448#11449#0" expanded="true" />
           </folding>
@@ -1414,8 +1430,12 @@
             <element signature="imports" expanded="true" />
             <element signature="docComment;method#$$$setupUI$$$#0;class#MainWindow#0" expanded="false" />
             <element signature="docComment;method#$$$getRootComponent$$$#0;class#MainWindow#0" expanded="false" />
-            <element signature="e#10651#10652#0" expanded="true" />
-            <element signature="e#10704#10705#0" expanded="true" />
+            <element signature="e#10232#10233#0" expanded="true" />
+            <element signature="e#10291#10292#0" expanded="true" />
+            <element signature="e#10513#10514#0" expanded="true" />
+            <element signature="e#10590#10591#0" expanded="true" />
+            <element signature="e#11293#11294#0" expanded="true" />
+            <element signature="e#11359#11360#0" expanded="true" />
             <element signature="e#11421#11422#0" expanded="true" />
             <element signature="e#11448#11449#0" expanded="true" />
           </folding>
@@ -1613,35 +1633,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/production/PathPlanningConnection.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="12" column="9" selection-start-line="12" selection-start-column="9" selection-end-line="12" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/production/LayerPanel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="71" column="44" selection-start-line="71" selection-start-column="44" selection-end-line="71" selection-end-column="44" />
-          <folding>
-            <element signature="e#629#630#0" expanded="true" />
-            <element signature="e#665#666#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/production/algorithms/LeftToRight.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/production/MainWindow.form">
       <provider editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1653,31 +1644,64 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/production/MainWindow.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="76" column="68" selection-start-line="76" selection-start-column="68" selection-end-line="76" selection-end-column="68" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="docComment;method#$$$setupUI$$$#0;class#MainWindow#0" expanded="false" />
-            <element signature="docComment;method#$$$getRootComponent$$$#0;class#MainWindow#0" expanded="false" />
-            <element signature="e#10651#10652#0" expanded="true" />
-            <element signature="e#10704#10705#0" expanded="true" />
-            <element signature="e#11421#11422#0" expanded="true" />
-            <element signature="e#11448#11449#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/production/Layer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.39666668">
+        <state vertical-scroll-proportion="0.0">
           <caret line="16" column="34" selection-start-line="16" selection-start-column="34" selection-end-line="16" selection-end-column="34" />
           <folding>
             <element signature="e#612#613#0" expanded="true" />
             <element signature="e#646#647#0" expanded="true" />
             <element signature="e#685#686#0" expanded="true" />
             <element signature="e#735#736#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/production/PathPlanningConnection.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="24" column="38" selection-start-line="24" selection-start-column="38" selection-end-line="24" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/production/MainWindow.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="241" column="5" selection-start-line="241" selection-start-column="5" selection-end-line="241" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="docComment;method#$$$setupUI$$$#0;class#MainWindow#0" expanded="false" />
+            <element signature="docComment;method#$$$getRootComponent$$$#0;class#MainWindow#0" expanded="false" />
+            <element signature="e#10232#10233#0" expanded="true" />
+            <element signature="e#10291#10292#0" expanded="true" />
+            <element signature="e#10513#10514#0" expanded="true" />
+            <element signature="e#10590#10591#0" expanded="true" />
+            <element signature="e#11293#11294#0" expanded="true" />
+            <element signature="e#11359#11360#0" expanded="true" />
+            <element signature="e#11421#11422#0" expanded="true" />
+            <element signature="e#11448#11449#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/production/algorithms/LeftToRight.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/production/LayerPanel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.74242425">
+          <caret line="118" column="21" selection-start-line="118" selection-start-column="21" selection-end-line="118" selection-end-column="21" />
+          <folding>
+            <element signature="e#629#630#0" expanded="true" />
+            <element signature="e#665#666#0" expanded="true" />
           </folding>
         </state>
       </provider>

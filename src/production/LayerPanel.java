@@ -79,7 +79,7 @@ public class LayerPanel extends JPanel {
         g.drawImage(image, 0, 0, null);
     }
 
-    private void saveToFile(BufferedImage image) {
+    private void saveToFile() {
         String directoryName = "results";
         File directory = new File(directoryName);
         if (!directory.exists() && !directory.mkdirs()) {
@@ -116,6 +116,6 @@ public class LayerPanel extends JPanel {
         this.repaint();
         this.revalidate();
 
-        saveToFile(image);
+        saveToFile();
     }
 }
