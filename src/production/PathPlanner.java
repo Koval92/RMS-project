@@ -69,6 +69,10 @@ public abstract class PathPlanner {
         long endTime = System.nanoTime();
         logger.log("\tAlgorithm finished");
 
+        Point initialPrinterPosition = connection.getInitialPrinterPosition();
+        if (initialPrinterPosition != null && route.get(0) != null && route.get(0) != initialPrinterPosition)
+            route.add(0, initialPrinterPosition);
+
         long durationInNano = endTime - startTime;
         double cost = MoveCostCalculator.calculate(route, connection.getCostFunctionType());
 

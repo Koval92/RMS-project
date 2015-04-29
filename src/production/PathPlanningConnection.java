@@ -21,4 +21,6 @@ public interface PathPlanningConnection {
     boolean[][] getCopyOfLayerAsSimpleTable();
 
     Layer getCopyOfLayer();
+
+    Point getInitialPrinterPosition();
 }

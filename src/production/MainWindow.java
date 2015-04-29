@@ -233,5 +233,10 @@ class Connection implements PathPlanningConnection {
     public Layer getCopyOfLayer() {
         return new Layer(mainWindow.layerPanel.getLayer());
     }
+
+    @Override
+    public Point getInitialPrinterPosition() {
+        return null;
+    }
 }
 
