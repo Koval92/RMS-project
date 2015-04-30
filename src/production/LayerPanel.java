@@ -87,7 +87,7 @@ public class LayerPanel extends JPanel {
             return;
         }
 
-        String fileName = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss").format(new Date()) + ".png";
+        String fileName = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss-SSS").format(new Date()) + ".png";
         File file = new File(directoryName + "/" + fileName);
 
         try {
