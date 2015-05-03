@@ -1,0 +1,9 @@
+algorithm_name: LeftToRight
+param_1: dfdfsdf # comment in same line
+# comment in separate line
+param_2: dsfdsff
+useless_param: sdfsd
+invalid_line
+wrong_splitted_line:dsdasd
+probably_correct : dsads
+incorrect_also :asddasd
