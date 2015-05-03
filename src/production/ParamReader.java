@@ -74,7 +74,7 @@ public class ParamReader {
                 }
                 line = line.split("#", 2)[0];
 
-                if (line.substring(0, 3).equals("***")) {
+                if (line.trim().equals("***")) {
                     if(params.get("algorithm_name") != null) {
                         paramList.add(params);
                     }
