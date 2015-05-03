@@ -32,7 +32,7 @@ public class ParamReader {
                     System.out.println("invalid line: " + line);
                     continue;
                 }
-                params.put(entry[0], entry[1]);
+                params.put(entry[0].trim(), entry[1].trim());
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -61,6 +61,7 @@ public class ParamReader {
         BufferedReader br = new BufferedReader(new InputStreamReader(stream));
         String line;
         Map<String, String> params = new HashMap<>();
+        boolean added = false;
 
         try {
             while ((line = br.readLine()) != null) {
@@ -71,6 +72,7 @@ public class ParamReader {
 
                 if (line.substring(0, 3).equals("***")) {
                     paramList.add(params);
+                    added = true;
                     params = new HashMap<>();
                     continue;
                 }
@@ -80,7 +82,8 @@ public class ParamReader {
                     System.out.println("invalid line: " + line);
                     continue;
                 }
-                params.put(entry[0], entry[1]);
+                params.put(entry[0].trim(), entry[1].trim());
+                added = false;
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -91,6 +94,9 @@ public class ParamReader {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        if(!added)
+            paramList.add(params);
 
         return paramList;
     }
