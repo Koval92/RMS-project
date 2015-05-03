@@ -5,14 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ParamReader {
-    public static void main(String[] args) {
-        Map<String, String> params = ParamReader.readAlgorithmFile(new File("params/singleAlgorithmTest.txt"));
-
-        System.out.println("Start");
-        for (Map.Entry<String, String> entry : params.entrySet()) {
-            System.out.println(entry.getKey() + " : " + entry.getValue());
-        }
-    }
 
     public static Map<String, String> readAlgorithmFile(File file) {
         FileInputStream stream = null;
