@@ -85,7 +85,10 @@ public class MainWindow extends JFrame {
             File file = new File(fileName);
             if (file.exists()) {
                 layer = LayerFactory.createFromFile(fileName);
+                route = null;
                 layerPanel.setPreferredSize(new Dimension(pixelSize * layer.getWidth(), pixelSize * layer.getHeight()));
+                layerPanel.repaint();
+                layerPanel.revalidate();
                 sizeTextField.setText(String.valueOf(layer.toListOfPoints().size()));
                 resetAlgorithms();
                 pack();
