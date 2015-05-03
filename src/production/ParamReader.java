@@ -75,7 +75,9 @@ public class ParamReader {
                 line = line.split("#", 2)[0];
 
                 if (line.substring(0, 3).equals("***")) {
-                    paramList.add(params);
+                    if(params.get("algorithm_name") != null) {
+                        paramList.add(params);
+                    }
                     added = true;
                     params = new HashMap<>();
                     continue;
@@ -99,7 +101,7 @@ public class ParamReader {
             e.printStackTrace();
         }
 
-        if(!added)
+        if(!added && params.get("algorithm_name") != null)
             paramList.add(params);
 
         return paramList;
