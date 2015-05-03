@@ -7,49 +7,11 @@ import java.util.List;
 import java.util.Map;
 
 public class ParamReader {
-
-    public static Map<String, String> readAlgorithmFile(File file) {
-        FileInputStream stream = null;
-        try {
-            stream = new FileInputStream(file);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        assert stream != null;
-        BufferedReader br = new BufferedReader(new InputStreamReader(stream));
-        String line;
-        Map<String, String> params = new HashMap<>();
-        int lineNumber = 0;
-
-        try {
-            while ((line = br.readLine()) != null) {
-                lineNumber++;
-                if (line.length() == 0 || (line.charAt(0) == '#')) {
-                    continue;
-                }
-                line = line.split("#", 2)[0];
-                String[] entry = line.split(": ");
-                if (entry.length != 2) {
-                    System.out.println("invalid line " + lineNumber + ": "+ line);
-                    continue;
-                }
-                params.put(entry[0].trim(), entry[1].trim());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            br.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return params;
+    public static Map<String, String> getParamsForSingleAlgorithm(File file) {
+        return getParamsForMultipleAlgorithms(file).get(0);
     }
 
-    public static List<Map<String, String>> readTestFile(File file) {
+    public static List<Map<String, String>> getParamsForMultipleAlgorithms(File file) {
         List<Map<String, String>> paramList = new ArrayList<>();
 
         FileInputStream stream = null;

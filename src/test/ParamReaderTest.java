@@ -9,11 +9,10 @@ import java.util.List;
 import java.util.Map;
 
 public class ParamReaderTest {
-
     @Test
     public void testReadAlgorithmFile() throws Exception {
         String fileName = "params/singleAlgorithmTest.txt";
-        Map<String, String> params = ParamReader.readAlgorithmFile(new File(fileName));
+        Map<String, String> params = ParamReader.getParamsForSingleAlgorithm(new File(fileName));
 
         Assert.assertEquals(5, params.size());
         Assert.assertEquals("LeftToRight", params.get("algorithm_name"));
@@ -26,7 +25,7 @@ public class ParamReaderTest {
     @Test
     public void testReadTestFile() throws Exception {
         String fileName = "params/test1.txt";
-        List<Map<String, String>> paramList = ParamReader.readTestFile(new File(fileName));
+        List<Map<String, String>> paramList = ParamReader.getParamsForMultipleAlgorithms(new File(fileName));
 
         Assert.assertEquals(2, paramList.size());
 
@@ -37,5 +36,13 @@ public class ParamReaderTest {
 
         params = paramList.get(1);
         Assert.assertEquals("LeftToRight", params.get("algorithm_name"));
+    }
+
+    @Test
+    public void testReadTestFileWithSingleAlgorithm() throws Exception {
+        String fileName = "params/singleAlgorithmTest.txt";
+        List<Map<String, String>> paramList = ParamReader.getParamsForMultipleAlgorithms(new File(fileName));
+
+        Assert.assertEquals(1, paramList.size());
     }
 }
