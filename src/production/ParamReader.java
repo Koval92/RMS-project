@@ -20,16 +20,18 @@ public class ParamReader {
         BufferedReader br = new BufferedReader(new InputStreamReader(stream));
         String line;
         Map<String, String> params = new HashMap<>();
+        int lineNumber = 0;
 
         try {
             while ((line = br.readLine()) != null) {
+                lineNumber++;
                 if (line.length() == 0 || (line.charAt(0) == '#')) {
                     continue;
                 }
                 line = line.split("#", 2)[0];
                 String[] entry = line.split(": ");
                 if (entry.length != 2) {
-                    System.out.println("invalid line: " + line);
+                    System.out.println("invalid line " + lineNumber + ": "+ line);
                     continue;
                 }
                 params.put(entry[0].trim(), entry[1].trim());
@@ -62,9 +64,11 @@ public class ParamReader {
         String line;
         Map<String, String> params = new HashMap<>();
         boolean added = false;
+        int lineNumber = 0;
 
         try {
             while ((line = br.readLine()) != null) {
+                lineNumber++;
                 if (line.length() == 0 || (line.charAt(0) == '#')) {
                     continue;
                 }
@@ -79,7 +83,7 @@ public class ParamReader {
 
                 String[] entry = line.split(": ");
                 if (entry.length != 2) {
-                    System.out.println("invalid line: " + line);
+                    System.out.println("invalid line " + lineNumber + ": " + line);
                     continue;
                 }
                 params.put(entry[0].trim(), entry[1].trim());
