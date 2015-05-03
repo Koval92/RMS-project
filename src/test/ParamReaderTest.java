@@ -1,5 +1,6 @@
 package test;
 
+import org.junit.Assert;
 import org.junit.Test;
 import production.ParamReader;
 
@@ -11,25 +12,30 @@ public class ParamReaderTest {
 
     @Test
     public void testReadAlgorithmFile() throws Exception {
-        Map<String, String> params = ParamReader.readAlgorithmFile(new File("params/singleAlgorithmTest.txt"));
+        String fileName = "params/singleAlgorithmTest.txt";
+        Map<String, String> params = ParamReader.readAlgorithmFile(new File(fileName));
 
-        System.out.println("Single algorithm");
-        for (Map.Entry<String, String> entry : params.entrySet()) {
-            System.out.println(entry.getKey() + " : " + entry.getValue());
-        }
+        Assert.assertEquals(5, params.size());
+        Assert.assertEquals("LeftToRight", params.get("algorithm_name"));
+        Assert.assertEquals("param1 value", params.get("param_1"));
+        Assert.assertEquals("param_2_value", params.get("param_2"));
+        Assert.assertEquals("param 3 value", params.get("param 3"));
+        Assert.assertEquals("param 4 value", params.get("param_4"));
     }
 
     @Test
     public void testReadTestFile() throws Exception {
-        List<Map<String, String>> paramList = ParamReader.readTestFile(new File("params/test1.txt"));
-        System.out.println();
-        System.out.println("Test file");
-        System.out.println(paramList.size());
-        for (Map<String, String> params : paramList) {
-            for (Map.Entry<String, String> entry : params.entrySet()) {
-                System.out.println(entry.getKey() + " : " + entry.getValue());
-            }
-            System.out.println();
-        }
+        String fileName = "params/test1.txt";
+        List<Map<String, String>> paramList = ParamReader.readTestFile(new File(fileName));
+
+        Assert.assertEquals(2, paramList.size());
+
+        Map<String, String> params;
+
+        params = paramList.get(0);
+        Assert.assertEquals("Snake", params.get("algorithm_name"));
+
+        params = paramList.get(1);
+        Assert.assertEquals("LeftToRight", params.get("algorithm_name"));
     }
 }

@@ -1,9 +1,12 @@
+# size : 4 + name
+
 algorithm_name: LeftToRight
-param_1: dfdfsdf # comment in same line
+param_1: param1 value # comment in same line
 # comment in separate line
-param_2: dsfdsff
-useless_param: sdfsd
+param_2: param_2_value 
+param 3: param 3 value
 invalid_line
 wrong_splitted_line:dsdasd
-probably_correct : dsads
+param_4 : param 4 value
+too many colons : value : wrong
 incorrect_also :asddasd
