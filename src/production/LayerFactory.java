@@ -30,24 +30,26 @@ public class LayerFactory {
         int width = img.getWidth();
         int height = img.getHeight();
 
-        List<List<Boolean>> imgArray = new ArrayList<>(height);
+        List<List<Boolean>> array = new ArrayList<>(height);
         for (int i = 0; i < height; i++) {
-            imgArray.add(new ArrayList<>(width));
+        	List<Boolean> row = new ArrayList<>(width);
             for (int j = 0; j < width; j++) {
-                imgArray.get(i).add(img.getRGB(j, i) != -1);
+                row.add(img.getRGB(j, i) != -1);
             }
+            array.add(row);
         }
-        return new Layer(imgArray);
+        return new Layer(array);
     }
 
     public static Layer createEmptyLayer(int height, int width) {
         List<List<Boolean>> array = new ArrayList<>(height);
 
         for (int i = 0; i < height; i++) {
-            array.add(new ArrayList<>(width));
+            List<Boolean> row = new ArrayList<>(width);
             for (int j = 0; j < width; j++) {
-                array.get(i).add(false);
+                row.add(false);
             }
+            array.add(row);
         }
 
         return new Layer(array);
