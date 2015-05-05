@@ -7,15 +7,11 @@ import production.algorithms.LeftToRight;
 import production.algorithms.Snake;
 import test.TestAlgorithm1;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class MainWindow extends JFrame {
@@ -52,7 +48,7 @@ public class MainWindow extends JFrame {
     }
 
     void updateLayerPanel() {
-        layerPanel.setPreferredSize(new Dimension(LayerFactory.getPixelSize() * layer.getWidth(), LayerFactory.getPixelSize() * layer.getHeight()));
+        layerPanel.setPreferredSize(new Dimension(Utils.getPixelSize() * layer.getWidth(), Utils.getPixelSize() * layer.getHeight()));
         layerPanel.repaint();
         layerPanel.revalidate();
     }
@@ -114,7 +110,7 @@ public class MainWindow extends JFrame {
             public void paintComponent(Graphics g) {
                 super.paintComponent(g);
 
-                BufferedImage image = LayerFactory.draw(layer, route);
+                BufferedImage image = Utils.draw(layer, route);
                 g.drawImage(image, 0, 0, null);
             }
         };
@@ -128,24 +124,6 @@ public class MainWindow extends JFrame {
         algorithmButton.addActionListener(e ->
                 algorithm.invoke());
         algorithmPanel.add(algorithmButton);
-    }
-
-    public void saveToFile(BufferedImage image) {
-        String directoryName = "results";
-        File directory = new File(directoryName);
-        if (!directory.exists() && !directory.mkdirs()) {
-            logger.log("Creation of directory failed");
-            return;
-        }
-
-        String currentDate = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss-SSS").format(new Date());
-        File file = new File(directoryName + "/" + currentDate + ".png");
-
-        try {
-            ImageIO.write(image, "PNG", file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -249,7 +227,7 @@ class Connection implements PathPlanningConnection {
         mainWindow.route = route;
         mainWindow.updateLayerPanel();
 
-        mainWindow.saveToFile(LayerFactory.draw(mainWindow.layer, mainWindow.route));
+        Utils.saveToFile(Utils.draw(mainWindow.layer, mainWindow.route));
     }
 
     @Override
