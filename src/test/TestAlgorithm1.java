@@ -24,9 +24,4 @@ public class TestAlgorithm1 extends PathPlanner {
 
         return route;
     }
-
-    @Override
-    protected String getName() {
-        return "Test 1";
-    }
 }

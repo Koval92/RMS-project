@@ -23,11 +23,6 @@ public class LeftToRight extends PathPlanner {
     }
 
     @Override
-    protected String getName() {
-        return "Left-to-right";
-    }
-
-    @Override
     protected void setUp() {
         layer = connection.getCopyOfLayerAsSimpleTable();
         route = new ArrayList<>();
