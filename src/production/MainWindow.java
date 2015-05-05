@@ -25,7 +25,7 @@ public class MainWindow extends JFrame {
 
     List<PathPlanner> algorithms;
     Connection connection = new Connection(this);
-    Logger logger = new Logger();
+    Logger logger = Logger.getInstance();
 
     Layer layer = LayerFactory.createEmptyLayer(10);
     List<Point> route;
@@ -123,7 +123,6 @@ public class MainWindow extends JFrame {
     }
 
     private void add(PathPlanner algorithm) {
-        algorithm.setLogger(this.logger);
         algorithm.setConnection(this.connection);
         JButton algorithmButton = new JButton(algorithm.getName());
         algorithmButton.addActionListener(e ->
@@ -224,7 +223,7 @@ public class MainWindow extends JFrame {
 
 class Connection implements PathPlanningConnection {
     MainWindow mainWindow;
-    Logger logger = new Logger();
+    Logger logger = Logger.getInstance();
 
     Connection(MainWindow mainWindow) {
         this.mainWindow = mainWindow;

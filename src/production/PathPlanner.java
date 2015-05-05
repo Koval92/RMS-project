@@ -20,7 +20,7 @@ import java.util.List;
 
 public abstract class PathPlanner {
     protected PathPlanningConnection connection;
-    protected Logger logger = new Logger(); // TODO maybe make logger a singleton?
+    protected Logger logger = Logger.getInstance();
 
     public PathPlanner() {
         logger.log("New instance of " + getName() + " algorithm created");
@@ -32,10 +32,6 @@ public abstract class PathPlanner {
 
     final public void setConnection(PathPlanningConnection connection) {
         this.connection = connection;
-    }
-
-    final public void setLogger(Logger logger) {
-        this.logger = logger;
     }
 
     final protected void sendCost(double cost) {
