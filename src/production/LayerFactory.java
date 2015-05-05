@@ -59,7 +59,17 @@ public class LayerFactory {
         return createEmptyLayer(size, size);
     }
 
-    public static BufferedImage draw(Layer layer, List<Point> route, int pixelSize) {
+    public static int getPixelSize() {
+        return pixelSize;
+    }
+
+    public static void setPixelSize(int pixelSize) {
+        LayerFactory.pixelSize = pixelSize;
+    }
+
+    private static int pixelSize = 10;
+
+    public static BufferedImage draw(Layer layer, List<Point> route) {
         BufferedImage image = new BufferedImage(layer.getWidth() * pixelSize, layer.getHeight() * pixelSize, BufferedImage.TYPE_3BYTE_BGR);
         Graphics imageGraphics = image.getGraphics();
 

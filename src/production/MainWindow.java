@@ -29,7 +29,6 @@ public class MainWindow extends JFrame {
 
     Layer layer = LayerFactory.createEmptyLayer(10);
     List<Point> route;
-    int pixelSize = 10;
 
     private JTextField fileNameField;
     private JButton loadButton;
@@ -47,11 +46,15 @@ public class MainWindow extends JFrame {
         setVisible(true);
         configureLoadButton();
 
-        layerPanel.setPreferredSize(new Dimension(pixelSize * layer.getWidth(), pixelSize * layer.getHeight()));
-        layerPanel.repaint();
-        layerPanel.revalidate();
+        updateLayerPanel();
 
         pack();
+    }
+
+    void updateLayerPanel() {
+        layerPanel.setPreferredSize(new Dimension(LayerFactory.getPixelSize() * layer.getWidth(), LayerFactory.getPixelSize() * layer.getHeight()));
+        layerPanel.repaint();
+        layerPanel.revalidate();
     }
 
     public static void main(String[] args) {
@@ -86,9 +89,7 @@ public class MainWindow extends JFrame {
             if (file.exists()) {
                 layer = LayerFactory.createFromFile(fileName);
                 route = null;
-                layerPanel.setPreferredSize(new Dimension(pixelSize * layer.getWidth(), pixelSize * layer.getHeight()));
-                layerPanel.repaint();
-                layerPanel.revalidate();
+                updateLayerPanel();
                 sizeTextField.setText(String.valueOf(layer.toListOfPoints().size()));
                 resetAlgorithms();
                 pack();
@@ -113,7 +114,7 @@ public class MainWindow extends JFrame {
             public void paintComponent(Graphics g) {
                 super.paintComponent(g);
 
-                BufferedImage image = LayerFactory.draw(layer, route, pixelSize);
+                BufferedImage image = LayerFactory.draw(layer, route);
                 g.drawImage(image, 0, 0, null);
             }
         };
@@ -247,10 +248,9 @@ class Connection implements PathPlanningConnection {
     @Override
     public void setRoute(List<Point> route) {
         mainWindow.route = route;
-        mainWindow.layerPanel.repaint();
-        mainWindow.layerPanel.revalidate();
+        mainWindow.updateLayerPanel();
 
-        mainWindow.saveToFile(LayerFactory.draw(mainWindow.layer, mainWindow.route, 10));
+        mainWindow.saveToFile(LayerFactory.draw(mainWindow.layer, mainWindow.route));
     }
 
     @Override
