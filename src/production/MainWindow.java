@@ -90,7 +90,7 @@ public class MainWindow extends JFrame {
                 resetAlgorithms();
                 pack();
             } else {
-                JOptionPane.showMessageDialog(this, "Incorrect file name/path to file!");
+                logger.log("Incorrect file name/path to file!");
             }
         });
         fileNameField.addActionListener(loadButton.getActionListeners()[0]);
