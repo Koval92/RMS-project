@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.List;
 
 public class Utils {
     public static int getPixelSize() {
@@ -71,6 +72,20 @@ public class Utils {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private static List<Point> toListOfPoints(boolean[][] array) {
+        List<Point> points = new ArrayList<>();
+
+        for(int i = 0; i < array.length; i++) {
+            for(int j = 0; j < array[i].length; j++) {
+                if(array[i][j]) {
+                    points.add(new Point(i, j));
+                }
+            }
+        }
+
+        return points;
     }
 
     private Utils() {
