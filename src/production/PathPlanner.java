@@ -82,5 +82,7 @@ public abstract class PathPlanner {
 
     protected abstract List<Point> planPath();
 
-    protected abstract String getName();
+    protected String getName() {
+        return this.getClass().getSimpleName();
+    }
 }

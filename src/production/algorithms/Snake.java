@@ -81,11 +81,6 @@ public class Snake extends PathPlanner {
     }
 
     @Override
-    protected String getName() {
-        return "Snake";
-    }
-
-    @Override
     protected void setUp() {
         layer = connection.getCopyOfLayerAsSimpleTable();
         route = new ArrayList<>();
