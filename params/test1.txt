@@ -1,0 +1,34 @@
+algorithm_name: Snake  
+param_1: param_1_1 value # comment in same line
+# comment in separate line
+param_2: param_1_2_value
+param_3: sdfsd
+invalid_line
+wrong_splitted_line1:dsdasd
+splitted with space : value
+wrong_splitted_line2 :asddasd
+layer: sp_1.png
+
+***
+
+# no name algorithm
+param1 : ok
+param3 : fdfds, sdfsdfsd
+
+***
+
+algorithm_name:       LeftToRight
+param_4: param_1_1 value # comment in same line
+# comment in separate line
+param_5: vgfgfd
+param6: fdgfdgh
+param 7 : 
+invalid_line
+wrong_splitted_line3:dsdasd
+wrong_splitted_line4 :asddasd
+
+  ***  
+
+# no name algorithm
+param1 : ok
+param3 : fdfds, sdfsdfsd
