@@ -88,6 +88,32 @@ public class Utils {
         return points;
     }
 
+    public static boolean isEmpty(boolean[][] array) {
+        for (boolean[] row : array) {
+            for (boolean pixel : row) {
+                if(pixel)
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static List<List<Boolean>> transpose(List<List<Boolean>> array) {
+        List<List<Boolean>> rotatedArray = new ArrayList<>();
+
+        final int N = array.get(0).size();
+        for (int i = 0; i < N; i++) {
+            List<Boolean> col = new ArrayList<>();
+            for (List<Boolean> row : array) {
+                col.add(row.get(i));
+            }
+            rotatedArray.add(col);
+        }
+
+        return rotatedArray;
+    }
+
     private Utils() {
         System.out.println("This shouldn't be invoked");
     }
