@@ -27,4 +27,10 @@ public class LeftToRight extends PathPlanner {
         layer = connection.getCopyOfLayerAsSimpleTable();
         route = new ArrayList<>();
     }
+
+    @Override
+    protected void setUp() {
+        layer = connection.getCopyOfLayerAsSimpleTable();
+        route = new ArrayList<>();
+    }
 }
