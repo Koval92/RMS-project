@@ -3,7 +3,7 @@ package production;
 import java.awt.*;
 import java.util.List;
 
-public interface PathPlanningListener {
+public interface PathPlanningConnection {
     void setProgress(double progress);
 
     void setCalcTime(double calcTimeInNano);
@@ -14,9 +14,13 @@ public interface PathPlanningListener {
 
     CostFunctionType getCostFunctionType();
 
-    List<Point> getCopyOfLayerAsList();
+    List<Point> getCopyOfLayerAsListOfPoints();
 
     List<List<Boolean>> getCopyOfLayerAsTable();
 
+    boolean[][] getCopyOfLayerAsSimpleTable();
+
     Layer getCopyOfLayer();
+
+    Point getInitialPrinterPosition();
 }
