@@ -10,6 +10,8 @@ import java.util.*;
 import java.util.List;
 
 public class Utils {
+    private static Logger logger = Logger.getInstance();
+
     public static int getPixelSize() {
         return pixelSize;
     }
@@ -74,7 +76,7 @@ public class Utils {
         }
     }
 
-    private static List<Point> toListOfPoints(boolean[][] array) {
+    public static List<Point> toListOfPoints(boolean[][] array) {
         List<Point> points = new ArrayList<>();
 
         for(int i = 0; i < array.length; i++) {
@@ -112,6 +114,56 @@ public class Utils {
         }
 
         return rotatedArray;
+    }
+
+    public static Point findClosest(Point currentPosition, boolean[][] array, CostFunctionType costType) {
+        List<Point> points = Utils.toListOfPoints(array);
+        if(points == null) {
+            logger.log("List shouldn't be null!");
+            return null;
+        }
+        Point closest = points.get(0);
+        double minDistance = MoveCostCalculator.calculate(currentPosition, closest, costType);
+
+        for (Point point : points) {
+            double distance = MoveCostCalculator.calculate(currentPosition, point, costType);
+            if(distance < minDistance) {
+                closest = point;
+                minDistance = distance;
+            }
+        }
+
+        return closest;
+    }
+
+    public static Point findNeighbour(Point currentPosition, boolean[][] edges, CostFunctionType costType) {
+        int i = currentPosition.x;
+        int j = currentPosition.y;
+
+        // point has at least one neighbor side-by-side
+        if(edges[i-1][j])
+            return new Point(i-1, j);
+        if(edges[i][j+1])
+            return new Point(i, j+1);
+        if(edges[i+1][j])
+            return new Point(i+1, j);
+        if(edges[i][j-1]) {
+            return new Point(i, j-1);
+        }
+
+        // point has at least one diagonal neighbor and cost function is appropriate
+        if(costType == CostFunctionType.TIME) {
+            if(edges[i-1][j+1])
+                return new Point(i-1, j+1);
+            if(edges[i+1][j+1])
+                return new Point(i+1, j+1);
+            if(edges[i+1][j-1])
+                return new Point(i+1, j-1);
+            if(edges[i-1][j-1])
+                return new Point(i-1, j-1);
+        }
+
+        return null;
     }
 
     private Utils() {
