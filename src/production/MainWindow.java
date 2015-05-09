@@ -33,7 +33,9 @@ public class MainWindow extends JFrame {
     private JPanel algorithmPanel;
     protected JPanel layerPanel;
     private JTextField sizeTextField;
-    private JComboBox costFunctionTypeComboBox;
+    private JRadioButton distanceRadioButton;
+    private JRadioButton timeRadioButton;
+    private JRadioButton energyRadioButton;
 
     MainWindow() {
         $$$setupUI$$$();
@@ -47,22 +49,25 @@ public class MainWindow extends JFrame {
         updateLayerPanel();
 
         pack();
-        costFunctionTypeComboBox.addActionListener(e -> {
-            switch ((String) costFunctionTypeComboBox.getSelectedItem()) {
-                case "Distance":
-                    this.costFunctionType = CostFunctionType.DISTANCE;
-                    break;
-                case "Time":
-                    this.costFunctionType = CostFunctionType.TIME;
-                    break;
-                case "Energy":
-                    this.costFunctionType = CostFunctionType.ENERGY;
-                    break;
-            }
-            logger.log("Cost function type set to " + this.costFunctionType);
-            double cost = MoveCostCalculator.calculate(route, this.costFunctionType);
-            costTextField.setText(String.valueOf(cost));
+
+        distanceRadioButton.addActionListener(e -> {
+            costFunctionType = CostFunctionType.DISTANCE;
+            costTypeChanged();
         });
+        timeRadioButton.addActionListener(e -> {
+            costFunctionType = CostFunctionType.TIME;
+            costTypeChanged();
+        });
+        energyRadioButton.addActionListener(e -> {
+            costFunctionType = CostFunctionType.ENERGY;
+            costTypeChanged();
+        });
+    }
+
+    private void costTypeChanged() {
+        logger.log("Cost function type set to " + this.costFunctionType);
+        double cost = MoveCostCalculator.calculate(route, this.costFunctionType);
+        costTextField.setText(String.format("%.2f", cost));
     }
 
     void updateLayerPanel() {
@@ -74,7 +79,6 @@ public class MainWindow extends JFrame {
     void resetStats() {
         costTextField.setText("-");
         calcTimeTextField.setText("-");
-        //sizeTextField.setText("-");
     }
 
     public static void main(String[] args) {
@@ -211,20 +215,33 @@ public class MainWindow extends JFrame {
         sizeTextField.setHorizontalAlignment(4);
         sizeTextField.setText("-");
         panel1.add(sizeTextField, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(75, -1), null, 0, false));
-        costFunctionTypeComboBox = new JComboBox();
-        final DefaultComboBoxModel defaultComboBoxModel1 = new DefaultComboBoxModel();
-        defaultComboBoxModel1.addElement("Distance");
-        defaultComboBoxModel1.addElement("Time");
-        defaultComboBoxModel1.addElement("Energy");
-        costFunctionTypeComboBox.setModel(defaultComboBoxModel1);
-        panel1.add(costFunctionTypeComboBox, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label4 = new JLabel();
-        label4.setText("Cost Function Time");
-        panel1.add(label4, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JPanel panel2 = new JPanel();
+        panel2.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
+        panel1.add(panel2, new GridConstraints(2, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        distanceRadioButton = new JRadioButton();
+        distanceRadioButton.setText("Distance");
+        distanceRadioButton.setMnemonic('D');
+        distanceRadioButton.setDisplayedMnemonicIndex(0);
+        panel2.add(distanceRadioButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        timeRadioButton = new JRadioButton();
+        timeRadioButton.setText("Time");
+        timeRadioButton.setMnemonic('T');
+        timeRadioButton.setDisplayedMnemonicIndex(0);
+        panel2.add(timeRadioButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        energyRadioButton = new JRadioButton();
+        energyRadioButton.setText("Energy");
+        energyRadioButton.setMnemonic('E');
+        energyRadioButton.setDisplayedMnemonicIndex(0);
+        panel2.add(energyRadioButton, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer6 = new Spacer();
         rootPanel.add(spacer6, new GridConstraints(3, 1, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(-1, 10), null, null, 0, false));
         final Spacer spacer7 = new Spacer();
         rootPanel.add(spacer7, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        ButtonGroup buttonGroup;
+        buttonGroup = new ButtonGroup();
+        buttonGroup.add(distanceRadioButton);
+        buttonGroup.add(timeRadioButton);
+        buttonGroup.add(energyRadioButton);
     }
 
     /**
