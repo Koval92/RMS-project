@@ -118,12 +118,18 @@ public class Utils {
 
     public static Point findClosest(Point currentPosition, boolean[][] array, CostFunctionType costType) {
         List<Point> points = Utils.toListOfPoints(array);
+
+        if(currentPosition == null) {
+            logger.log("Current point shouldn't be null!");
+            return null;
+        }
+
         if(points == null) {
             logger.log("List shouldn't be null!");
             return null;
         }
-        Point closest = points.get(0);
-        double minDistance = MoveCostCalculator.calculate(currentPosition, closest, costType);
+        Point closest = null;
+        double minDistance = Double.MAX_VALUE;
 
         for (Point point : points) {
             double distance = MoveCostCalculator.calculate(currentPosition, point, costType);
@@ -140,26 +146,29 @@ public class Utils {
         int i = currentPosition.x;
         int j = currentPosition.y;
 
+        int height = edges.length;
+        int width = edges[0].length;
+
         // point has at least one neighbor side-by-side
-        if(edges[i-1][j])
+        if((i-1 >= 0) && edges[i-1][j])
             return new Point(i-1, j);
-        if(edges[i][j+1])
+        if((j+1 < width) && edges[i][j+1])
             return new Point(i, j+1);
-        if(edges[i+1][j])
+        if((i+1 < height) && edges[i+1][j])
             return new Point(i+1, j);
-        if(edges[i][j-1]) {
+        if((j-1 >= 0) &&edges[i][j-1]) {
             return new Point(i, j-1);
         }
 
         // point has at least one diagonal neighbor and cost function is appropriate
         if(costType == CostFunctionType.TIME) {
-            if(edges[i-1][j+1])
+            if((i-1 >= 0 && j+1 < width )  && edges[i-1][j+1])
                 return new Point(i-1, j+1);
-            if(edges[i+1][j+1])
+            if((i+1 < height && j+1 < width) && edges[i+1][j+1])
                 return new Point(i+1, j+1);
-            if(edges[i+1][j-1])
+            if((i+1 < height && j-1 >= 0) && edges[i+1][j-1])
                 return new Point(i+1, j-1);
-            if(edges[i-1][j-1])
+            if((i-1 >= 0 && j-1 >= 0) && edges[i-1][j-1])
                 return new Point(i-1, j-1);
         }
 
