@@ -75,7 +75,9 @@ public class MainWindow extends JFrame {
         algorithms.add(new LeftToRight());
         algorithms.add(new Snake());
         algorithms.add(new Spiral());
-        algorithms.add(new Greedy());
+        Greedy greedy = new Greedy();
+        algorithms.add(greedy);
+        algorithms.add(new GreedyTwoOpt(greedy));
         // add other algorithms below
     }
 

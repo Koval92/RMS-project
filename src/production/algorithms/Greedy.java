@@ -13,6 +13,7 @@ public class Greedy extends PathPlanner {
 
     PrintingTool printingTool;
     SimpleTableOfNeighbours tableOfNeighbours;
+    GreedyThreadParameters greedyThreadParameters;
 
     private int nrOfPoints;
     // Array of starting points
@@ -115,10 +116,23 @@ public class Greedy extends PathPlanner {
 
 class GreedyParameters {
     //seed for random
-    public static final long SEED = 50;
+    public static long SEED = 50;
     //ile watkow rownoczesnie
-    public final static int NR_OF_THREADS = 20;
-    public final static int NR_OF_NEIGHBOURS_FOR_STARTING_POINT = 1;
+    public static int NR_OF_THREADS = 20;
+    public static int NR_OF_NEIGHBOURS_FOR_STARTING_POINT = 1;
+
+    public static void set(int seed, int nrOfThreads, int nrOfNeighboursForStartingPoint) {
+        SEED = seed;
+        NR_OF_THREADS = nrOfThreads;
+        NR_OF_NEIGHBOURS_FOR_STARTING_POINT = nrOfNeighboursForStartingPoint;
+    }
+
+    public static void reset() {
+        SEED = 50;
+        NR_OF_THREADS = 20;
+        NR_OF_NEIGHBOURS_FOR_STARTING_POINT = 1;
+    }
+
 }
 
 
@@ -127,10 +141,29 @@ class GreedyParameters {
 class GreedyThreadParameters {
 
     // po ilu punktow zmienic metode szukania
-    public final int NR_OF_POINTS_NEEDED_TO_CHECK_ARRAY = 40;
-    public final int BEST_NR_OF_NEIGHBOURS = 0;
-    public final float WEIGHT_OF_NEIGHBOURS = 0.42F;
-    public final float WEIGHT_OF_DISTANCE = 0.32F;
+    public static  int NR_OF_POINTS_NEEDED_TO_CHECK_ARRAY = 40;
+    public static int BEST_NR_OF_NEIGHBOURS = 0;
+    public static float WEIGHT_OF_NEIGHBOURS = 0.42F;
+    public static float WEIGHT_OF_DISTANCE = 0.32F;
+
+    public static void set(int nrOfPointsNeededToCheckArray, int bestNrOfNeighbours, float weightOfNeighbours, float weightOfDistance) {
+        NR_OF_POINTS_NEEDED_TO_CHECK_ARRAY = nrOfPointsNeededToCheckArray;
+        BEST_NR_OF_NEIGHBOURS = bestNrOfNeighbours;
+        WEIGHT_OF_NEIGHBOURS = weightOfNeighbours;
+        WEIGHT_OF_DISTANCE = weightOfDistance;
+    }
+
+    public static void set(int nrOfPointsNeededToCheckArray, int bestNrOfNeighbours) {
+        NR_OF_POINTS_NEEDED_TO_CHECK_ARRAY = nrOfPointsNeededToCheckArray;
+        BEST_NR_OF_NEIGHBOURS = bestNrOfNeighbours;
+    }
+
+    public static void reset() {
+        NR_OF_POINTS_NEEDED_TO_CHECK_ARRAY = 40;
+        BEST_NR_OF_NEIGHBOURS = 0;
+        WEIGHT_OF_NEIGHBOURS = 0.42F;
+        WEIGHT_OF_DISTANCE = 0.32F;
+    }
 }
 
 
