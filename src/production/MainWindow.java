@@ -3,8 +3,7 @@ package production;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import production.algorithms.LeftToRight;
-import production.algorithms.Snake;
+import production.algorithms.*;
 import test.TestAlgorithm1;
 
 import javax.swing.*;
@@ -75,6 +74,8 @@ public class MainWindow extends JFrame {
         algorithms.add(new TestAlgorithm1());
         algorithms.add(new LeftToRight());
         algorithms.add(new Snake());
+        algorithms.add(new Spiral());
+        algorithms.add(new Greedy());
         // add other algorithms below
     }
 
