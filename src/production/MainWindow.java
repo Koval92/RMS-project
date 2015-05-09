@@ -33,6 +33,7 @@ public class MainWindow extends JFrame {
     private JPanel algorithmPanel;
     protected JPanel layerPanel;
     private JTextField sizeTextField;
+    private JComboBox costFunctionTypeComboBox;
 
     MainWindow() {
         $$$setupUI$$$();
@@ -46,12 +47,34 @@ public class MainWindow extends JFrame {
         updateLayerPanel();
 
         pack();
+        costFunctionTypeComboBox.addActionListener(e -> {
+            switch ((String) costFunctionTypeComboBox.getSelectedItem()) {
+                case "Distance":
+                    this.costFunctionType = CostFunctionType.DISTANCE;
+                    break;
+                case "Time":
+                    this.costFunctionType = CostFunctionType.TIME;
+                    break;
+                case "Energy":
+                    this.costFunctionType = CostFunctionType.ENERGY;
+                    break;
+            }
+            logger.log("Cost function type set to " + this.costFunctionType);
+            double cost = MoveCostCalculator.calculate(route, this.costFunctionType);
+            costTextField.setText(String.valueOf(cost));
+        });
     }
 
     void updateLayerPanel() {
         layerPanel.setPreferredSize(new Dimension(Utils.getPixelSize() * layer.getWidth(), Utils.getPixelSize() * layer.getHeight()));
         layerPanel.repaint();
         layerPanel.revalidate();
+    }
+
+    void resetStats() {
+        costTextField.setText("-");
+        calcTimeTextField.setText("-");
+        //sizeTextField.setText("-");
     }
 
     public static void main(String[] args) {
@@ -88,8 +111,9 @@ public class MainWindow extends JFrame {
                 layer = LayerFactory.createFromFile(fileName);
                 route = null;
                 updateLayerPanel();
-                sizeTextField.setText(String.valueOf(layer.toListOfPoints().size()));
+                resetStats();
                 resetAlgorithms();
+                sizeTextField.setText(String.valueOf(layer.toListOfPoints().size()));
                 pack();
             } else {
                 logger.log("Incorrect file name/path to file!");
@@ -150,43 +174,53 @@ public class MainWindow extends JFrame {
         final Spacer spacer4 = new Spacer();
         rootPanel.add(spacer4, new GridConstraints(0, 1, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(-1, 10), null, null, 0, false));
         final JPanel panel1 = new JPanel();
-        panel1.setLayout(new GridLayoutManager(7, 2, new Insets(0, 0, 0, 0), -1, -1));
+        panel1.setLayout(new GridLayoutManager(8, 2, new Insets(0, 0, 0, 0), -1, -1));
         rootPanel.add(panel1, new GridConstraints(1, 3, 2, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         fileNameField = new JTextField();
         fileNameField.setText("img/sp-1.png");
         panel1.add(fileNameField, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-        panel1.add(algorithmPanel, new GridConstraints(5, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel1.add(algorithmPanel, new GridConstraints(6, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         final JLabel label1 = new JLabel();
         label1.setText("Layer cost: ");
-        panel1.add(label1, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_EAST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel1.add(label1, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_EAST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label2 = new JLabel();
         label2.setText("Calculation time:");
-        panel1.add(label2, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_EAST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel1.add(label2, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_EAST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         costTextField = new JTextField();
         costTextField.setEditable(false);
         costTextField.setHorizontalAlignment(4);
         costTextField.setText("-");
-        panel1.add(costTextField, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(75, -1), null, 0, false));
+        panel1.add(costTextField, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(75, -1), null, 0, false));
         calcTimeTextField = new JTextField();
         calcTimeTextField.setEditable(false);
         calcTimeTextField.setHorizontalAlignment(4);
         calcTimeTextField.setText("-");
-        panel1.add(calcTimeTextField, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(75, -1), null, 0, false));
+        panel1.add(calcTimeTextField, new GridConstraints(5, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(75, -1), null, 0, false));
         loadButton = new JButton();
         loadButton.setText("Load/Reset");
         loadButton.setMnemonic('L');
         loadButton.setDisplayedMnemonicIndex(0);
         panel1.add(loadButton, new GridConstraints(1, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer5 = new Spacer();
-        panel1.add(spacer5, new GridConstraints(6, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        panel1.add(spacer5, new GridConstraints(7, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         final JLabel label3 = new JLabel();
         label3.setText("Point on layer:");
-        panel1.add(label3, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_EAST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel1.add(label3, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_EAST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         sizeTextField = new JTextField();
         sizeTextField.setEditable(false);
         sizeTextField.setHorizontalAlignment(4);
         sizeTextField.setText("-");
-        panel1.add(sizeTextField, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(75, -1), null, 0, false));
+        panel1.add(sizeTextField, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(75, -1), null, 0, false));
+        costFunctionTypeComboBox = new JComboBox();
+        final DefaultComboBoxModel defaultComboBoxModel1 = new DefaultComboBoxModel();
+        defaultComboBoxModel1.addElement("Distance");
+        defaultComboBoxModel1.addElement("Time");
+        defaultComboBoxModel1.addElement("Energy");
+        costFunctionTypeComboBox.setModel(defaultComboBoxModel1);
+        panel1.add(costFunctionTypeComboBox, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label4 = new JLabel();
+        label4.setText("Cost Function Time");
+        panel1.add(label4, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer6 = new Spacer();
         rootPanel.add(spacer6, new GridConstraints(3, 1, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(-1, 10), null, null, 0, false));
         final Spacer spacer7 = new Spacer();
