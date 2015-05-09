@@ -1,21 +1,53 @@
 package production.algorithms;
 
-import production.CostFunctionType;
-import production.Layer;
-import production.PathPlanner;
-import production.Utils;
+import production.*;
 
-import java.awt.*;
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EdgeFollowing extends PathPlanner{
+    List<Point> route;
+    boolean[][] remainingPoints;
+    private CostFunctionType costType;
+
+    @Override
+    protected void setUp() {
+        remainingPoints = connection.getCopyOfLayerAsSimpleTable();
+        route = new ArrayList<>();
+        costType = connection.getCostFunctionType();
+    }
+
     @Override
     protected java.util.List<Point> planPath() {
-        boolean[][] remainingPoints = connection.getCopyOfLayerAsSimpleTable();
+        Point currentPosition = new Point(0, 0);
 
-        boolean[][] G = findEdges(remainingPoints);
+        while(! Utils.isEmpty(remainingPoints)) {
+            boolean[][] edges = findEdges(remainingPoints);
+            //Utils.saveToFile(Utils.draw(new Layer(edges), route));
 
-        Utils.saveToFile(Utils.draw(new Layer(G), null));
-        return null;
+            currentPosition = Utils.findClosest(currentPosition, edges, costType);
+
+            while(true) {
+                if(currentPosition == null) {
+                    logger.log("current position is null!");
+                    return null;
+                }
+                route.add(currentPosition);
+                int i = (int) currentPosition.getX();
+                int j = (int) currentPosition.getY();
+                remainingPoints[i][j] = false;
+                edges[i][j] = false;
+
+                Point neighbour;
+                if((neighbour = Utils.findNeighbour(currentPosition, edges, costType)) == null)
+                    break;
+                else
+                    currentPosition = neighbour;
+            }
+        }
+
+        return route;
     }
 
     private boolean[][] findEdges(boolean[][] L) {
@@ -45,7 +77,7 @@ public class EdgeFollowing extends PathPlanner{
                     continue;
                 }
                 // point has at least one empty diagonal neighbor and cost function is appropriate
-                if(connection.getCostFunctionType() == CostFunctionType.TIME
+                if(costType == CostFunctionType.TIME
                         && (!L[i-1][j+1] || !L[i+1][j+1] || !L[i+1][j-1] || !L[i-1][j-1])) {
                     G[i][j] = true;
                 }
