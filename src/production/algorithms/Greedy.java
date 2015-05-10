@@ -23,7 +23,7 @@ public class Greedy extends PathPlanner {
 
     private List<GreedyThread> greedyThreads;
 
-    private TreeMap<Double, List<Point>> distancesAndPaths;
+    private TreeMap<Double, List<Point>> routes;
 
 
     @Override
@@ -31,15 +31,6 @@ public class Greedy extends PathPlanner {
         initializeValues();
     }
 
-    private void initializeThreads() {
-
-        for (Point point : startingPoints)
-            greedyThreads.add(new GreedyThread(connection, tableOfNeighbours.copyArray(), point));
-        for (GreedyThread path : greedyThreads) {
-            path.setParameters(new GreedyThreadParameters());
-            threads.add(new Thread(path));
-        }
-    }
 
     private void initializeValues() {
         printingTool = new PrintingTool(connection);
@@ -48,7 +39,25 @@ public class Greedy extends PathPlanner {
         threads = new ArrayList<>();
         greedyThreads = new ArrayList<>();
         // automatyczne sortowanie -> najkrotsza trasa pod pierwszym elementem
-        distancesAndPaths = new TreeMap<>();
+        routes = new TreeMap<>();
+    }
+
+
+
+    @Override
+    protected java.util.List<Point> planPath() {
+        fillTableOfNeighbours();
+        setRandomStartingPointsWithConcreteNumberOfNeighbour(GreedyParameters.NR_OF_THREADS);
+        initializeThreads();
+        startThreads();
+        joinThreads();
+        fillMapWithRoutes();
+        return getBestPath(routes);
+    }
+
+    private void fillTableOfNeighbours() {
+        //wyliczenie liczby sasiadow kazdego punktu, konieczne zeby wygenerowac punkty
+        tableOfNeighbours = new SimpleTableOfNeighbours(printingTool);
     }
 
     //wybiera losowo punkty rozpoczecia sciezki
@@ -78,17 +87,24 @@ public class Greedy extends PathPlanner {
         }
     }
 
-    @Override
-    protected java.util.List<Point> planPath() {
-        //wyliczenie liczby sasiadow kazdego punktu, konieczne zeby wygenerowac punkty
-        tableOfNeighbours = new SimpleTableOfNeighbours(printingTool);
-        setRandomStartingPointsWithConcreteNumberOfNeighbour(GreedyParameters.NR_OF_THREADS);
-        initializeThreads();
+    private void initializeThreads() {
 
+        for (Point point : startingPoints)
+            greedyThreads.add(new GreedyThread(connection, tableOfNeighbours.copyArray(), point));
+        for (GreedyThread path : greedyThreads) {
+            path.setParameters(new GreedyThreadParameters());
+            threads.add(new Thread(path));
+        }
+    }
+
+
+    private void startThreads(){
         //starting threads
         for (Thread thread : threads)
             thread.start();
+    }
 
+    private void joinThreads() {
         //joining threads
         try {
             for (Thread thread : threads)
@@ -96,12 +112,12 @@ public class Greedy extends PathPlanner {
         } catch (InterruptedException exc) {
             exc.printStackTrace();
         }
+    }
 
+    private void fillMapWithRoutes() {
         //getting paths and distances
         for (GreedyThread greedySolution : greedyThreads)
-            distancesAndPaths.put(greedySolution.getTotalDistance(), greedySolution.getRoute());
-
-        return getBestPath(distancesAndPaths);
+            routes.put(greedySolution.getTotalDistance(), greedySolution.getRoute());
     }
 
     private List<Point> getBestPath(TreeMap<Double, List<Point>> routes) {
@@ -111,6 +127,10 @@ public class Greedy extends PathPlanner {
     @Override
     protected String getName() {
         return "Greedy";
+    }
+
+    public TreeMap<Double, List<Point>> getRoutes() {
+        return routes;
     }
 }
 
@@ -305,8 +325,6 @@ class GreedyThread implements Runnable {
 
     private double calculateDistance(Point first, Point second) {
         return Point.distance(first.getY(), first.getX(), second.getY(), second.getX());
-//        return Math.sqrt((second.getX() - first.getX()) * (second.getX() - first.getX())
-//                + (second.getY() - first.getY()) * (second.getY() - first.getY()));
     }
 
     public List<Point> getRoute() {
