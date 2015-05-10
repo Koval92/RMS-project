@@ -6,12 +6,18 @@ public class LayerAsSimpleTable implements PrintingLayer{
 
     boolean[][] layer;
 
+    private int height;
+    private int width;
+
     public LayerAsSimpleTable(PathPlanningConnection connection){
         this.layer = connection.getCopyOfLayerAsSimpleTable();
+        height = getHeight();
+        width = getWidth();
     }
 
+
     public boolean get(int y, int x) {
-        return layer[y][x];
+        return y < height && y >= 0 && x < width && x >= 0 && layer[y][x];
     }
 
     public void setTrue(int y, int x) {

@@ -3,9 +3,13 @@ package production;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
+<<<<<<< HEAD
+import production.algorithms.*;
+=======
 import production.algorithms.EdgeFollowing;
 import production.algorithms.LeftToRight;
 import production.algorithms.Snake;
+>>>>>>> master
 import test.TestAlgorithm1;
 
 import javax.swing.*;
@@ -106,6 +110,10 @@ public class MainWindow extends JFrame {
         algorithms.add(new LeftToRight());
         algorithms.add(new Snake());
         algorithms.add(new EdgeFollowing());
+        algorithms.add(new Spiral());
+        Greedy greedy = new Greedy();
+        algorithms.add(greedy);
+        algorithms.add(new GreedyTwoOpt(greedy));
         // add other algorithms below
     }
 

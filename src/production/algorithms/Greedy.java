@@ -1,165 +1,337 @@
 package production.algorithms;
 
-import production.CostFunctionType;
-import production.MoveCostCalculator;
 import production.PathPlanner;
 import production.PathPlanningConnection;
 import production.algorithms.route.PrintingTool;
+import production.algorithms.route.SimpleTableOfNeighbours;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.*;
 import java.util.List;
 
 public class Greedy extends PathPlanner {
 
     PrintingTool printingTool;
-    // domyslna wartosc, ustawiana jako parametr
-    private final int NR_OF_THREADS = 10;
+    SimpleTableOfNeighbours tableOfNeighbours;
+    GreedyThreadParameters greedyThreadParameters;
+
     private int nrOfPoints;
     // Array of starting points
     private List<Point> startingPoints;
     // Array of threads
     private List<Thread> threads;
 
-    private List<FindPathThread> findPathThreads;
+    private List<GreedyThread> greedyThreads;
 
-    private List<List<Point>> listOfPaths;
+    private TreeMap<Double, List<Point>> routes;
+
 
     @Override
     protected void setUp() {
+        initializeValues();
+    }
+
+
+    private void initializeValues() {
         printingTool = new PrintingTool(connection);
         nrOfPoints = printingTool.getNumberOfPoints();
-
         startingPoints = new ArrayList<>();
         threads = new ArrayList<>();
-        findPathThreads = new ArrayList<>();
-        listOfPaths = new ArrayList<>();
+        greedyThreads = new ArrayList<>();
+        // automatyczne sortowanie -> najkrotsza trasa pod pierwszym elementem
+        routes = new TreeMap<>();
     }
+
+
 
     @Override
     protected java.util.List<Point> planPath() {
-        for (int i = 0; i < NR_OF_THREADS; i++)
-            startingPoints.add(printingTool.getPointFromList(nrOfPoints / NR_OF_THREADS * i));
-        for (Point point : startingPoints)
-            findPathThreads.add(new FindPathThread(connection, point));
-        for(FindPathThread path : findPathThreads)
-            threads.add(new Thread(path));
-        for (Thread thread : threads)
-            thread.start();
-
-
-//        ExecutorService exec = Executors.newCachedThreadPool();
-//        for (FindPathThread thread : threads)
-//            exec.execute(thread);
-        for(Thread thread : threads)
-            while(thread.getState() != Thread.State.TERMINATED);
-
-        for (FindPathThread path : findPathThreads)
-            listOfPaths.add(path.getRoute());
-
-
-        //DODAJ WYBOR STARTING POINTS
-        // ARRAY OF THREADS
-        //FindPathThread f = new FindPathThread(connection);
-        //Thread t = new Thread(f);
-        //t.start();
-        //while(t.getState() != Thread.State.TERMINATED) {}
-
-
-
-        return getBestPath(listOfPaths);
+        fillTableOfNeighbours();
+        setRandomStartingPointsWithConcreteNumberOfNeighbour(GreedyParameters.NR_OF_THREADS);
+        initializeThreads();
+        startThreads();
+        joinThreads();
+        fillMapWithRoutes();
+        return getBestPath(routes);
     }
 
-    private List<Point> getBestPath(List<List<Point>> listOfRoutes) {
-        Iterator<List<Point>> it = listOfRoutes.iterator();
-        List<Point> best = null;
-        List<Point> point;
-        double bestDistance;
-        double distance;
-        if (it.hasNext()) {
-            best = it.next();
-            bestDistance = MoveCostCalculator.calculate(best, CostFunctionType.DISTANCE);
+    private void fillTableOfNeighbours() {
+        //wyliczenie liczby sasiadow kazdego punktu, konieczne zeby wygenerowac punkty
+        tableOfNeighbours = new SimpleTableOfNeighbours(printingTool);
+    }
 
-            while (it.hasNext()) {
-                point = it.next();
-                distance = MoveCostCalculator.calculate(point, CostFunctionType.DISTANCE);
-                if (distance < bestDistance) {
-                    best = point;
-                    bestDistance = distance;
-                }
+    //wybiera losowo punkty rozpoczecia sciezki
+    private void setRandomStartingPoints(int numberOfStartingPoints) {
+        Random random = new Random(GreedyParameters.SEED);
+        for (int i = 0; i < numberOfStartingPoints; i++)
+            startingPoints.add(printingTool.getPointFromList(random.nextInt(nrOfPoints)));
+    }
+
+    //wybiera punkty na poczatek sciezki ze zdefiniowana liczba sasiadow, jezeli nie ma
+    //takiej liczby dobiera losowo
+    private void setRandomStartingPointsWithConcreteNumberOfNeighbour(int nrOfStartingPoints) {
+        List<Point> pointsWithOneNeighbour = new ArrayList<>();
+        for (int i = 0; i < nrOfPoints; i++) {
+            Point point;
+            if (tableOfNeighbours.get(point = printingTool.getPointFromList(i)) == GreedyParameters.NR_OF_NEIGHBOURS_FOR_STARTING_POINT) {
+                pointsWithOneNeighbour.add(point);
             }
         }
-        return best;
+        int nrOfPointsStillToAdd = nrOfStartingPoints;
+        Random random = new Random(GreedyParameters.SEED);
+        for (; nrOfPointsStillToAdd > 0; nrOfPointsStillToAdd--) {
+            if (!pointsWithOneNeighbour.isEmpty())
+                startingPoints.add(pointsWithOneNeighbour.remove(random.nextInt(pointsWithOneNeighbour.size())));
+            else
+                setRandomStartingPoints(nrOfPointsStillToAdd);
+        }
+    }
+
+    private void initializeThreads() {
+
+        for (Point point : startingPoints)
+            greedyThreads.add(new GreedyThread(connection, tableOfNeighbours.copyArray(), point));
+        for (GreedyThread path : greedyThreads) {
+            path.setParameters(new GreedyThreadParameters());
+            threads.add(new Thread(path));
+        }
+    }
+
+
+    private void startThreads(){
+        //starting threads
+        for (Thread thread : threads)
+            thread.start();
+    }
+
+    private void joinThreads() {
+        //joining threads
+        try {
+            for (Thread thread : threads)
+                thread.join();
+        } catch (InterruptedException exc) {
+            exc.printStackTrace();
+        }
+    }
+
+    private void fillMapWithRoutes() {
+        //getting paths and distances
+        for (GreedyThread greedySolution : greedyThreads)
+            routes.put(greedySolution.getTotalDistance(), greedySolution.getRoute());
+    }
+
+    private List<Point> getBestPath(TreeMap<Double, List<Point>> routes) {
+        return routes.firstEntry().getValue();
     }
 
     @Override
     protected String getName() {
         return "Greedy";
     }
+
+    public TreeMap<Double, List<Point>> getRoutes() {
+        return routes;
+    }
+}
+
+class GreedyParameters {
+    //seed for random
+    public static long SEED = 50;
+    //ile watkow rownoczesnie
+    public static int NR_OF_THREADS = 20;
+    public static int NR_OF_NEIGHBOURS_FOR_STARTING_POINT = 1;
+
+    public static void set(int seed, int nrOfThreads, int nrOfNeighboursForStartingPoint) {
+        SEED = seed;
+        NR_OF_THREADS = nrOfThreads;
+        NR_OF_NEIGHBOURS_FOR_STARTING_POINT = nrOfNeighboursForStartingPoint;
+    }
+
+    public static void reset() {
+        SEED = 50;
+        NR_OF_THREADS = 20;
+        NR_OF_NEIGHBOURS_FOR_STARTING_POINT = 1;
+    }
+
 }
 
 
-class FindPathThread implements Runnable {
+//--------------------------------------------------------------------------------------------------
 
-    PrintingTool printingTool;
+class GreedyThreadParameters {
 
-    public FindPathThread(PathPlanningConnection connection) {
-        this.printingTool = new PrintingTool(connection);
-        findStartingPoint();
+    // po ilu punktow zmienic metode szukania
+    public static  int NR_OF_POINTS_NEEDED_TO_CHECK_ARRAY = 40;
+    public static int BEST_NR_OF_NEIGHBOURS = 0;
+    public static float WEIGHT_OF_NEIGHBOURS = 0.42F;
+    public static float WEIGHT_OF_DISTANCE = 0.32F;
+
+    public static void set(int nrOfPointsNeededToCheckArray, int bestNrOfNeighbours, float weightOfNeighbours, float weightOfDistance) {
+        NR_OF_POINTS_NEEDED_TO_CHECK_ARRAY = nrOfPointsNeededToCheckArray;
+        BEST_NR_OF_NEIGHBOURS = bestNrOfNeighbours;
+        WEIGHT_OF_NEIGHBOURS = weightOfNeighbours;
+        WEIGHT_OF_DISTANCE = weightOfDistance;
     }
 
-    public FindPathThread(PathPlanningConnection connection, Point startingPoint) {
+    public static void set(int nrOfPointsNeededToCheckArray, int bestNrOfNeighbours) {
+        NR_OF_POINTS_NEEDED_TO_CHECK_ARRAY = nrOfPointsNeededToCheckArray;
+        BEST_NR_OF_NEIGHBOURS = bestNrOfNeighbours;
+    }
+
+    public static void reset() {
+        NR_OF_POINTS_NEEDED_TO_CHECK_ARRAY = 40;
+        BEST_NR_OF_NEIGHBOURS = 0;
+        WEIGHT_OF_NEIGHBOURS = 0.42F;
+        WEIGHT_OF_DISTANCE = 0.32F;
+    }
+}
+
+
+//--------------------------------------------------------------------------------------------------
+
+//klasa wyszukujaca jednej sciezki (uruchamiana jako oddzielny watek
+class GreedyThread implements Runnable {
+
+    private PrintingTool printingTool;
+    private SimpleTableOfNeighbours simpleTableOfNeighbours;
+
+    //droga calej trasy
+    private double totalDistance;
+
+    private GreedyThreadParameters greedyThreadParameters;
+
+
+    public GreedyThread(PathPlanningConnection connection, int[][] tableOfNeighbours, Point startingPoint) {
         this.printingTool = new PrintingTool(connection);
+        this.simpleTableOfNeighbours = new SimpleTableOfNeighbours(printingTool, tableOfNeighbours);
         printingTool.setCurrentPosition(startingPoint);
         printingTool.print();
     }
 
+    public void setParameters(GreedyThreadParameters greedyParameters) {
+        this.greedyThreadParameters = greedyParameters;
+    }
+
     @Override
     public void run() {
+        while (printingTool.getNumberOfPoints() > greedyThreadParameters.NR_OF_POINTS_NEEDED_TO_CHECK_ARRAY)
+            if (!findNextPointFromArray())
+                findNextPointFromList();
         while (printingTool.getNumberOfPoints() > 0)
-            findNextPoint();
+            findNextPointFromList();
     }
 
-    private void findNextPoint() {
+    private boolean findNextPointFromArray() {
         Point currentPoint = printingTool.getCurrentPosition();
-        Point nextPoint;
-        double distance;
+        int y = (int) currentPoint.getX();
+        int x = (int) currentPoint.getY();
+        int[][] coeff = new int[][]{{1, 0}, {0, 1}, {-1, 0}, {0, -1},
+                {1, 1}, {-1, 1}, {-1, -1}, {1, -1},
+                {2, 0}, {0, 2}, {-2, 0}, {0, -2},
+                {2, 1}, {1, 2}, {-1, 2}, {-2, 1}, {-2, -1}, {-1, -2}, {1, -2}, {2, -1},
+                {2, 2}, {-2, 2}, {-2, -2}, {2, -2}};
 
-        Point bestPoint = printingTool.getPointFromList(0);
-        double currentDistance = calcDistance(currentPoint, bestPoint);
-        if (currentDistance == 1) {
-            printingTool.print(bestPoint);
-            return;
-        }
-        for (int i = 1; i < printingTool.getNumberOfPoints(); i++) {
-            nextPoint = printingTool.getPointFromList(i);
-            distance = calcDistance(currentPoint, nextPoint);
-            if (distance < currentDistance) {
-                bestPoint = nextPoint;
-                currentDistance = distance;
-                if (currentDistance == 1) {
-                    printingTool.print(bestPoint);
-                    return;
+        int bestNrOfNeighbours = 100;
+        int nextNrOfNeighbours;
+        Point bestPoint = null;
+
+        int bounding = 8;
+        for (int j = 0; j < coeff.length; ) {
+            for (int i = j; i < j + bounding; i++) {
+                int tmpY = y + coeff[i][0];
+                int tmpX = x + coeff[i][1];
+                if (printingTool.get(tmpY, tmpX)) {
+                    nextNrOfNeighbours = Math.abs(simpleTableOfNeighbours.get(tmpY, tmpX) - greedyThreadParameters.BEST_NR_OF_NEIGHBOURS);
+                    if (nextNrOfNeighbours < bestNrOfNeighbours) {
+                        bestNrOfNeighbours = nextNrOfNeighbours;
+                        bestPoint = new Point(tmpY, tmpX);
+                    }
+                    if (bestNrOfNeighbours <= greedyThreadParameters.BEST_NR_OF_NEIGHBOURS + 1) {
+                        printingTool.print(bestPoint);
+                        simpleTableOfNeighbours.updateNeighbours(bestPoint);
+                        return true;
+                    }
                 }
             }
+            if (bestPoint != null) {
+                printingTool.print(bestPoint);
+                simpleTableOfNeighbours.updateNeighbours(bestPoint);
+                return true;
+            }
+            j += bounding;
+            bounding += bounding;
         }
+
+        return false;
+    }
+
+    private void findNextPointFromList() {
+        Point currentPoint = printingTool.getCurrentPosition();
+        Point bestPoint;
+
+        int bestNrOfNeighbours;
+        int nextNrOfNeighbours;
+
+        //przyjmij pierwszy punkt jako najlepszy
+        bestPoint = printingTool.getPointFromList(0);
+        double bestDistance = calculateDistance(currentPoint, bestPoint);
+        bestNrOfNeighbours = Math.abs(simpleTableOfNeighbours.get(bestPoint) - greedyThreadParameters.BEST_NR_OF_NEIGHBOURS);
+        // jezeli jest to juz idealny punkt to tam idz
+        if (bestDistance <= 1 + greedyThreadParameters.WEIGHT_OF_NEIGHBOURS && bestNrOfNeighbours <= greedyThreadParameters.BEST_NR_OF_NEIGHBOURS) {
+            totalDistance += bestDistance;
+            printingTool.print(bestPoint);
+            simpleTableOfNeighbours.updateNeighbours(bestPoint);
+            return;
+        }
+
+        //przegladaj inne punkty
+        for (int i = 1; i < printingTool.getNumberOfPoints(); i++) {
+            Point nextPoint = printingTool.getPointFromList(i);
+            double nextDistance = calculateDistance(currentPoint, nextPoint);
+
+            //jezeli dystans miedzy punktammi jest znaczacy od razu wez nowy punkt
+            if (nextDistance < bestDistance - greedyThreadParameters.WEIGHT_OF_DISTANCE) {
+                bestPoint = nextPoint;
+                bestNrOfNeighbours = Math.abs(simpleTableOfNeighbours.get(bestPoint) - greedyThreadParameters.BEST_NR_OF_NEIGHBOURS);
+                bestDistance = nextDistance;
+            }
+            //jezeli dystans miedzy punktami jest zblizony wez pod uwage liczbe sasiadow
+            else if (nextDistance < bestDistance + greedyThreadParameters.WEIGHT_OF_NEIGHBOURS) {
+                nextNrOfNeighbours = Math.abs(simpleTableOfNeighbours.get(nextPoint) - greedyThreadParameters.BEST_NR_OF_NEIGHBOURS);
+
+                //jezeli zmalala liczba sasiadow
+                if (nextNrOfNeighbours < bestNrOfNeighbours) {
+                    bestPoint = nextPoint;
+                    bestNrOfNeighbours = nextNrOfNeighbours;
+                    bestDistance = nextDistance;
+                }
+                //jezeli tak nie bylo to zostanmy przy starym punkcie
+            }
+
+            //sprawdzmy czy obecna odleglosc nie jest juz wystarczajaco dobra
+            if (bestDistance <= 1 + greedyThreadParameters.WEIGHT_OF_NEIGHBOURS && bestNrOfNeighbours <= greedyThreadParameters.BEST_NR_OF_NEIGHBOURS) {
+                printingTool.print(bestPoint);
+                simpleTableOfNeighbours.updateNeighbours(bestPoint);
+                totalDistance += bestDistance;
+                return;
+            }
+        }
+
+        totalDistance += bestDistance;
         printingTool.print(bestPoint);
+        simpleTableOfNeighbours.updateNeighbours(bestPoint);
     }
 
-    private void findStartingPoint() {
-        printingTool.getFirstPoint();
-        printingTool.print();
-    }
 
-    private double calcDistance(Point first, Point second) {
-        return Math.sqrt(Math.pow(second.getX() - first.getX(), 2) + Math.pow(second.getY() - first.getY(), 2));
+    private double calculateDistance(Point first, Point second) {
+        return Point.distance(first.getY(), first.getX(), second.getY(), second.getX());
     }
 
     public List<Point> getRoute() {
         return printingTool.getRoute();
+    }
+
+    public double getTotalDistance() {
+        return totalDistance;
     }
 }
