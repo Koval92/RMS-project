@@ -304,8 +304,9 @@ class GreedyThread implements Runnable {
 
 
     private double calculateDistance(Point first, Point second) {
-        return Math.sqrt((second.getX() - first.getX()) * (second.getX() - first.getX())
-                + (second.getY() - first.getY()) * (second.getY() - first.getY()));
+        return Point.distance(first.getY(), first.getX(), second.getY(), second.getX());
+//        return Math.sqrt((second.getX() - first.getX()) * (second.getX() - first.getX())
+//                + (second.getY() - first.getY()) * (second.getY() - first.getY()));
     }
 
     public List<Point> getRoute() {
