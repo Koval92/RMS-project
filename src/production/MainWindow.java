@@ -18,7 +18,7 @@ import java.util.List;
 public class MainWindow extends JFrame {
     protected JTextField costTextField;
     protected JTextField calcTimeTextField;
-    protected CostFunctionType costFunctionType = CostFunctionType.DISTANCE;
+    protected CostFunctionType costFunctionType;
 
     List<PathPlanner> algorithms;
     Connection connection = new Connection(this);
@@ -62,6 +62,8 @@ public class MainWindow extends JFrame {
             costFunctionType = CostFunctionType.ENERGY;
             costTypeChanged();
         });
+
+        distanceRadioButton.doClick();
     }
 
     private void costTypeChanged() {
