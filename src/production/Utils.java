@@ -10,6 +10,8 @@ import java.util.*;
 import java.util.List;
 
 public class Utils {
+    private static Logger logger = Logger.getInstance();
+
     public static int getPixelSize() {
         return pixelSize;
     }
@@ -28,7 +30,8 @@ public class Utils {
             for (int j = 0; j < layer.getWidth(); j++) {
                 if (layer.get(i, j)) {
                     imageGraphics.setColor(Color.BLACK);
-                } else {
+                }
+                else {
                     imageGraphics.setColor(Color.WHITE);
                 }
                 imageGraphics.fillRect(j * pixelSize, i * pixelSize, pixelSize, pixelSize);
@@ -39,11 +42,14 @@ public class Utils {
             for (int i = 0; i < route.size() - 1; i++) {
                 Point start = route.get(i);
                 Point end = route.get(i + 1);
-                if (MoveCostCalculator.arePointsAdjacent(start, end))
+                if (MoveCostCalculator.arePointsAdjacent(start, end)) {
                     imageGraphics.setColor(Color.GREEN);
-                else
+                    ((Graphics2D) imageGraphics).setStroke(new BasicStroke(pixelSize / 2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL));
+                }
+                else {
                     imageGraphics.setColor(Color.RED);
-                ((Graphics2D) imageGraphics).setStroke(new BasicStroke(pixelSize / 3, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL));
+                    ((Graphics2D) imageGraphics).setStroke(new BasicStroke(pixelSize / 3, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL));
+                }
 
                 imageGraphics.drawLine(
                         pixelSize / 2 + pixelSize * start.y,
@@ -74,7 +80,7 @@ public class Utils {
         }
     }
 
-    private static List<Point> toListOfPoints(boolean[][] array) {
+    public static List<Point> toListOfPoints(boolean[][] array) {
         List<Point> points = new ArrayList<>();
 
         for(int i = 0; i < array.length; i++) {
@@ -86,6 +92,91 @@ public class Utils {
         }
 
         return points;
+    }
+
+    public static boolean isEmpty(boolean[][] array) {
+        for (boolean[] row : array) {
+            for (boolean pixel : row) {
+                if(pixel)
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static List<List<Boolean>> transpose(List<List<Boolean>> array) {
+        List<List<Boolean>> rotatedArray = new ArrayList<>();
+
+        final int N = array.get(0).size();
+        for (int i = 0; i < N; i++) {
+            List<Boolean> col = new ArrayList<>();
+            for (List<Boolean> row : array) {
+                col.add(row.get(i));
+            }
+            rotatedArray.add(col);
+        }
+
+        return rotatedArray;
+    }
+
+    public static Point findClosest(Point currentPosition, boolean[][] array, CostFunctionType costType) {
+        List<Point> points = Utils.toListOfPoints(array);
+
+        if(currentPosition == null) {
+            logger.log("Current point shouldn't be null!");
+            return null;
+        }
+
+        if(points == null) {
+            logger.log("List shouldn't be null!");
+            return null;
+        }
+        Point closest = null;
+        double minDistance = Double.MAX_VALUE;
+
+        for (Point point : points) {
+            double distance = MoveCostCalculator.calculate(currentPosition, point, costType);
+            if(distance < minDistance) {
+                closest = point;
+                minDistance = distance;
+            }
+        }
+
+        return closest;
+    }
+
+    public static Point findNeighbour(Point currentPosition, boolean[][] edges, CostFunctionType costType) {
+        int i = currentPosition.x;
+        int j = currentPosition.y;
+
+        int height = edges.length;
+        int width = edges[0].length;
+
+        // point has at least one neighbor side-by-side
+        if((i-1 >= 0) && edges[i-1][j])
+            return new Point(i-1, j);
+        if((j+1 < width) && edges[i][j+1])
+            return new Point(i, j+1);
+        if((i+1 < height) && edges[i+1][j])
+            return new Point(i+1, j);
+        if((j-1 >= 0) &&edges[i][j-1]) {
+            return new Point(i, j-1);
+        }
+
+        // point has at least one diagonal neighbor and cost function is appropriate
+        if(costType == CostFunctionType.TIME) {
+            if((i-1 >= 0 && j+1 < width )  && edges[i-1][j+1])
+                return new Point(i-1, j+1);
+            if((i+1 < height && j+1 < width) && edges[i+1][j+1])
+                return new Point(i+1, j+1);
+            if((i+1 < height && j-1 >= 0) && edges[i+1][j-1])
+                return new Point(i+1, j-1);
+            if((i-1 >= 0 && j-1 >= 0) && edges[i-1][j-1])
+                return new Point(i-1, j-1);
+        }
+
+        return null;
     }
 
     private Utils() {
