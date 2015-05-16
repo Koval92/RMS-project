@@ -1,4 +1,4 @@
-package production;
+package pathfinder;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

@@ -1,7 +1,7 @@
-package production.algorithms;
+package pathfinder.algorithms;
 
-import production.MoveCostCalculator;
-import production.PathPlanner;
+import pathfinder.MoveCostCalculator;
+import pathfinder.PathPlanner;
 
 import java.awt.*;
 import java.util.ArrayList;

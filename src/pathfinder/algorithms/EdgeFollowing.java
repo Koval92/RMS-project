@@ -1,6 +1,6 @@
-package production.algorithms;
+package pathfinder.algorithms;
 
-import production.*;
+import pathfinder.*;
 
 import java.awt.Point;
 import java.util.ArrayList;

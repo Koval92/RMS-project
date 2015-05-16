@@ -1,8 +1,6 @@
-package test;
-
 import org.junit.Assert;
 import org.junit.Test;
-import production.MoveCostCalculator;
+import pathfinder.MoveCostCalculator;
 
 public class MoveCostCalculatorTest {
 
