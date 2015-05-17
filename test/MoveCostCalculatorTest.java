@@ -36,7 +36,9 @@ public class MoveCostCalculatorTest {
 
     @Test
     public void testAdjacency() throws Exception {
-        CostFunctionType costType = CostFunctionType.TIME;
+        CostFunctionType costType;
+
+        costType= CostFunctionType.TIME;
         Assert.assertTrue(MoveCostCalculator.arePointsAdjacent(2, 2, 1, 1, costType));
         Assert.assertTrue(MoveCostCalculator.arePointsAdjacent(2, 2, 1, 2, costType));
         Assert.assertTrue(MoveCostCalculator.arePointsAdjacent(2, 2, 1, 3, costType));
@@ -45,6 +47,32 @@ public class MoveCostCalculatorTest {
         Assert.assertTrue(MoveCostCalculator.arePointsAdjacent(2, 2, 3, 1, costType));
         Assert.assertTrue(MoveCostCalculator.arePointsAdjacent(2, 2, 3, 2, costType));
         Assert.assertTrue(MoveCostCalculator.arePointsAdjacent(2, 2, 3, 3, costType));
+
+        Assert.assertFalse(MoveCostCalculator.arePointsAdjacent(3, 2, 0, 0, costType));
+        Assert.assertFalse(MoveCostCalculator.arePointsAdjacent(3, 2, 1, 4, costType));
+
+        costType = CostFunctionType.DISTANCE;
+        Assert.assertFalse(MoveCostCalculator.arePointsAdjacent(2, 2, 1, 1, costType));
+        Assert.assertTrue(MoveCostCalculator.arePointsAdjacent(2, 2, 1, 2, costType));
+        Assert.assertFalse(MoveCostCalculator.arePointsAdjacent(2, 2, 1, 3, costType));
+        Assert.assertTrue(MoveCostCalculator.arePointsAdjacent(2, 2, 2, 1, costType));
+        Assert.assertTrue(MoveCostCalculator.arePointsAdjacent(2, 2, 2, 3, costType));
+        Assert.assertFalse(MoveCostCalculator.arePointsAdjacent(2, 2, 3, 1, costType));
+        Assert.assertTrue(MoveCostCalculator.arePointsAdjacent(2, 2, 3, 2, costType));
+        Assert.assertFalse(MoveCostCalculator.arePointsAdjacent(2, 2, 3, 3, costType));
+
+        Assert.assertFalse(MoveCostCalculator.arePointsAdjacent(3, 2, 0, 0, costType));
+        Assert.assertFalse(MoveCostCalculator.arePointsAdjacent(3, 2, 1, 4, costType));
+
+        costType = CostFunctionType.ENERGY;
+        Assert.assertFalse(MoveCostCalculator.arePointsAdjacent(2, 2, 1, 1, costType));
+        Assert.assertTrue(MoveCostCalculator.arePointsAdjacent(2, 2, 1, 2, costType));
+        Assert.assertFalse(MoveCostCalculator.arePointsAdjacent(2, 2, 1, 3, costType));
+        Assert.assertTrue(MoveCostCalculator.arePointsAdjacent(2, 2, 2, 1, costType));
+        Assert.assertTrue(MoveCostCalculator.arePointsAdjacent(2, 2, 2, 3, costType));
+        Assert.assertFalse(MoveCostCalculator.arePointsAdjacent(2, 2, 3, 1, costType));
+        Assert.assertTrue(MoveCostCalculator.arePointsAdjacent(2, 2, 3, 2, costType));
+        Assert.assertFalse(MoveCostCalculator.arePointsAdjacent(2, 2, 3, 3, costType));
 
         Assert.assertFalse(MoveCostCalculator.arePointsAdjacent(3, 2, 0, 0, costType));
         Assert.assertFalse(MoveCostCalculator.arePointsAdjacent(3, 2, 1, 4, costType));
