@@ -289,14 +289,8 @@ class Connection implements PathPlanningConnection {
     }
 
     @Override
-    public void setCost(double cost) {
-        mainWindow.timeTextField.setText(String.format("%.2f", cost));
-    }
-
-    @Override
     public void setRoute(List<Point> route) {
         mainWindow.route = route;
-        mainWindow.updateLayerPanel();
 
         double timeCost = MoveCostCalculator.calculate(route, CostFunctionType.TIME);
         double distanceCost = MoveCostCalculator.calculate(route, CostFunctionType.DISTANCE);
@@ -306,6 +300,7 @@ class Connection implements PathPlanningConnection {
         mainWindow.distanceTextField.setText(String.format("%.2f", distanceCost));
         mainWindow.energyTextField.setText(String.format("%.2f", energyCost));
 
+        mainWindow.updateLayerPanel();
         Utils.saveToFile(Utils.draw(mainWindow.layer, mainWindow.route));
     }
 

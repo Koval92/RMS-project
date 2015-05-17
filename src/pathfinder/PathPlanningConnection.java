@@ -8,8 +8,6 @@ public interface PathPlanningConnection {
 
     void setCalcTime(double calcTimeInNano);
 
-    void setCost(double cost);
-
     void setRoute(List<Point> route);
 
     CostFunctionType getCostFunctionType();
