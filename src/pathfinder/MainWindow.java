@@ -78,6 +78,12 @@ public class MainWindow extends JFrame {
         layerPanel.revalidate();
     }
 
+    void updateCostFields(Map<CostFunctionType, Double> costs) {
+        timeTextField.setText(String.format("%.2f", costs.get(CostFunctionType.TIME)));
+        distanceTextField.setText(String.format("%.2f", costs.get(CostFunctionType.DISTANCE)));
+        energyTextField.setText(String.format("%.2f", costs.get(CostFunctionType.ENERGY)));
+    }
+
     void resetStats() {
         timeTextField.setText("-");
         distanceTextField.setText("-");
@@ -290,16 +296,20 @@ class Connection implements PathPlanningConnection {
     }
 
     @Override
-    public void setRoute(List<Point> route) {
+    public void setResults(List<Point> route, Map<String, String> params) {
         mainWindow.route = route;
-        Map<CostFunctionType, Double> costs = Utils.calculateCosts(mainWindow.route);
+        Map<CostFunctionType, Double> costs = Utils.calculateCosts(route);
 
-        mainWindow.timeTextField.setText(String.format("%.2f", costs.get(CostFunctionType.TIME)));
-        mainWindow.distanceTextField.setText(String.format("%.2f", costs.get(CostFunctionType.DISTANCE)));
-        mainWindow.energyTextField.setText(String.format("%.2f", costs.get(CostFunctionType.ENERGY)));
+        params.put("time_cost", String.format("%.2f", costs.get(CostFunctionType.TIME)));
+        params.put("dist_cost", String.format("%.2f", costs.get(CostFunctionType.DISTANCE)));
+        params.put("ener_cost", String.format("%.2f", costs.get(CostFunctionType.ENERGY)));
 
+        mainWindow.updateCostFields(costs);
         mainWindow.updateLayerPanel();
-        Utils.saveToFile(Utils.draw(mainWindow.layer, mainWindow.route));
+
+        String fileName = Utils.getCurrentTime();
+        Utils.saveToFile(Utils.draw(mainWindow.layer, mainWindow.route), fileName, null);
+        Utils.saveToFile(params, fileName, null);
     }
 
     @Override
