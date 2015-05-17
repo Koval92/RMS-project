@@ -24,7 +24,6 @@ public class EdgeFollowing extends PathPlanner{
 
         while(! Utils.isEmpty(remainingPoints)) {
             boolean[][] edges = findEdges(remainingPoints);
-            //Utils.saveToFile(Utils.draw(new Layer(edges), route));
 
             currentPosition = Utils.findClosest(currentPosition, edges, costType);
 
