@@ -80,6 +80,16 @@ public class Utils {
         }
     }
 
+    public static Map<CostFunctionType, Double> calculateCosts(List<Point> route) {
+        Map<CostFunctionType, Double> costs = new HashMap<>();
+
+        costs.put(CostFunctionType.TIME, MoveCostCalculator.calculate(route, CostFunctionType.TIME));
+        costs.put(CostFunctionType.DISTANCE, MoveCostCalculator.calculate(route, CostFunctionType.DISTANCE));
+        costs.put(CostFunctionType.ENERGY, MoveCostCalculator.calculate(route, CostFunctionType.ENERGY));
+
+        return costs;
+    }
+
     public static List<Point> toListOfPoints(boolean[][] array) {
         List<Point> points = new ArrayList<>();
 

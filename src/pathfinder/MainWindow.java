@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class MainWindow extends JFrame {
     private JTextField sizeTextField;
@@ -291,14 +292,11 @@ class Connection implements PathPlanningConnection {
     @Override
     public void setRoute(List<Point> route) {
         mainWindow.route = route;
+        Map<CostFunctionType, Double> costs = Utils.calculateCosts(mainWindow.route);
 
-        double timeCost = MoveCostCalculator.calculate(route, CostFunctionType.TIME);
-        double distanceCost = MoveCostCalculator.calculate(route, CostFunctionType.DISTANCE);
-        double energyCost = MoveCostCalculator.calculate(route, CostFunctionType.ENERGY);
-
-        mainWindow.timeTextField.setText(String.format("%.2f", timeCost));
-        mainWindow.distanceTextField.setText(String.format("%.2f", distanceCost));
-        mainWindow.energyTextField.setText(String.format("%.2f", energyCost));
+        mainWindow.timeTextField.setText(String.format("%.2f", costs.get(CostFunctionType.TIME)));
+        mainWindow.distanceTextField.setText(String.format("%.2f", costs.get(CostFunctionType.DISTANCE)));
+        mainWindow.energyTextField.setText(String.format("%.2f", costs.get(CostFunctionType.ENERGY)));
 
         mainWindow.updateLayerPanel();
         Utils.saveToFile(Utils.draw(mainWindow.layer, mainWindow.route));
