@@ -4,6 +4,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -63,20 +64,13 @@ public class Utils {
     }
 
     public static void saveToFile(BufferedImage image) {
-        String currentDate = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss-SSS").format(new Date());
+        String currentDate = getCurrentTime();
         saveToFile(image, currentDate, null);
     }
 
     public static void saveToFile(BufferedImage image, String fileName, String directoryName) {
-        if(directoryName == null) {
-            directoryName = "results";
-        }
-
-        File directory = new File(directoryName);
-        if (!directory.exists() && !directory.mkdirs()) {
-            Logger.getInstance().log("Creation of directory failed");
-            return;
-        }
+        directoryName = createDirectory(directoryName);
+        if (directoryName == null) return;
 
         File file = new File(directoryName + "/" + fileName + ".png");
 
@@ -85,6 +79,54 @@ public class Utils {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void saveToFile(Map<String, String> params) {
+        String currentDate = getCurrentTime();
+        saveToFile(params, currentDate, null);
+    }
+
+    public static String getCurrentTime() {
+        return new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss-SSS").format(new Date());
+    }
+
+    public static void saveToFile(Map<String, String> params, String fileName, String directoryName) {
+        directoryName = createDirectory(directoryName);
+        if (directoryName == null) return;
+
+        FileWriter fileWriter = null;
+        try {
+             fileWriter = new FileWriter(directoryName + "/" + fileName + ".txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if(fileWriter == null) {
+            logger.log("Error in creating FileWriter");
+            return;
+        }
+
+        try {
+            for (Map.Entry<String, String> entry : params.entrySet()) {
+                fileWriter.write(entry.getKey() + " : " + entry.getValue() + System.lineSeparator());
+            }
+            fileWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static String createDirectory(String directoryName) {
+        if(directoryName == null) {
+            directoryName = "results";
+        }
+
+        File directory = new File(directoryName);
+        if (!directory.exists() && !directory.mkdirs()) {
+            Logger.getInstance().log("Creation of directory failed");
+            return null;
+        }
+        return directoryName;
     }
 
     public static Map<CostFunctionType, Double> calculateCosts(List<Point> route) {
