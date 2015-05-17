@@ -1,9 +1,10 @@
-package production;
+package pathfinder;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -22,8 +23,10 @@ public class Utils {
 
     private static int pixelSize = 10;
 
-    public static BufferedImage draw(Layer layer, java.util.List<Point> route) {
-        BufferedImage image = new BufferedImage(layer.getWidth() * pixelSize, layer.getHeight() * pixelSize, BufferedImage.TYPE_3BYTE_BGR);
+    public static BufferedImage draw(Layer layer, List<Point> route, CostFunctionType costType) {
+        BufferedImage image = new BufferedImage(layer.getWidth() * pixelSize,
+                                                layer.getHeight() * pixelSize,
+                                                BufferedImage.TYPE_3BYTE_BGR);
         Graphics imageGraphics = image.getGraphics();
 
         for (int i = 0; i < layer.getHeight(); i++) {
@@ -42,13 +45,17 @@ public class Utils {
             for (int i = 0; i < route.size() - 1; i++) {
                 Point start = route.get(i);
                 Point end = route.get(i + 1);
-                if (MoveCostCalculator.arePointsAdjacent(start, end)) {
+                if (MoveCostCalculator.arePointsAdjacent(start, end, costType)) {
                     imageGraphics.setColor(Color.GREEN);
-                    ((Graphics2D) imageGraphics).setStroke(new BasicStroke(pixelSize / 2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL));
+                    ((Graphics2D) imageGraphics).setStroke( new BasicStroke(pixelSize / 2,
+                                                            BasicStroke.CAP_ROUND,
+                                                            BasicStroke.JOIN_BEVEL));
                 }
                 else {
                     imageGraphics.setColor(Color.RED);
-                    ((Graphics2D) imageGraphics).setStroke(new BasicStroke(pixelSize / 3, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL));
+                    ((Graphics2D) imageGraphics).setStroke( new BasicStroke(pixelSize / 3,
+                                                            BasicStroke.CAP_ROUND,
+                                                            BasicStroke.JOIN_BEVEL));
                 }
 
                 imageGraphics.drawLine(
@@ -63,21 +70,79 @@ public class Utils {
     }
 
     public static void saveToFile(BufferedImage image) {
-        String directoryName = "results";
-        File directory = new File(directoryName);
-        if (!directory.exists() && !directory.mkdirs()) {
-            Logger.getInstance().log("Creation of directory failed");
-            return;
-        }
+        String currentDate = getCurrentTime();
+        saveToFile(image, currentDate, null);
+    }
 
-        String currentDate = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss-SSS").format(new Date());
-        File file = new File(directoryName + "/" + currentDate + ".png");
+    public static void saveToFile(BufferedImage image, String fileName, String directoryName) {
+        directoryName = createDirectory(directoryName);
+        if (directoryName == null) return;
+
+        File file = new File(directoryName + "/" + fileName + ".png");
 
         try {
             ImageIO.write(image, "PNG", file);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void saveToFile(Map<String, String> params) {
+        String currentDate = getCurrentTime();
+        saveToFile(params, currentDate, null);
+    }
+
+    public static String getCurrentTime() {
+        return new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss-SSS").format(new Date());
+    }
+
+    public static void saveToFile(Map<String, String> params, String fileName, String directoryName) {
+        directoryName = createDirectory(directoryName);
+        if (directoryName == null) return;
+
+        FileWriter fileWriter = null;
+        try {
+             fileWriter = new FileWriter(directoryName + "/" + fileName + ".txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if(fileWriter == null) {
+            logger.log("Error in creating FileWriter");
+            return;
+        }
+
+        try {
+            for (Map.Entry<String, String> entry : params.entrySet()) {
+                fileWriter.write(entry.getKey() + " : " + entry.getValue() + System.lineSeparator());
+            }
+            fileWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static String createDirectory(String directoryName) {
+        if(directoryName == null) {
+            directoryName = "results";
+        }
+
+        File directory = new File(directoryName);
+        if (!directory.exists() && !directory.mkdirs()) {
+            Logger.getInstance().log("Creation of directory failed");
+            return null;
+        }
+        return directoryName;
+    }
+
+    public static Map<CostFunctionType, Double> calculateCosts(List<Point> route) {
+        Map<CostFunctionType, Double> costs = new HashMap<>();
+
+        costs.put(CostFunctionType.TIME, MoveCostCalculator.calculate(route, CostFunctionType.TIME));
+        costs.put(CostFunctionType.DISTANCE, MoveCostCalculator.calculate(route, CostFunctionType.DISTANCE));
+        costs.put(CostFunctionType.ENERGY, MoveCostCalculator.calculate(route, CostFunctionType.ENERGY));
+
+        return costs;
     }
 
     public static List<Point> toListOfPoints(boolean[][] array) {

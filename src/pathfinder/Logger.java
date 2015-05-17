@@ -1,4 +1,4 @@
-package production;
+package pathfinder;
 
 public class Logger {
     private static Logger instance;

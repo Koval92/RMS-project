@@ -2,8 +2,8 @@ package test;
 
 import junit.framework.Assert;
 import org.junit.Test;
-import production.CostFunctionType;
-import production.Utils;
+import pathfinder.CostFunctionType;
+import pathfinder.Utils;
 
 import java.awt.*;
 

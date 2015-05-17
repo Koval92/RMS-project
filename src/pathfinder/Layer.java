@@ -1,4 +1,4 @@
-package production;
+package pathfinder;
 
 import java.awt.*;
 import java.util.ArrayList;
