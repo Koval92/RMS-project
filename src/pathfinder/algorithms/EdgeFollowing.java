@@ -16,6 +16,7 @@ public class EdgeFollowing extends PathPlanner{
         remainingPoints = connection.getCopyOfLayerAsSimpleTable();
         route = new ArrayList<>();
         costType = connection.getCostFunctionType();
+        params.put("cost_function_type", costType.toString());
     }
 
     @Override
