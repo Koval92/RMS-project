@@ -1,4 +1,4 @@
-package production;
+package pathfinder;
 
 import java.awt.*;
 import java.util.List;
@@ -25,8 +25,9 @@ public class MoveCostCalculator {
         return abs(p1.x - p2.x) + abs(p1.y - p2.y);
     }
 
-    public static boolean arePointsAdjacent(Point p1, Point p2) {
-        return !(Math.abs(p1.x - p2.x) > 1 || Math.abs(p1.y - p2.y) > 1);
+    public static boolean arePointsAdjacent(Point p1, Point p2, CostFunctionType costType) {
+        return !(calculate(p1, p2, costType) > 1);
+        //return !(Math.abs(p1.x - p2.x) > 1 || Math.abs(p1.y - p2.y) > 1);
     }
 
     public static double distance(int x1, int y1, int x2, int y2) {
@@ -41,8 +42,8 @@ public class MoveCostCalculator {
         return energy(new Point(x1, y1), new Point(x2, y2));
     }
 
-    public static boolean arePointsAdjacent(int x1, int y1, int x2, int y2) {
-        return arePointsAdjacent(new Point(x1, y1), new Point(x2, y2));
+    public static boolean arePointsAdjacent(int x1, int y1, int x2, int y2, CostFunctionType costType) {
+        return arePointsAdjacent(new Point(x1, y1), new Point(x2, y2), costType);
     }
 
     public static double calculate(Point p1, Point p2, CostFunctionType type) {

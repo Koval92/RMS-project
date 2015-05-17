@@ -1,16 +1,15 @@
-package production;
+package pathfinder;
 
 import java.awt.*;
 import java.util.List;
+import java.util.Map;
 
 public interface PathPlanningConnection {
     void setProgress(double progress);
 
     void setCalcTime(double calcTimeInNano);
 
-    void setCost(double cost);
-
-    void setRoute(List<Point> route);
+    void setResults(List<Point> route, Map<String, String> params);
 
     CostFunctionType getCostFunctionType();
 

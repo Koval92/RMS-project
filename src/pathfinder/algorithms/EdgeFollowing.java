@@ -1,6 +1,6 @@
-package production.algorithms;
+package pathfinder.algorithms;
 
-import production.*;
+import pathfinder.*;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -16,6 +16,7 @@ public class EdgeFollowing extends PathPlanner{
         remainingPoints = connection.getCopyOfLayerAsSimpleTable();
         route = new ArrayList<>();
         costType = connection.getCostFunctionType();
+        params.put("cost_function_type", costType.toString());
     }
 
     @Override
@@ -24,7 +25,6 @@ public class EdgeFollowing extends PathPlanner{
 
         while(! Utils.isEmpty(remainingPoints)) {
             boolean[][] edges = findEdges(remainingPoints);
-            //Utils.saveToFile(Utils.draw(new Layer(edges), route));
 
             currentPosition = Utils.findClosest(currentPosition, edges, costType);
 

@@ -2,7 +2,7 @@ package test;
 
 import org.junit.Assert;
 import org.junit.Test;
-import production.ParamReader;
+import pathfinder.ParamReader;
 
 import java.io.File;
 import java.util.List;

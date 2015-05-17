@@ -1,6 +1,6 @@
-package production.algorithms;
+package pathfinder.algorithms;
 
-import production.PathPlanner;
+import pathfinder.PathPlanner;
 
 import java.awt.*;
 import java.util.ArrayList;
