@@ -1,5 +1,6 @@
 import org.junit.Assert;
 import org.junit.Test;
+import pathfinder.CostFunctionType;
 import pathfinder.MoveCostCalculator;
 
 public class MoveCostCalculatorTest {
@@ -35,16 +36,17 @@ public class MoveCostCalculatorTest {
 
     @Test
     public void testAdjacency() throws Exception {
-        Assert.assertTrue(MoveCostCalculator.arePointsAdjacent(2, 2, 1, 1));
-        Assert.assertTrue(MoveCostCalculator.arePointsAdjacent(2, 2, 1, 2));
-        Assert.assertTrue(MoveCostCalculator.arePointsAdjacent(2, 2, 1, 3));
-        Assert.assertTrue(MoveCostCalculator.arePointsAdjacent(2, 2, 2, 1));
-        Assert.assertTrue(MoveCostCalculator.arePointsAdjacent(2, 2, 2, 3));
-        Assert.assertTrue(MoveCostCalculator.arePointsAdjacent(2, 2, 3, 1));
-        Assert.assertTrue(MoveCostCalculator.arePointsAdjacent(2, 2, 3, 2));
-        Assert.assertTrue(MoveCostCalculator.arePointsAdjacent(2, 2, 3, 3));
+        CostFunctionType costType = CostFunctionType.TIME;
+        Assert.assertTrue(MoveCostCalculator.arePointsAdjacent(2, 2, 1, 1, costType));
+        Assert.assertTrue(MoveCostCalculator.arePointsAdjacent(2, 2, 1, 2, costType));
+        Assert.assertTrue(MoveCostCalculator.arePointsAdjacent(2, 2, 1, 3, costType));
+        Assert.assertTrue(MoveCostCalculator.arePointsAdjacent(2, 2, 2, 1, costType));
+        Assert.assertTrue(MoveCostCalculator.arePointsAdjacent(2, 2, 2, 3, costType));
+        Assert.assertTrue(MoveCostCalculator.arePointsAdjacent(2, 2, 3, 1, costType));
+        Assert.assertTrue(MoveCostCalculator.arePointsAdjacent(2, 2, 3, 2, costType));
+        Assert.assertTrue(MoveCostCalculator.arePointsAdjacent(2, 2, 3, 3, costType));
 
-        Assert.assertFalse(MoveCostCalculator.arePointsAdjacent(3, 2, 0, 0));
-        Assert.assertFalse(MoveCostCalculator.arePointsAdjacent(3, 2, 1, 4));
+        Assert.assertFalse(MoveCostCalculator.arePointsAdjacent(3, 2, 0, 0, costType));
+        Assert.assertFalse(MoveCostCalculator.arePointsAdjacent(3, 2, 1, 4, costType));
     }
 }

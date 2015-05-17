@@ -23,8 +23,10 @@ public class Utils {
 
     private static int pixelSize = 10;
 
-    public static BufferedImage draw(Layer layer, java.util.List<Point> route) {
-        BufferedImage image = new BufferedImage(layer.getWidth() * pixelSize, layer.getHeight() * pixelSize, BufferedImage.TYPE_3BYTE_BGR);
+    public static BufferedImage draw(Layer layer, List<Point> route, CostFunctionType costType) {
+        BufferedImage image = new BufferedImage(layer.getWidth() * pixelSize,
+                                                layer.getHeight() * pixelSize,
+                                                BufferedImage.TYPE_3BYTE_BGR);
         Graphics imageGraphics = image.getGraphics();
 
         for (int i = 0; i < layer.getHeight(); i++) {
@@ -43,13 +45,17 @@ public class Utils {
             for (int i = 0; i < route.size() - 1; i++) {
                 Point start = route.get(i);
                 Point end = route.get(i + 1);
-                if (MoveCostCalculator.arePointsAdjacent(start, end)) {
+                if (MoveCostCalculator.arePointsAdjacent(start, end, costType)) {
                     imageGraphics.setColor(Color.GREEN);
-                    ((Graphics2D) imageGraphics).setStroke(new BasicStroke(pixelSize / 2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL));
+                    ((Graphics2D) imageGraphics).setStroke( new BasicStroke(pixelSize / 2,
+                                                            BasicStroke.CAP_ROUND,
+                                                            BasicStroke.JOIN_BEVEL));
                 }
                 else {
                     imageGraphics.setColor(Color.RED);
-                    ((Graphics2D) imageGraphics).setStroke(new BasicStroke(pixelSize / 3, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL));
+                    ((Graphics2D) imageGraphics).setStroke( new BasicStroke(pixelSize / 3,
+                                                            BasicStroke.CAP_ROUND,
+                                                            BasicStroke.JOIN_BEVEL));
                 }
 
                 imageGraphics.drawLine(

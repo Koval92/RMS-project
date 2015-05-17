@@ -64,7 +64,7 @@ public class MainWindow extends JFrame {
             costTypeChanged();
         });
 
-        distanceRadioButton.doClick();
+        timeRadioButton.doClick();
     }
 
     private void costTypeChanged() {
@@ -149,7 +149,7 @@ public class MainWindow extends JFrame {
             public void paintComponent(Graphics g) {
                 super.paintComponent(g);
 
-                BufferedImage image = Utils.draw(layer, route);
+                BufferedImage image = Utils.draw(layer, route, connection.getCostFunctionType());
                 g.drawImage(image, 0, 0, null);
             }
         };
@@ -231,17 +231,17 @@ public class MainWindow extends JFrame {
         distanceRadioButton.setText("Distance");
         distanceRadioButton.setMnemonic('D');
         distanceRadioButton.setDisplayedMnemonicIndex(0);
-        panel2.add(distanceRadioButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        timeRadioButton = new JRadioButton();
-        timeRadioButton.setText("Time");
-        timeRadioButton.setMnemonic('T');
-        timeRadioButton.setDisplayedMnemonicIndex(0);
-        panel2.add(timeRadioButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel2.add(distanceRadioButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         energyRadioButton = new JRadioButton();
         energyRadioButton.setText("Energy");
         energyRadioButton.setMnemonic('E');
         energyRadioButton.setDisplayedMnemonicIndex(0);
         panel2.add(energyRadioButton, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        timeRadioButton = new JRadioButton();
+        timeRadioButton.setText("Time");
+        timeRadioButton.setMnemonic('T');
+        timeRadioButton.setDisplayedMnemonicIndex(0);
+        panel2.add(timeRadioButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label4 = new JLabel();
         label4.setText("Distance");
         panel1.add(label4, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_EAST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -308,7 +308,7 @@ class Connection implements PathPlanningConnection {
         mainWindow.updateLayerPanel();
 
         String fileName = Utils.getCurrentTime();
-        Utils.saveToFile(Utils.draw(mainWindow.layer, mainWindow.route), fileName, null);
+        Utils.saveToFile(Utils.draw(mainWindow.layer, mainWindow.route, getCostFunctionType()), fileName, null);
         Utils.saveToFile(params, fileName, null);
     }
 

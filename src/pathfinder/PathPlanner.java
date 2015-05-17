@@ -28,7 +28,6 @@ public abstract class PathPlanner {
 
     public PathPlanner() {
         logger.log("New instance of " + getName() + " algorithm created");
-        params.put("algorithm_name", getName());
     }
 
     final public PathPlanningConnection getConnection() {
@@ -42,6 +41,8 @@ public abstract class PathPlanner {
     final public void invoke() {
         logger.log(getName() + " algorithm invoked");
         logger.log("\tSetting up algorithm");
+        params.clear();
+        params.put("algorithm_name", getName());
         setUp();
         logger.log("\tSetting up completed");
         logger.log("\tAlgorithm starting");
