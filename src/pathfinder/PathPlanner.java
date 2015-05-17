@@ -34,21 +34,6 @@ public abstract class PathPlanner {
         this.connection = connection;
     }
 
-    final protected void sendCalculationTime(double calcTimeInNano) {
-        if (connection != null)
-            connection.setCalcTime(calcTimeInNano);
-    }
-
-    final protected void sendCurrentProgress(double progress) {
-        if (connection != null)
-            connection.setProgress(progress);
-    }
-
-    final protected void sendRoute(List<Point> route) {
-        if (connection != null)
-            connection.setRoute(route);
-    }
-
     final public void invoke() {
         logger.log(getName() + " algorithm invoked");
         logger.log("\tSetting up algorithm");
@@ -67,8 +52,8 @@ public abstract class PathPlanner {
         long durationInNano = endTime - startTime;
         double cost = MoveCostCalculator.calculate(route, connection.getCostFunctionType());
 
-        sendCalculationTime(durationInNano);
-        sendRoute(route);
+        connection.setCalcTime(durationInNano);
+        connection.setRoute(route);
     }
 
     protected void setUp() {
