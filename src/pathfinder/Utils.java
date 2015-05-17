@@ -63,15 +63,22 @@ public class Utils {
     }
 
     public static void saveToFile(BufferedImage image) {
-        String directoryName = "results";
+        String currentDate = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss-SSS").format(new Date());
+        saveToFile(image, currentDate, null);
+    }
+
+    public static void saveToFile(BufferedImage image, String fileName, String directoryName) {
+        if(directoryName == null) {
+            directoryName = "results";
+        }
+
         File directory = new File(directoryName);
         if (!directory.exists() && !directory.mkdirs()) {
             Logger.getInstance().log("Creation of directory failed");
             return;
         }
 
-        String currentDate = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss-SSS").format(new Date());
-        File file = new File(directoryName + "/" + currentDate + ".png");
+        File file = new File(directoryName + "/" + fileName + ".png");
 
         try {
             ImageIO.write(image, "PNG", file);
