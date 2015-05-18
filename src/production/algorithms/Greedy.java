@@ -13,7 +13,7 @@ public class Greedy extends PathPlanner {
 
     PrintingTool printingTool;
     SimpleTableOfNeighbours tableOfNeighbours;
-    GreedyThreadParameters greedyThreadParameters;
+
 
     private int nrOfPoints;
     // Array of starting points
@@ -47,7 +47,10 @@ public class Greedy extends PathPlanner {
     @Override
     protected java.util.List<Point> planPath() {
         fillTableOfNeighbours();
-        setRandomStartingPointsWithConcreteNumberOfNeighbour(GreedyParameters.NR_OF_THREADS);
+        if(!GreedyParameters.SAME_STARTING_POINT)
+            setRandomStartingPointsWithConcreteNumberOfNeighbour(GreedyParameters.NR_OF_THREADS);
+        else
+            setSameStartingPoint();
         initializeThreads();
         startThreads();
         joinThreads();
@@ -70,21 +73,28 @@ public class Greedy extends PathPlanner {
     //wybiera punkty na poczatek sciezki ze zdefiniowana liczba sasiadow, jezeli nie ma
     //takiej liczby dobiera losowo
     private void setRandomStartingPointsWithConcreteNumberOfNeighbour(int nrOfStartingPoints) {
-        List<Point> pointsWithOneNeighbour = new ArrayList<>();
+        List<Point> points = new ArrayList<>();
         for (int i = 0; i < nrOfPoints; i++) {
             Point point;
             if (tableOfNeighbours.get(point = printingTool.getPointFromList(i)) == GreedyParameters.NR_OF_NEIGHBOURS_FOR_STARTING_POINT) {
-                pointsWithOneNeighbour.add(point);
+                points.add(point);
             }
         }
         int nrOfPointsStillToAdd = nrOfStartingPoints;
         Random random = new Random(GreedyParameters.SEED);
         for (; nrOfPointsStillToAdd > 0; nrOfPointsStillToAdd--) {
-            if (!pointsWithOneNeighbour.isEmpty())
-                startingPoints.add(pointsWithOneNeighbour.remove(random.nextInt(pointsWithOneNeighbour.size())));
+            if (!points.isEmpty())
+                startingPoints.add(points.remove(random.nextInt(points.size())));
             else
                 setRandomStartingPoints(nrOfPointsStillToAdd);
         }
+    }
+
+    private void setSameStartingPoint() {
+        Random random = new Random(GreedyParameters.SEED);
+        Point point = printingTool.getPointFromList(random.nextInt(nrOfPoints));
+        for (int i = 0; i < GreedyParameters.NR_OF_THREADS; i++)
+            startingPoints.add(point);
     }
 
     private void initializeThreads() {
@@ -140,17 +150,20 @@ class GreedyParameters {
     //ile watkow rownoczesnie
     public static int NR_OF_THREADS = 20;
     public static int NR_OF_NEIGHBOURS_FOR_STARTING_POINT = 1;
+    public static boolean SAME_STARTING_POINT = false;
 
-    public static void set(int seed, int nrOfThreads, int nrOfNeighboursForStartingPoint) {
+    public static void set(int seed, int nrOfThreads, int nrOfNeighboursForStartingPoint, boolean sameStartingPoint) {
         SEED = seed;
         NR_OF_THREADS = nrOfThreads;
         NR_OF_NEIGHBOURS_FOR_STARTING_POINT = nrOfNeighboursForStartingPoint;
+        SAME_STARTING_POINT = sameStartingPoint;
     }
 
     public static void reset() {
         SEED = 50;
         NR_OF_THREADS = 20;
         NR_OF_NEIGHBOURS_FOR_STARTING_POINT = 1;
+        SAME_STARTING_POINT = false;
     }
 
 }
@@ -246,7 +259,7 @@ class GreedyThread implements Runnable {
                         bestNrOfNeighbours = nextNrOfNeighbours;
                         bestPoint = new Point(tmpY, tmpX);
                     }
-                    if (bestNrOfNeighbours <= greedyThreadParameters.BEST_NR_OF_NEIGHBOURS + 1) {
+                    if (bestNrOfNeighbours <= greedyThreadParameters.BEST_NR_OF_NEIGHBOURS) {
                         printingTool.print(bestPoint);
                         simpleTableOfNeighbours.updateNeighbours(bestPoint);
                         return true;

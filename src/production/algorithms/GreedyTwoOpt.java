@@ -25,7 +25,7 @@ public class GreedyTwoOpt extends PathPlanner {
     @Override
     protected void setUp() {
         //todo: parametry z tego zrobiæ
-        GreedyParameters.set(50, 10, 1);
+        GreedyParameters.set(50, 10, 1, false);
         GreedyThreadParameters.set(24, 0);
         initializeValues();
     }
