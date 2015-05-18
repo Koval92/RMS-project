@@ -43,6 +43,7 @@ public abstract class PathPlanner {
         logger.log("\tSetting up algorithm");
         params.clear();
         params.put("algorithm_name", getName());
+        params.put("cost_type", connection.getCostFunctionType().toString());
         setUp();
         logger.log("\tSetting up completed");
         logger.log("\tAlgorithm starting");
@@ -56,7 +57,6 @@ public abstract class PathPlanner {
             route.add(0, initialPrinterPosition);
 
         long durationInNano = endTime - startTime;
-        double cost = MoveCostCalculator.calculate(route, connection.getCostFunctionType());
 
         connection.setCalcTime(durationInNano);
         connection.setResults(route, params);
