@@ -1,0 +1,8 @@
+algorithm_name: Two Opt
+
+# params:
+
+seed : 50
+memorySize : 10
+nrOfIterations : 1000
+memoryProbability : 0.3

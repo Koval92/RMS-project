@@ -117,6 +117,7 @@ public class MainWindow extends JFrame {
         algorithms.add(greedy);
         algorithms.add(new TwoOpt());
         algorithms.add(new GreedyTwoOpt(greedy));
+        algorithms.add(new HarmonySearch());
         algorithms.add(new SimulatedAnnealing());
         algorithms.add(new GreedyAnnealing(greedy));
         // add other algorithms below
