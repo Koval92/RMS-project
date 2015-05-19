@@ -87,7 +87,7 @@ public class Greedy extends PathPlanner {
     private List<GreedyThread> greedyThreads;
     // lista dróg i ich dystansów (trzeba bedzie przechowywac nr najlepszej drogi
     private List<RouteAndDistance> routes;
-    
+
 
     //set up - read parameters from file
     @Override
@@ -109,8 +109,8 @@ public class Greedy extends PathPlanner {
                 Boolean.parseBoolean(params.get("sameStartingPoint")),
                 Integer.parseInt(params.get("nrOfPointsNeededToCheckArray")),
                 Integer.parseInt(params.get("bestNrOfNeighbours")),
-                Float.parseFloat(params.get("weightOfNeighbours")),
-                Float.parseFloat(params.get("weightOfDistance")));
+                Double.parseDouble(params.get("weightOfNeighbours")),
+                Double.parseDouble(params.get("weightOfDistance")));
     }
 
     private void initializeValues() {
@@ -224,10 +224,11 @@ public class Greedy extends PathPlanner {
 
 
 }
+
 //klasa wyszukujaca jednej sciezki (uruchamiana jako oddzielny watek
 class GreedyThread implements Runnable {
-    
-    private static final int[][] COEFFICIENTS= new int[][]{{1, 0}, {0, 1}, {-1, 0}, {0, -1},
+
+    private static final int[][] COEFFICIENTS = new int[][]{{1, 0}, {0, 1}, {-1, 0}, {0, -1},
             {1, 1}, {-1, 1}, {-1, -1}, {1, -1},
             {2, 0}, {0, 2}, {-2, 0}, {0, -2},
             {2, 1}, {1, 2}, {-1, 2}, {-2, 1}, {-2, -1}, {-1, -2}, {1, -2}, {2, -1},
@@ -243,7 +244,7 @@ class GreedyThread implements Runnable {
     private List<Point> route;
     private Point currentPoint;
 
-    
+
     public GreedyThread(List<Point> allPointsToPrint, TableOfNeighbours tableOfNeighbours, Point startingPoint) {
         this.availablePoints = Route.copyOfRoute(allPointsToPrint);
         this.tableOfNeighbours = TableOfNeighbours.newInstance(tableOfNeighbours);
@@ -253,12 +254,11 @@ class GreedyThread implements Runnable {
     }
 
 
-
     @Override
     public void run() {
         route.add(currentPoint);
         availablePoints.remove(currentPoint);
-        while( availablePoints.size() > GreedyParameters.NR_OF_POINTS_NEEDED_TO_CHECK_ARRAY)
+        while (availablePoints.size() > GreedyParameters.NR_OF_POINTS_NEEDED_TO_CHECK_ARRAY)
             if (!findNextPointFromArray())
                 findNextPointFromList();
         while (availablePoints.size() > 0)
@@ -268,7 +268,7 @@ class GreedyThread implements Runnable {
     private boolean findNextPointFromArray() {
         int y = (int) currentPoint.getX();
         int x = (int) currentPoint.getY();
-        
+
 
         int bestNrOfNeighbours = 100;
         int nextNrOfNeighbours;
@@ -279,7 +279,7 @@ class GreedyThread implements Runnable {
             for (int i = j; i < j + bounding; i++) {
                 int tmpY = y + COEFFICIENTS[i][0];
                 int tmpX = x + COEFFICIENTS[i][1];
-                if( availablePoints.contains(new Point(tmpY, tmpX))) {
+                if (availablePoints.contains(new Point(tmpY, tmpX))) {
                     nextNrOfNeighbours = Math.abs(tableOfNeighbours.get(tmpY, tmpX) - GreedyParameters.BEST_NR_OF_NEIGHBOURS);
                     if (nextNrOfNeighbours < bestNrOfNeighbours) {
                         bestNrOfNeighbours = nextNrOfNeighbours;
@@ -323,7 +323,7 @@ class GreedyThread implements Runnable {
         }
 
         //przegladaj inne punkty
-        for(int i = 1; i < availablePoints.size(); i++) {
+        for (int i = 1; i < availablePoints.size(); i++) {
             Point nextPoint = availablePoints.get(i);
             double nextDistance = calculateDistance(currentPoint, nextPoint);
 
@@ -365,7 +365,6 @@ class GreedyThread implements Runnable {
         route.add(p);
         availablePoints.remove(p);
     }
-
 
 
     private double calculateDistance(Point first, Point second) {

@@ -27,7 +27,7 @@ class TwoOptParameters {
 
 }
 
-public class TwoOpt extends PathPlanner{
+public class TwoOpt extends PathPlanner {
 
     private List<Point> route;
     private double bestEdgeSwapCost = 0;
@@ -44,10 +44,11 @@ public class TwoOpt extends PathPlanner{
 
     @Override
     protected void setUp() {
+        solutionFromOtherAlgorithm = null;
         getParametersFromFile();
     }
 
-    private void getParametersFromFile(){
+    private void getParametersFromFile() {
         File file = new File(System.getProperty("user.dir") + "/params/TwoOpt.txt");
         params.putAll(ParamReader.getParamsForSingleAlgorithm(file));
         setParameters();
@@ -75,10 +76,9 @@ public class TwoOpt extends PathPlanner{
 
     private void findBeginningPaths() {
         // if first solution wasn't set find it randomly
-        if(solutionFromOtherAlgorithm == null) {
+        if (solutionFromOtherAlgorithm == null) {
             route = Route.generateRandomRoute(connection.getCopyOfLayerAsListOfPoints());
-        }
-        else {
+        } else {
             route = Route.copyOfRoute(solutionFromOtherAlgorithm);
         }
     }

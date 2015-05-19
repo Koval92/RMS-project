@@ -86,6 +86,7 @@ public class HarmonySearch extends PathPlanner {
 
     @Override
     protected void setUp() {
+        solutionFromOtherAlgorithm = null;
         getParametersFromFile();
     }
 

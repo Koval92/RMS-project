@@ -1,6 +1,5 @@
 package pathfinder.algorithms;
 
-
 import pathfinder.ParamReader;
 import pathfinder.PathPlanner;
 
@@ -8,25 +7,23 @@ import java.awt.*;
 import java.io.File;
 import java.util.List;
 
-//polaczenie greedy z simulated annealing
-public class GreedyAnnealing extends PathPlanner {
+public class GreedyHarmony extends PathPlanner {
 
     private Greedy greedy;
-    private SimulatedAnnealing simulatedAnnealing;
+    private HarmonySearch harmonySearch;
 
-    public GreedyAnnealing(Greedy greedy) {
+    public GreedyHarmony(Greedy greedy, HarmonySearch harmonySearch) {
         this.greedy = greedy;
+        this.harmonySearch = harmonySearch;
     }
-
 
     @Override
     protected void setUp() {
-        simulatedAnnealing = new SimulatedAnnealing();
         getParametersFromFile();
     }
 
     private void getParametersFromFile() {
-        File file = new File(System.getProperty("user.dir") + "/params/GreedyAnnealing.txt");
+        File file = new File(System.getProperty("user.dir") + "/params/GreedyHarmony.txt");
         params.putAll(ParamReader.getParamsForSingleAlgorithm(file));
         setParameters();
     }
@@ -40,16 +37,15 @@ public class GreedyAnnealing extends PathPlanner {
                 Integer.parseInt(params.get("bestNrOfNeighbours")),
                 Double.parseDouble(params.get("weightOfNeighbours")),
                 Double.parseDouble(params.get("weightOfDistance")));
-        SimulatedAnnealingParameters.set(Long.parseLong(params.get("seed")),
-                Double.parseDouble(params.get("temperatureMin")),
-                Double.parseDouble(params.get("coolingRate")),
-                Integer.parseInt(params.get("iterationsOnTemperature")));
+        HarmonySearchParameters.set(Long.parseLong(params.get("seed")),
+                Integer.parseInt(params.get("memorySize")),
+                Integer.parseInt(params.get("nrOfIterations")),
+                Double.parseDouble(params.get("memoryProbability")));
     }
 
     @Override
     protected List<Point> planPath() {
-
-        simulatedAnnealing.setFirstSolutionFromOtherAlgorithm(greedy.planPath());
-        return simulatedAnnealing.planPath();
+        harmonySearch.setSolutionFromOtherAlgorithm(greedy.planPath());
+        return harmonySearch.planPath();
     }
 }

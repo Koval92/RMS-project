@@ -12,9 +12,9 @@ import java.util.Random;
 
 class SimulatedAnnealingParameters {
     public static long SEED = 50;
-    public static double TEMPERATURE_MIN  = 0.0001;
-    public static double COOLING_RATE  = 0.98;
-    public static int ITERATIONS_ON_TEMPERATURE  = 1000;
+    public static double TEMPERATURE_MIN = 0.0001;
+    public static double COOLING_RATE = 0.98;
+    public static int ITERATIONS_ON_TEMPERATURE = 1000;
 
     public static void set(long seed, double temperatureMin, double coolingRate, int iterationsOnTemperature) {
         SEED = seed;
@@ -25,15 +25,15 @@ class SimulatedAnnealingParameters {
 
     public static void setDefault() {
         SEED = 50;
-        TEMPERATURE_MIN  = 0.0001;
-        COOLING_RATE  = 0.95;
-        ITERATIONS_ON_TEMPERATURE  = 300;
+        TEMPERATURE_MIN = 0.0001;
+        COOLING_RATE = 0.95;
+        ITERATIONS_ON_TEMPERATURE = 300;
     }
 
 }
 
 
-public class SimulatedAnnealing extends PathPlanner{
+public class SimulatedAnnealing extends PathPlanner {
 
     private List<Point> currentRoute;
     private List<Point> bestRoute;
@@ -70,6 +70,7 @@ public class SimulatedAnnealing extends PathPlanner{
 
     @Override
     protected void setUp() {
+        solutionFromOtherAlgorithm = null;
         getParametersFromFile();
     }
 
@@ -86,7 +87,7 @@ public class SimulatedAnnealing extends PathPlanner{
                 Integer.parseInt(params.get("iterationsOnTemperature")));
     }
 
-    private void initializeValues(){
+    private void initializeValues() {
         currentRoute = new ArrayList<>();
         bestRoute = new ArrayList<>();
         temperature = 1.0;
@@ -98,9 +99,9 @@ public class SimulatedAnnealing extends PathPlanner{
         initializeValues();
         findFirstSolution();
         setCurrentRouteAsBest();
-        while(isStillHot()) {
+        while (isStillHot()) {
             //how many times on each temperature
-            for (int i = 0 ; i < SimulatedAnnealingParameters.ITERATIONS_ON_TEMPERATURE; i++) {
+            for (int i = 0; i < SimulatedAnnealingParameters.ITERATIONS_ON_TEMPERATURE; i++) {
                 nextRoute = new ArrayList<>();
                 nextRoute = Route.copyOfRoute(currentRoute);
                 generateSwapPosition();
@@ -152,7 +153,6 @@ public class SimulatedAnnealing extends PathPlanner{
         swapPosition1 = (int) (nextRoute.size() * random.nextDouble());
         swapPosition2 = (int) (nextRoute.size() * random.nextDouble());
     }
-
 
 
     private void swapRoute() {
