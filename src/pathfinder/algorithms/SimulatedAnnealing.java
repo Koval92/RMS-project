@@ -47,7 +47,17 @@ public class SimulatedAnnealing extends PathPlanner{
     private int swapPosition1;
     private int swapPosition2;
 
+    //if it isn't null set this solution as a first path in this algorithm
+    private List<Point> solutionFromOtherAlgorithm;
+
     private Random random;
+
+
+    //first solution is set to null
+    //if you want start with not generated path use -> setFirstSolution(List<Point> );
+    public SimulatedAnnealing() {
+        solutionFromOtherAlgorithm = null;
+    }
 
 
     //probability of new solution acceptance
@@ -114,8 +124,20 @@ public class SimulatedAnnealing extends PathPlanner{
     }
 
     private void findFirstSolution() {
-        currentRoute = Route.generateRandomRoute(connection.getCopyOfLayerAsListOfPoints());
-        currentDistance = Route.calculateTotalDistance(currentRoute);
+        //if first solution wasn't set find it randomly
+        if (solutionFromOtherAlgorithm == null) {
+            currentRoute = Route.generateRandomRoute(connection.getCopyOfLayerAsListOfPoints());
+            currentDistance = Route.calculateTotalDistance(currentRoute);
+        }
+        // if solution from other algorithm was set take it as a first solution
+        else {
+            currentRoute = Route.copyOfRoute(solutionFromOtherAlgorithm);
+            currentDistance = Route.calculateTotalDistance(currentRoute);
+        }
+    }
+
+    public void setFirstSolutionFromOtherAlgorithm(List<Point> route) {
+        solutionFromOtherAlgorithm = Route.copyOfRoute(route);
     }
 
     private void setCurrentRouteAsBest() {

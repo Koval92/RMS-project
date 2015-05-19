@@ -24,14 +24,14 @@ class GreedyParameters {
     public static int BEST_NR_OF_NEIGHBOURS = 0;
     //coefficient describing importance of closest value of point's neighbours
     //rather than nearest distance
-    public static float WEIGHT_OF_NEIGHBOURS = 0.42F;
+    public static double WEIGHT_OF_NEIGHBOURS = 0.42;
     //coefficient describing importance of closest distance rather than point with number
     //of neighbours closest to value of best number of neighbours
-    public static float WEIGHT_OF_DISTANCE = 0.32F;
+    public static double WEIGHT_OF_DISTANCE = 0.32;
 
-    public static void set(int seed, int nrOfThreads, int nrOfNeighboursForStartingPoint,
+    public static void set(long seed, int nrOfThreads, int nrOfNeighboursForStartingPoint,
                            boolean sameStartingPoint, int nrOfPointsNeededToCheckArray,
-                           int bestNrOfNeighbours, float weightOfNeighbours, float weightOfDistance) {
+                           int bestNrOfNeighbours, double weightOfNeighbours, double weightOfDistance) {
         SEED = seed;
         NR_OF_THREADS = nrOfThreads;
         NR_OF_NEIGHBOURS_FOR_STARTING_POINT = nrOfNeighboursForStartingPoint;
@@ -41,6 +41,20 @@ class GreedyParameters {
         BEST_NR_OF_NEIGHBOURS = bestNrOfNeighbours;
         WEIGHT_OF_NEIGHBOURS = weightOfNeighbours;
         WEIGHT_OF_DISTANCE = weightOfDistance;
+    }
+
+    public static void set(long seed, int nrOfThreads, int nrOfNeighboursForStartingPoint,
+                           boolean sameStartingPoint, int nrOfPointsNeededToCheckArray,
+                           int bestNrOfNeighbours) {
+        SEED = seed;
+        NR_OF_THREADS = nrOfThreads;
+        NR_OF_NEIGHBOURS_FOR_STARTING_POINT = nrOfNeighboursForStartingPoint;
+        SAME_STARTING_POINT = sameStartingPoint;
+
+        NR_OF_POINTS_NEEDED_TO_CHECK_ARRAY = nrOfPointsNeededToCheckArray;
+        BEST_NR_OF_NEIGHBOURS = bestNrOfNeighbours;
+        WEIGHT_OF_NEIGHBOURS = 0.42;
+        WEIGHT_OF_DISTANCE = 0.32;
     }
 
     public static void setDefault() {
@@ -57,12 +71,9 @@ class GreedyParameters {
 
 }
 
-
-//--------------------------------------------------------------------------------------------------
-
 public class Greedy extends PathPlanner {
 
-    TableOfNeighbours tableOfNeighbours;
+    private TableOfNeighbours tableOfNeighbours;
 
     //list of all points to print
     private List<Point> allPointsToPrint;
@@ -92,7 +103,7 @@ public class Greedy extends PathPlanner {
     }
 
     private void setParameters() {
-        GreedyParameters.set(Integer.parseInt(params.get("seed")),
+        GreedyParameters.set(Long.parseLong(params.get("seed")),
                 Integer.parseInt(params.get("nrOfThreads")),
                 Integer.parseInt(params.get("nrOfNeighboursForStartingPoint")),
                 Boolean.parseBoolean(params.get("sameStartingPoint")),

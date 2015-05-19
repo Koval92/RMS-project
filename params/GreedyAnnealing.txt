@@ -1,0 +1,21 @@
+algorithm_name: Greedy Annealing
+
+
+#-- Greedy part of parameters
+
+seed: 50
+nrOfThreads: 10
+nrOfNeighboursForStartingPoint: 1
+sameStartingPoint: false
+
+nrOfPointsNeededToCheckArray: 40
+bestNrOfNeighbours: 0
+weightOfNeighbours: 0.42
+weightOfDistance: 0.32
+
+#-- Simulated Annealing part of parameters
+# keep in mind that seed is common for both of them
+
+temperatureMin: 0.00001
+coolingRate: 0.98
+iterationsOnTemperature : 500
