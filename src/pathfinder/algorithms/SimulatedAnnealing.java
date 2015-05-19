@@ -1,24 +1,45 @@
 package pathfinder.algorithms;
 
-
+import pathfinder.ParamReader;
 import pathfinder.PathPlanner;
-import pathfinder.algorithms.route.LayerAsSimpleTable;
 import pathfinder.algorithms.route.Route;
 
-
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.Point;
+import java.util.Random;
+
+class SimulatedAnnealingParameters {
+    public static long SEED = 50;
+    public static double TEMPERATURE_MIN  = 0.0001;
+    public static double COOLING_RATE  = 0.98;
+    public static int ITERATIONS_ON_TEMPERATURE  = 1000;
+
+    public static void set(long seed, double temperatureMin, double coolingRate, int iterationsOnTemperature) {
+        SEED = seed;
+        TEMPERATURE_MIN = temperatureMin;
+        COOLING_RATE = coolingRate;
+        ITERATIONS_ON_TEMPERATURE = iterationsOnTemperature;
+    }
+
+    public static void setDefault() {
+        SEED = 50;
+        TEMPERATURE_MIN  = 0.0001;
+        COOLING_RATE  = 0.95;
+        ITERATIONS_ON_TEMPERATURE  = 300;
+    }
+
+}
+
 
 public class SimulatedAnnealing extends PathPlanner{
 
     private List<Point> currentRoute;
     private List<Point> bestRoute;
     private List<Point> nextRoute;
-    private double temperature;
-    private double temperatureMin;
-    private double coolingRate;
 
+    private double temperature;
     private double currentDistance;
     private double bestDistance;
     private double nextDistance;
@@ -26,12 +47,8 @@ public class SimulatedAnnealing extends PathPlanner{
     private int swapPosition1;
     private int swapPosition2;
 
+    private Random random;
 
-    private LayerAsSimpleTable layerAsSimpleTable;
-
-
-    public SimulatedAnnealing() {
-    }
 
     //probability of new solution acceptance
     public static double acceptanceProbability(double currentDistance, double nextDistance, double temperature) {
@@ -43,27 +60,43 @@ public class SimulatedAnnealing extends PathPlanner{
 
     @Override
     protected void setUp() {
+        getParametersFromFile();
+    }
+
+    private void getParametersFromFile() {
+        File file = new File(System.getProperty("user.dir") + "/params/SimulatedAnnealing.txt");
+        params.putAll(ParamReader.getParamsForSingleAlgorithm(file));
+        setParameters();
+    }
+
+    private void setParameters() {
+        SimulatedAnnealingParameters.set(Long.parseLong(params.get("seed")),
+                Double.parseDouble(params.get("temperatureMin")),
+                Double.parseDouble(params.get("coolingRate")),
+                Integer.parseInt(params.get("iterationsOnTemperature")));
+    }
+
+    private void initializeValues(){
         currentRoute = new ArrayList<>();
         bestRoute = new ArrayList<>();
         temperature = 1.0;
-        temperatureMin = 0.0001;
-        coolingRate = 0.98;
-        layerAsSimpleTable = new LayerAsSimpleTable(connection);
+        random = new Random(SimulatedAnnealingParameters.SEED);
     }
 
     @Override
     protected List<Point> planPath() {
+        initializeValues();
         findFirstSolution();
         setCurrentRouteAsBest();
         while(isStillHot()) {
             //how many times on each temperature
-            for (int i = 0 ; i < 1000; i++) {
+            for (int i = 0 ; i < SimulatedAnnealingParameters.ITERATIONS_ON_TEMPERATURE; i++) {
                 nextRoute = new ArrayList<>();
                 nextRoute = Route.copyOfRoute(currentRoute);
                 generateSwapPosition();
                 swapRoute();
                 updateNextRouteDistance();
-                if (acceptanceProbability(currentDistance, nextDistance, temperature) > Math.random()) {
+                if (acceptanceProbability(currentDistance, nextDistance, temperature) > random.nextDouble()) {
                     currentRoute = Route.copyOfRoute(nextRoute);
                     currentDistance = nextDistance;
                 }
@@ -72,7 +105,7 @@ public class SimulatedAnnealing extends PathPlanner{
                     bestDistance = currentDistance;
                 }
             }
-            temperature *= coolingRate;
+            temperature *= SimulatedAnnealingParameters.COOLING_RATE;
             currentRoute = Route.copyOfRoute(bestRoute);
             currentDistance = bestDistance;
 
@@ -91,19 +124,19 @@ public class SimulatedAnnealing extends PathPlanner{
     }
 
     private boolean isStillHot() {
-        return temperature > temperatureMin;
+        return temperature > SimulatedAnnealingParameters.TEMPERATURE_MIN;
     }
 
     private void generateSwapPosition() {
-        swapPosition1 = (int) (nextRoute.size() * Math.random());
-        swapPosition2 = (int) (nextRoute.size() * Math.random());
+        swapPosition1 = (int) (nextRoute.size() * random.nextDouble());
+        swapPosition2 = (int) (nextRoute.size() * random.nextDouble());
     }
 
 
 
     private void swapRoute() {
         //polowa szansy ze zamieni krawedzie
-        if (Math.random() > 0.5) {
+        if (random.nextDouble() > 0.5) {
             if (swapPosition1 < swapPosition2)
                 Route.swapEdges(swapPosition1, swapPosition2, nextRoute);
             else
@@ -121,3 +154,5 @@ public class SimulatedAnnealing extends PathPlanner{
     }
 
 }
+
+
