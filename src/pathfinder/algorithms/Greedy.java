@@ -1,9 +1,7 @@
-package production.algorithms;
+package pathfinder.algorithms;
 
-import production.PathPlanner;
-import production.PathPlanningConnection;
-import production.algorithms.route.PrintingTool;
-import production.algorithms.route.SimpleTableOfNeighbours;
+import pathfinder.*;
+import pathfinder.algorithms.route.*;
 
 import java.awt.*;
 import java.util.*;
@@ -16,14 +14,26 @@ public class Greedy extends PathPlanner {
 
 
     private int nrOfPoints;
-    // Array of starting points
+
+    // List of starting points
     private List<Point> startingPoints;
-    // Array of threads
+
+    // List of threads
     private List<Thread> threads;
 
+    // list of greedyThread classes
     private List<GreedyThread> greedyThreads;
 
-    private TreeMap<Double, List<Point>> routes;
+//    private TreeMap<Double, List<Point>> routes;
+
+    // lista dróg i ich dystansów (trzeba bedzie przechowywac nr najlepszej drogi
+    private List<RouteAndDistance> routes;
+//TODO: Usunąc thready - na razie zrobić wszystko na jednym
+//TODO: pozbyć się klas printing tool printing layer itd.
+//    TODO: nie robic reprezentacji w postaci mapy bo to zabiera inne rozwiązania wątków jeżeli maja tą samą odległość.
+//    TODO: wymyślec inny sposób na sprawdzenie odległości dla danej drogi
+//    TODO: dodać greedy annealing
+
 
 
     @Override
@@ -34,12 +44,15 @@ public class Greedy extends PathPlanner {
 
     private void initializeValues() {
         printingTool = new PrintingTool(connection);
-        nrOfPoints = printingTool.getNumberOfPoints();
-        startingPoints = new ArrayList<>();
-        threads = new ArrayList<>();
+        nrOfPoints = printingTool.getNumberOfPoints();                              //Nr Of Points
+        startingPoints = new ArrayList<>();                                         //  list of starting points
+        threads = new ArrayList<>();                                                //list of threads
         greedyThreads = new ArrayList<>();
         // automatyczne sortowanie -> najkrotsza trasa pod pierwszym elementem
-        routes = new TreeMap<>();
+
+
+//        routes = new TreeMap<>();
+        routes = new ArrayList<>();
     }
 
 
@@ -54,47 +67,48 @@ public class Greedy extends PathPlanner {
         initializeThreads();
         startThreads();
         joinThreads();
-        fillMapWithRoutes();
+        getRoutesFromThreads();
+        sortRoutesAndDistances();
         return getBestPath(routes);
     }
 
     private void fillTableOfNeighbours() {
         //wyliczenie liczby sasiadow kazdego punktu, konieczne zeby wygenerowac punkty
-        tableOfNeighbours = new SimpleTableOfNeighbours(printingTool);
+        tableOfNeighbours = new SimpleTableOfNeighbours(printingTool);                                  // fill table of neighbours
     }
 
     //wybiera losowo punkty rozpoczecia sciezki
     private void setRandomStartingPoints(int numberOfStartingPoints) {
         Random random = new Random(GreedyParameters.SEED);
         for (int i = 0; i < numberOfStartingPoints; i++)
-            startingPoints.add(printingTool.getPointFromList(random.nextInt(nrOfPoints)));
+            startingPoints.add((Point) printingTool.getPointFromList(random.nextInt(nrOfPoints)).clone());
     }
 
     //wybiera punkty na poczatek sciezki ze zdefiniowana liczba sasiadow, jezeli nie ma
     //takiej liczby dobiera losowo
     private void setRandomStartingPointsWithConcreteNumberOfNeighbour(int nrOfStartingPoints) {
-        List<Point> points = new ArrayList<>();
-        for (int i = 0; i < nrOfPoints; i++) {
+        List<Point> foundPoints = new ArrayList<>();
+        for (int i = 0; i < nrOfPoints && foundPoints.size() < nrOfStartingPoints ; i++) {
             Point point;
             if (tableOfNeighbours.get(point = printingTool.getPointFromList(i)) == GreedyParameters.NR_OF_NEIGHBOURS_FOR_STARTING_POINT) {
-                points.add(point);
+                foundPoints.add((Point)point.clone());
             }
         }
         int nrOfPointsStillToAdd = nrOfStartingPoints;
-        Random random = new Random(GreedyParameters.SEED);
         for (; nrOfPointsStillToAdd > 0; nrOfPointsStillToAdd--) {
-            if (!points.isEmpty())
-                startingPoints.add(points.remove(random.nextInt(points.size())));
+            if (!foundPoints.isEmpty())
+                startingPoints.add(foundPoints.remove(0));
             else
-                setRandomStartingPoints(nrOfPointsStillToAdd);
+                break;
         }
+        setRandomStartingPoints(nrOfPointsStillToAdd);
     }
 
     private void setSameStartingPoint() {
         Random random = new Random(GreedyParameters.SEED);
         Point point = printingTool.getPointFromList(random.nextInt(nrOfPoints));
         for (int i = 0; i < GreedyParameters.NR_OF_THREADS; i++)
-            startingPoints.add(point);
+            startingPoints.add((Point)point.clone());
     }
 
     private void initializeThreads() {
@@ -124,31 +138,60 @@ public class Greedy extends PathPlanner {
         }
     }
 
-    private void fillMapWithRoutes() {
+    //TODO: Change it from map to ???   ------------ Changed to array!
+    private void getRoutesFromThreads() {
         //getting paths and distances
-        for (GreedyThread greedySolution : greedyThreads)
-            routes.put(greedySolution.getTotalDistance(), greedySolution.getRoute());
+        // from greedy threat -> wrzucenie ich do listy (co za roznica czy tree map to posortuje czy ja to zrobie samodzielnie
+        for (GreedyThread greedySolution : greedyThreads) {
+            RouteAndDistance routeAndDistance = new RouteAndDistance(greedySolution.getRoute(), greedySolution.getTotalDistance());
+//            routes.put(greedySolution.getTotalDistance(), greedySolution.getRoute());
+            routes.add(routeAndDistance);
+        }
     }
 
-    private List<Point> getBestPath(TreeMap<Double, List<Point>> routes) {
-        return routes.firstEntry().getValue();
+    private void sortRoutesAndDistances() {
+        Collections.sort(routes);
     }
 
-    @Override
-    protected String getName() {
-        return "Greedy";
+    //TODO: Change get Best Path ----- przejrzyj listę i wybierz tą z najmniejszym dystansem
+//    private List<Point> getBestPath(TreeMap<Double, List<Point>> routes) {
+//        return routes.firstEntry().getValue();
+    private List<Point> getBestPath(List<RouteAndDistance> routes) {
+        return routes.get(0).getRoute();
+//        if(routes.size() == 0)
+//            return null;
+//        int idOfBestRoute = 0;
+//        double bestDistance = routes.get(0).getDistance();
+//        double nextDistance;
+//        for (int i = 1; i < routes.size(); i++) {
+//            nextDistance = routes.get(i).getDistance();
+//            if (nextDistance < bestDistance) {
+//                bestDistance = nextDistance;
+//                idOfBestRoute = i;
+//            }
+//        }
+//        return routes.get(idOfBestRoute).getRoute();
     }
 
-    public TreeMap<Double, List<Point>> getRoutes() {
+    //TODO: Change get Routes
+//    public TreeMap<Double, List<Point>> getRoutes() {
+//        return routes;
+//    }
+
+    //TODO: Change name to getRoutesAndDistances
+    public List<RouteAndDistance> getRoutes() {
         return routes;
     }
+
+
 }
 
+//TODO: Write it in file
 class GreedyParameters {
     //seed for random
     public static long SEED = 50;
     //ile watkow rownoczesnie
-    public static int NR_OF_THREADS = 20;
+    public static int NR_OF_THREADS = 10;
     public static int NR_OF_NEIGHBOURS_FOR_STARTING_POINT = 1;
     public static boolean SAME_STARTING_POINT = false;
 
@@ -171,6 +214,7 @@ class GreedyParameters {
 
 //--------------------------------------------------------------------------------------------------
 
+//TODO: Write it in ile
 class GreedyThreadParameters {
 
     // po ilu punktow zmienic metode szukania
@@ -205,7 +249,9 @@ class GreedyThreadParameters {
 //klasa wyszukujaca jednej sciezki (uruchamiana jako oddzielny watek
 class GreedyThread implements Runnable {
 
+    //TODO: pozbyć się printing tool
     private PrintingTool printingTool;
+    //TODO: pozbyć się table Of Neighbours
     private SimpleTableOfNeighbours simpleTableOfNeighbours;
 
     //droga calej trasy
