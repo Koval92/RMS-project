@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-
+//static methods for route
 public class Route {
 
     public static int SEED = 0;
@@ -43,9 +43,9 @@ public class Route {
         return copyRoute;
     }
 
-    public static void swapEdges(int vertexI, int vertexJ, List<Point> route) {
-        int i = vertexI + 1;
-        int j = vertexJ;
+    public static void swapEdges(int pointI, int pointJ, List<Point> route) {
+        int i = pointI + 1;
+        int j = pointJ;
 
         while (i < j) {
             Point temp = route.remove(i);
@@ -53,4 +53,6 @@ public class Route {
             j--;
         }
     }
+
+
 }
