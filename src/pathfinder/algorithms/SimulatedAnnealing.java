@@ -127,17 +127,16 @@ public class SimulatedAnnealing extends PathPlanner{
         //if first solution wasn't set find it randomly
         if (solutionFromOtherAlgorithm == null) {
             currentRoute = Route.generateRandomRoute(connection.getCopyOfLayerAsListOfPoints());
-            currentDistance = Route.calculateTotalDistance(currentRoute);
         }
         // if solution from other algorithm was set take it as a first solution
         else {
             currentRoute = Route.copyOfRoute(solutionFromOtherAlgorithm);
-            currentDistance = Route.calculateTotalDistance(currentRoute);
         }
+        currentDistance = Route.calculateTotalDistance(currentRoute);
     }
 
     public void setFirstSolutionFromOtherAlgorithm(List<Point> route) {
-        solutionFromOtherAlgorithm = Route.copyOfRoute(route);
+        solutionFromOtherAlgorithm = route;
     }
 
     private void setCurrentRouteAsBest() {

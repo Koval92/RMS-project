@@ -1,34 +1,34 @@
 package pathfinder.algorithms;
 
-
 import pathfinder.ParamReader;
 import pathfinder.PathPlanner;
 
 import java.awt.*;
 import java.io.File;
+import java.util.*;
 import java.util.List;
+import java.util.Map.Entry;
 
-//polaczenie greedy z simulated annealing
-public class GreedyAnnealing extends PathPlanner{
+
+public class GreedyTwoOpt extends PathPlanner {
 
     private Greedy greedy;
-    private SimulatedAnnealing simulatedAnnealing;
-
-    public GreedyAnnealing(Greedy greedy) {
-        this.greedy = greedy;
-    }
+    private TwoOpt twoOpt;
 
     private List<Point> route;
 
+    public GreedyTwoOpt(Greedy greedy) {
+        this.greedy = greedy;
+    }
 
     @Override
     protected void setUp() {
-        simulatedAnnealing = new SimulatedAnnealing();
+        twoOpt = new TwoOpt();
         getParametersFromFile();
     }
 
     private void getParametersFromFile() {
-        File file = new File(System.getProperty("user.dir") + "/params/GreedyAnnealing.txt");
+        File file = new File(System.getProperty("user.dir") + "/params/GreedyTwoOpt.txt");
         params.putAll(ParamReader.getParamsForSingleAlgorithm(file));
         setParameters();
     }
@@ -42,17 +42,14 @@ public class GreedyAnnealing extends PathPlanner{
                 Integer.parseInt(params.get("bestNrOfNeighbours")),
                 Float.parseFloat(params.get("weightOfNeighbours")),
                 Float.parseFloat(params.get("weightOfDistance")));
-        SimulatedAnnealingParameters.set(Long.parseLong(params.get("seed")),
-                Double.parseDouble(params.get("temperatureMin")),
-                Double.parseDouble(params.get("coolingRate")),
-                Integer.parseInt(params.get("iterationsOnTemperature")));
+        TwoOptParameters.set(Boolean.parseBoolean(params.get("isGreedy")),
+                Integer.parseInt(params.get("maxNrOfIterations")));
     }
 
     @Override
     protected List<Point> planPath() {
-
-        simulatedAnnealing.setFirstSolutionFromOtherAlgorithm(greedy.planPath());
-        route = simulatedAnnealing.planPath();
+        twoOpt.setSolutionFromOtherAlgorithm(greedy.planPath());
+        route = twoOpt.planPath();
         return route;
     }
 }
