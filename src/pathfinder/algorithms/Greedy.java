@@ -4,8 +4,11 @@ import pathfinder.*;
 import pathfinder.algorithms.route.*;
 
 import java.awt.*;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.List;
+import java.util.Map.Entry;
 
 public class Greedy extends PathPlanner {
 
@@ -35,10 +38,37 @@ public class Greedy extends PathPlanner {
 //    TODO: dodać greedy annealing
 
 
-
     @Override
     protected void setUp() {
-        initializeValues();
+        getParametersFromFile();
+    }
+
+    //read paramaters from file -> if file isn't found or is empty default parameters are set.
+    private void getParametersFromFile() {
+        try {
+            File file = new File(System.getProperty("user.dir") + "/params/Greedy.txt");
+            params.putAll(ParamReader.getParamsForSingleAlgorithm(file));
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        for (Entry<String, String> entry : params.entrySet()) {
+            System.out.println(entry.getKey() + " : " + entry.getValue());
+        }
+        if (params.isEmpty())
+            GreedyParameters.setDefault();
+        else
+            setParameters();
+    }
+
+    private void setParameters() {
+        GreedyParameters.set(Integer.parseInt(params.get("seed")),
+                Integer.parseInt(params.get("nrOfThreads")),
+                Integer.parseInt(params.get("nrOfNeighboursForStartingPoint")),
+                Boolean.parseBoolean(params.get("sameStartingPoint")),
+                Integer.parseInt(params.get("nrOfPointsNeededToCheckArray")),
+                Integer.parseInt(params.get("bestNrOfNeighbours")),
+                Float.parseFloat(params.get("weightOfNeighbours")),
+                Float.parseFloat(params.get("weightOfDistance")));
     }
 
 
@@ -48,19 +78,15 @@ public class Greedy extends PathPlanner {
         startingPoints = new ArrayList<>();                                         //  list of starting points
         threads = new ArrayList<>();                                                //list of threads
         greedyThreads = new ArrayList<>();
-        // automatyczne sortowanie -> najkrotsza trasa pod pierwszym elementem
-
-
-//        routes = new TreeMap<>();
         routes = new ArrayList<>();
     }
 
 
-
     @Override
     protected java.util.List<Point> planPath() {
+        initializeValues();
         fillTableOfNeighbours();
-        if(!GreedyParameters.SAME_STARTING_POINT)
+        if (!GreedyParameters.SAME_STARTING_POINT)
             setRandomStartingPointsWithConcreteNumberOfNeighbour(GreedyParameters.NR_OF_THREADS);
         else
             setSameStartingPoint();
@@ -88,10 +114,10 @@ public class Greedy extends PathPlanner {
     //takiej liczby dobiera losowo
     private void setRandomStartingPointsWithConcreteNumberOfNeighbour(int nrOfStartingPoints) {
         List<Point> foundPoints = new ArrayList<>();
-        for (int i = 0; i < nrOfPoints && foundPoints.size() < nrOfStartingPoints ; i++) {
+        for (int i = 0; i < nrOfPoints && foundPoints.size() < nrOfStartingPoints; i++) {
             Point point;
             if (tableOfNeighbours.get(point = printingTool.getPointFromList(i)) == GreedyParameters.NR_OF_NEIGHBOURS_FOR_STARTING_POINT) {
-                foundPoints.add((Point)point.clone());
+                foundPoints.add((Point) point.clone());
             }
         }
         int nrOfPointsStillToAdd = nrOfStartingPoints;
@@ -108,7 +134,7 @@ public class Greedy extends PathPlanner {
         Random random = new Random(GreedyParameters.SEED);
         Point point = printingTool.getPointFromList(random.nextInt(nrOfPoints));
         for (int i = 0; i < GreedyParameters.NR_OF_THREADS; i++)
-            startingPoints.add((Point)point.clone());
+            startingPoints.add((Point) point.clone());
     }
 
     private void initializeThreads() {
@@ -116,13 +142,12 @@ public class Greedy extends PathPlanner {
         for (Point point : startingPoints)
             greedyThreads.add(new GreedyThread(connection, tableOfNeighbours.copyArray(), point));
         for (GreedyThread path : greedyThreads) {
-            path.setParameters(new GreedyThreadParameters());
+//            path.setParameters(new GreedyThreadParameters());
             threads.add(new Thread(path));
         }
     }
 
-
-    private void startThreads(){
+    private void startThreads() {
         //starting threads
         for (Thread thread : threads)
             thread.start();
@@ -138,13 +163,11 @@ public class Greedy extends PathPlanner {
         }
     }
 
-    //TODO: Change it from map to ???   ------------ Changed to array!
     private void getRoutesFromThreads() {
         //getting paths and distances
         // from greedy threat -> wrzucenie ich do listy (co za roznica czy tree map to posortuje czy ja to zrobie samodzielnie
         for (GreedyThread greedySolution : greedyThreads) {
             RouteAndDistance routeAndDistance = new RouteAndDistance(greedySolution.getRoute(), greedySolution.getTotalDistance());
-//            routes.put(greedySolution.getTotalDistance(), greedySolution.getRoute());
             routes.add(routeAndDistance);
         }
     }
@@ -153,30 +176,10 @@ public class Greedy extends PathPlanner {
         Collections.sort(routes);
     }
 
-    //TODO: Change get Best Path ----- przejrzyj listę i wybierz tą z najmniejszym dystansem
-//    private List<Point> getBestPath(TreeMap<Double, List<Point>> routes) {
-//        return routes.firstEntry().getValue();
     private List<Point> getBestPath(List<RouteAndDistance> routes) {
         return routes.get(0).getRoute();
-//        if(routes.size() == 0)
-//            return null;
-//        int idOfBestRoute = 0;
-//        double bestDistance = routes.get(0).getDistance();
-//        double nextDistance;
-//        for (int i = 1; i < routes.size(); i++) {
-//            nextDistance = routes.get(i).getDistance();
-//            if (nextDistance < bestDistance) {
-//                bestDistance = nextDistance;
-//                idOfBestRoute = i;
-//            }
-//        }
-//        return routes.get(idOfBestRoute).getRoute();
     }
 
-    //TODO: Change get Routes
-//    public TreeMap<Double, List<Point>> getRoutes() {
-//        return routes;
-//    }
 
     //TODO: Change name to getRoutesAndDistances
     public List<RouteAndDistance> getRoutes() {
@@ -188,63 +191,57 @@ public class Greedy extends PathPlanner {
 
 //TODO: Write it in file
 class GreedyParameters {
-    //seed for random
+    //seed of the random
     public static long SEED = 50;
-    //ile watkow rownoczesnie
+    //nr of greedy threads
     public static int NR_OF_THREADS = 10;
+    //best nr of neighbours for the starting point
     public static int NR_OF_NEIGHBOURS_FOR_STARTING_POINT = 1;
+    //should all greedy threads start from the same point
     public static boolean SAME_STARTING_POINT = false;
+    //how many points are necessary to look into list, not into array,
+    //for next closest point
+    public static int NR_OF_POINTS_NEEDED_TO_CHECK_ARRAY = 40;
+    //what is the best nr of neighbours for the next point of path
+    public static int BEST_NR_OF_NEIGHBOURS = 0;
+    //coefficient describing importance of closest value of point's neighbours
+    //rather than nearest distance
+    public static float WEIGHT_OF_NEIGHBOURS = 0.42F;
+    //coefficient describing importance of closest distance rather than point with number
+    //of neighbours closest to value of best number of neighbours
+    public static float WEIGHT_OF_DISTANCE = 0.32F;
 
-    public static void set(int seed, int nrOfThreads, int nrOfNeighboursForStartingPoint, boolean sameStartingPoint) {
+    public static void set(int seed, int nrOfThreads, int nrOfNeighboursForStartingPoint,
+                           boolean sameStartingPoint, int nrOfPointsNeededToCheckArray,
+                           int bestNrOfNeighbours, float weightOfNeighbours, float weightOfDistance) {
         SEED = seed;
         NR_OF_THREADS = nrOfThreads;
         NR_OF_NEIGHBOURS_FOR_STARTING_POINT = nrOfNeighboursForStartingPoint;
         SAME_STARTING_POINT = sameStartingPoint;
-    }
 
-    public static void reset() {
-        SEED = 50;
-        NR_OF_THREADS = 20;
-        NR_OF_NEIGHBOURS_FOR_STARTING_POINT = 1;
-        SAME_STARTING_POINT = false;
-    }
-
-}
-
-
-//--------------------------------------------------------------------------------------------------
-
-//TODO: Write it in ile
-class GreedyThreadParameters {
-
-    // po ilu punktow zmienic metode szukania
-    public static  int NR_OF_POINTS_NEEDED_TO_CHECK_ARRAY = 40;
-    public static int BEST_NR_OF_NEIGHBOURS = 0;
-    public static float WEIGHT_OF_NEIGHBOURS = 0.42F;
-    public static float WEIGHT_OF_DISTANCE = 0.32F;
-
-    public static void set(int nrOfPointsNeededToCheckArray, int bestNrOfNeighbours, float weightOfNeighbours, float weightOfDistance) {
         NR_OF_POINTS_NEEDED_TO_CHECK_ARRAY = nrOfPointsNeededToCheckArray;
         BEST_NR_OF_NEIGHBOURS = bestNrOfNeighbours;
         WEIGHT_OF_NEIGHBOURS = weightOfNeighbours;
         WEIGHT_OF_DISTANCE = weightOfDistance;
     }
 
-    public static void set(int nrOfPointsNeededToCheckArray, int bestNrOfNeighbours) {
-        NR_OF_POINTS_NEEDED_TO_CHECK_ARRAY = nrOfPointsNeededToCheckArray;
-        BEST_NR_OF_NEIGHBOURS = bestNrOfNeighbours;
-    }
+    public static void setDefault() {
+        SEED = 50;
+        NR_OF_THREADS = 20;
+        NR_OF_NEIGHBOURS_FOR_STARTING_POINT = 1;
+        SAME_STARTING_POINT = false;
 
-    public static void reset() {
         NR_OF_POINTS_NEEDED_TO_CHECK_ARRAY = 40;
         BEST_NR_OF_NEIGHBOURS = 0;
         WEIGHT_OF_NEIGHBOURS = 0.42F;
         WEIGHT_OF_DISTANCE = 0.32F;
     }
+
 }
 
 
 //--------------------------------------------------------------------------------------------------
+
 
 //klasa wyszukujaca jednej sciezki (uruchamiana jako oddzielny watek
 class GreedyThread implements Runnable {
@@ -257,7 +254,7 @@ class GreedyThread implements Runnable {
     //droga calej trasy
     private double totalDistance;
 
-    private GreedyThreadParameters greedyThreadParameters;
+//    private GreedyThreadParameters greedyThreadParameters;
 
 
     public GreedyThread(PathPlanningConnection connection, int[][] tableOfNeighbours, Point startingPoint) {
@@ -267,13 +264,13 @@ class GreedyThread implements Runnable {
         printingTool.print();
     }
 
-    public void setParameters(GreedyThreadParameters greedyParameters) {
-        this.greedyThreadParameters = greedyParameters;
-    }
+//    public void setParameters(GreedyThreadParameters greedyParameters) {
+//        this.greedyThreadParameters = greedyParameters;
+//    }
 
     @Override
     public void run() {
-        while (printingTool.getNumberOfPoints() > greedyThreadParameters.NR_OF_POINTS_NEEDED_TO_CHECK_ARRAY)
+        while (printingTool.getNumberOfPoints() > GreedyParameters.NR_OF_POINTS_NEEDED_TO_CHECK_ARRAY)
             if (!findNextPointFromArray())
                 findNextPointFromList();
         while (printingTool.getNumberOfPoints() > 0)
@@ -300,12 +297,12 @@ class GreedyThread implements Runnable {
                 int tmpY = y + coeff[i][0];
                 int tmpX = x + coeff[i][1];
                 if (printingTool.get(tmpY, tmpX)) {
-                    nextNrOfNeighbours = Math.abs(simpleTableOfNeighbours.get(tmpY, tmpX) - greedyThreadParameters.BEST_NR_OF_NEIGHBOURS);
+                    nextNrOfNeighbours = Math.abs(simpleTableOfNeighbours.get(tmpY, tmpX) - GreedyParameters.BEST_NR_OF_NEIGHBOURS);
                     if (nextNrOfNeighbours < bestNrOfNeighbours) {
                         bestNrOfNeighbours = nextNrOfNeighbours;
                         bestPoint = new Point(tmpY, tmpX);
                     }
-                    if (bestNrOfNeighbours <= greedyThreadParameters.BEST_NR_OF_NEIGHBOURS) {
+                    if (bestNrOfNeighbours <= GreedyParameters.BEST_NR_OF_NEIGHBOURS) {
                         printingTool.print(bestPoint);
                         simpleTableOfNeighbours.updateNeighbours(bestPoint);
                         return true;
@@ -334,9 +331,9 @@ class GreedyThread implements Runnable {
         //przyjmij pierwszy punkt jako najlepszy
         bestPoint = printingTool.getPointFromList(0);
         double bestDistance = calculateDistance(currentPoint, bestPoint);
-        bestNrOfNeighbours = Math.abs(simpleTableOfNeighbours.get(bestPoint) - greedyThreadParameters.BEST_NR_OF_NEIGHBOURS);
+        bestNrOfNeighbours = Math.abs(simpleTableOfNeighbours.get(bestPoint) - GreedyParameters.BEST_NR_OF_NEIGHBOURS);
         // jezeli jest to juz idealny punkt to tam idz
-        if (bestDistance <= 1 + greedyThreadParameters.WEIGHT_OF_NEIGHBOURS && bestNrOfNeighbours <= greedyThreadParameters.BEST_NR_OF_NEIGHBOURS) {
+        if (bestDistance <= 1 + GreedyParameters.WEIGHT_OF_NEIGHBOURS && bestNrOfNeighbours <= GreedyParameters.BEST_NR_OF_NEIGHBOURS) {
             totalDistance += bestDistance;
             printingTool.print(bestPoint);
             simpleTableOfNeighbours.updateNeighbours(bestPoint);
@@ -349,14 +346,14 @@ class GreedyThread implements Runnable {
             double nextDistance = calculateDistance(currentPoint, nextPoint);
 
             //jezeli dystans miedzy punktammi jest znaczacy od razu wez nowy punkt
-            if (nextDistance < bestDistance - greedyThreadParameters.WEIGHT_OF_DISTANCE) {
+            if (nextDistance < bestDistance - GreedyParameters.WEIGHT_OF_DISTANCE) {
                 bestPoint = nextPoint;
-                bestNrOfNeighbours = Math.abs(simpleTableOfNeighbours.get(bestPoint) - greedyThreadParameters.BEST_NR_OF_NEIGHBOURS);
+                bestNrOfNeighbours = Math.abs(simpleTableOfNeighbours.get(bestPoint) - GreedyParameters.BEST_NR_OF_NEIGHBOURS);
                 bestDistance = nextDistance;
             }
             //jezeli dystans miedzy punktami jest zblizony wez pod uwage liczbe sasiadow
-            else if (nextDistance < bestDistance + greedyThreadParameters.WEIGHT_OF_NEIGHBOURS) {
-                nextNrOfNeighbours = Math.abs(simpleTableOfNeighbours.get(nextPoint) - greedyThreadParameters.BEST_NR_OF_NEIGHBOURS);
+            else if (nextDistance < bestDistance + GreedyParameters.WEIGHT_OF_NEIGHBOURS) {
+                nextNrOfNeighbours = Math.abs(simpleTableOfNeighbours.get(nextPoint) - GreedyParameters.BEST_NR_OF_NEIGHBOURS);
 
                 //jezeli zmalala liczba sasiadow
                 if (nextNrOfNeighbours < bestNrOfNeighbours) {
@@ -368,7 +365,7 @@ class GreedyThread implements Runnable {
             }
 
             //sprawdzmy czy obecna odleglosc nie jest juz wystarczajaco dobra
-            if (bestDistance <= 1 + greedyThreadParameters.WEIGHT_OF_NEIGHBOURS && bestNrOfNeighbours <= greedyThreadParameters.BEST_NR_OF_NEIGHBOURS) {
+            if (bestDistance <= 1 + GreedyParameters.WEIGHT_OF_NEIGHBOURS && bestNrOfNeighbours <= GreedyParameters.BEST_NR_OF_NEIGHBOURS) {
                 printingTool.print(bestPoint);
                 simpleTableOfNeighbours.updateNeighbours(bestPoint);
                 totalDistance += bestDistance;
