@@ -316,6 +316,7 @@ class Connection implements PathPlanningConnection {
         params.put("time_cost", String.format("%.2f", costs.get(CostFunctionType.TIME)));
         params.put("dist_cost", String.format("%.2f", costs.get(CostFunctionType.DISTANCE)));
         params.put("ener_cost", String.format("%.2f", costs.get(CostFunctionType.ENERGY)));
+        params.put("layer_size", String.valueOf(route.size()));
 
         mainWindow.updateCostFields(costs);
         mainWindow.updateLayerPanel();
