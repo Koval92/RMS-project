@@ -37,7 +37,7 @@ public class ParamReader {
                 line = line.split("#", 2)[0];
 
                 if (line.trim().equals("***")) {
-                    if(params.get("algorithm_name") != null) {
+                    if (params.get("algorithm_name") != null) {
                         paramList.add(params);
                     }
                     added = true;
@@ -63,7 +63,7 @@ public class ParamReader {
             e.printStackTrace();
         }
 
-        if(!added && params.get("algorithm_name") != null)
+        if (!added && params.get("algorithm_name") != null)
             paramList.add(params);
 
         return paramList;

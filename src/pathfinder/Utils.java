@@ -21,7 +21,7 @@ public class Utils {
         Utils.pixelSize = pixelSize;
     }
 
-    private static int pixelSize = 10;
+    private static int pixelSize = 8;
 
     public static BufferedImage draw(Layer layer, List<Point> route, CostFunctionType costType) {
         BufferedImage image = new BufferedImage(layer.getWidth() * pixelSize,

@@ -1,0 +1,27 @@
+algorithm_name: Greedy
+
+# ---------------------------------------------------------------------------------------
+# Following params are:
+#
+# seed :                                    seed of the random
+# nrOfThreads:                              nr of greedy threads
+# nrOfNeighboursForStartingPoint            best nr of neighbours for the starting point
+# sameStartingPoint                         should all greedy threads start from the same point
+# nrOfPointsNeededToCheckArray              how many points are necessary to look into list, not into array,
+#                                           for next closest point
+# bestNrOfNeighbours                        what is the best nr of neighbours for the next point of path
+# weightOfNeighbours                        coefficient describing importance of closest value of point's neighbours
+#                                           rather than nearest distance
+# weightOfDistance                          coefficient describing importance of closest distance rather than point with number
+#                                           of neighbours closest to value of best number of neighbours
+#-----------------------------------------------------------------------------------------
+
+seed: 50
+nrOfThreads: 10
+nrOfNeighboursForStartingPoint: 1
+sameStartingPoint: false
+
+nrOfPointsNeededToCheckArray: 40
+bestNrOfNeighbours: 0
+weightOfNeighbours: 0.42
+weightOfDistance: 0.32
