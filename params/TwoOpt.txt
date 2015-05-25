@@ -6,5 +6,5 @@ algorithm_name: Two Opt
 # maxNrOfIterations                     how many times algorithm should search better solution,
 #                                       if -1 it will be searching till it finds no improvements
 
-isGreedy : True
+isGreedy : False
 maxNrOfIterations : -1

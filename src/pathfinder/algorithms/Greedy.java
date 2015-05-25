@@ -7,6 +7,7 @@ import java.awt.*;
 import java.io.File;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
 
 class GreedyParameters {
     //seed of the random
@@ -115,9 +116,7 @@ public class Greedy extends PathPlanner {
 
     private void initializeValues() {
         allPointsToPrint = connection.getCopyOfLayerAsListOfPoints();
-
         nrOfPoints = allPointsToPrint.size();
-
         startingPoints = new ArrayList<>();                                         //  list of starting points
         threads = new ArrayList<>();                                                //list of threads
         greedyThreads = new ArrayList<>();
@@ -184,6 +183,7 @@ public class Greedy extends PathPlanner {
     private void initializeThreads() {
         for (Point startingPoint : startingPoints)
             greedyThreads.add(new GreedyThread(allPointsToPrint, tableOfNeighbours, startingPoint));
+
         for (GreedyThread path : greedyThreads)
             threads.add(new Thread(path));
     }
@@ -206,6 +206,7 @@ public class Greedy extends PathPlanner {
         //getting paths and distances
         for (GreedyThread greedySolution : greedyThreads) {
             RouteAndDistance routeAndDistance = new RouteAndDistance(greedySolution.getRoute(), greedySolution.getTotalDistance());
+            logger.log("Found route with distance: " + greedySolution.getTotalDistance());
             routes.add(routeAndDistance);
         }
     }
@@ -246,6 +247,7 @@ class GreedyThread implements Runnable {
 
 
     public GreedyThread(List<Point> allPointsToPrint, TableOfNeighbours tableOfNeighbours, Point startingPoint) {
+
         this.availablePoints = Route.copyOfRoute(allPointsToPrint);
         this.tableOfNeighbours = TableOfNeighbours.newInstance(tableOfNeighbours);
         this.currentPoint = startingPoint;
@@ -256,6 +258,9 @@ class GreedyThread implements Runnable {
 
     @Override
     public void run() {
+        synchronized (this) {
+
+        }
         route.add(currentPoint);
         availablePoints.remove(currentPoint);
         while (availablePoints.size() > GreedyParameters.NR_OF_POINTS_NEEDED_TO_CHECK_ARRAY)
@@ -305,6 +310,7 @@ class GreedyThread implements Runnable {
     }
 
     private void findNextPointFromList() {
+
         Point bestPoint;
 
         int bestNrOfNeighbours;

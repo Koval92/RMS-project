@@ -120,6 +120,8 @@ public class SimulatedAnnealing extends PathPlanner {
             currentRoute = Route.copyOfRoute(bestRoute);
             currentDistance = bestDistance;
 
+            logger.log("Temperature: " + temperature + ", best Distance: " + currentDistance);
+
         }
         return bestRoute;
     }

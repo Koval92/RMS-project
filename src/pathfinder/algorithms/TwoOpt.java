@@ -125,6 +125,7 @@ public class TwoOpt extends PathPlanner {
     private void swapIfItIsProfitable() {
         if (bestEdgeSwapCost < 0) {
             Route.swapEdges(bestVertexI, bestVertexJ, route);
+            logger.log("Find better path: " + bestEdgeSwapCost);
         }
     }
 

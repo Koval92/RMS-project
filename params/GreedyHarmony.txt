@@ -14,8 +14,8 @@ bestNrOfNeighbours: 0
 weightOfNeighbours: 0.42
 weightOfDistance: 0.32
 
-# --- harmony part (seed is common for oth algorithms)
+# --- harmony part (seed is common for both algorithms)
 
-memorySize : 10
-nrOfIterations : 1000
-memoryProbability : 0.3
+memorySize : 5
+nrOfIterations : 100000
+memoryProbability : 0.9

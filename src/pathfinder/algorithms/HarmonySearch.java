@@ -115,7 +115,9 @@ public class HarmonySearch extends PathPlanner {
             while (availablePoints.size() > 0) {
                 findNextPoint();
             }
-            memory.updateMemory(route, Route.calculateTotalDistance(route));
+            double distance = Route.calculateTotalDistance(route);
+            logger.log("Iteration: " + i + ", found path with distance: " + distance);
+            memory.updateMemory(route, distance);
         }
         return memory.getBestRoute();
     }

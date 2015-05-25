@@ -4,5 +4,5 @@ algorithm_name: Two Opt
 
 seed : 50
 memorySize : 10
-nrOfIterations : 1000
-memoryProbability : 0.3
+nrOfIterations : 1000000
+memoryProbability : 0.95

@@ -16,5 +16,5 @@ weightOfDistance: 0.32
 
 # ---- Two Opt part
 
-isGreedy : True
+isGreedy : False
 maxNrOfIterations : -1
