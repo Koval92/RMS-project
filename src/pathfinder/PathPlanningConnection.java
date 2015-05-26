@@ -7,7 +7,7 @@ import java.util.Map;
 public interface PathPlanningConnection {
     void setProgress(double progress);
 
-    void setCalcTime(double calcTimeInNano);
+    void setCalcTime(double calcTimeInMillis);
 
     void setResults(List<Point> route, Map<String, String> params);
 

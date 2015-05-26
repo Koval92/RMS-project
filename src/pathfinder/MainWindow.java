@@ -291,8 +291,8 @@ class Connection implements PathPlanningConnection {
     }
 
     @Override
-    public void setCalcTime(double calcTimeInNano) {
-        mainWindow.calcTimeTextField.setText(String.format("%.2f", calcTimeInNano / 1_000_000) + " ms");
+    public void setCalcTime(double calcTimeInMillis) {
+        mainWindow.calcTimeTextField.setText(String.format("%.2f", calcTimeInMillis) + " ms");
     }
 
     @Override

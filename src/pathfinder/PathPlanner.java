@@ -57,8 +57,11 @@ public abstract class PathPlanner {
             route.add(0, initialPrinterPosition);
 
         long durationInNano = endTime - startTime;
+        double calcTimeInMillis = (double) durationInNano/1_000_000;
 
-        connection.setCalcTime(durationInNano);
+        params.put("calc_time", String.format("%.2f", calcTimeInMillis) + " ms");
+
+        connection.setCalcTime(calcTimeInMillis);
         connection.setResults(route, params);
     }
 
