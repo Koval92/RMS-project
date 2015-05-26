@@ -1,0 +1,6 @@
+cost_type : TIME
+time_cost : 1071,00
+dist_cost : 1079,01
+layer_size : 163
+algorithm_name : LeftToRight
+ener_cost : 1136,00

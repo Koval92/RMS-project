@@ -7,11 +7,12 @@
 %\usepackage[nottoc, notlof, numbib]{tocbibind} % wyswietlenie bibliografii w spisie tresci
 \usepackage{url}
 \usepackage[justification=centering]{caption}
+\usepackage{subfigure}
 
 \newcommand{\includelayer}[2][c]{
 \begin{figure}
 \begin{center}
-\fbox{\includegraphics[scale = 2]{../img/#2}}
+\fbox{\includegraphics[width = 0.8\textwidth, height = 0.4\textheight, keepaspectratio]{../img/#2}}
 \caption{#2}
 \label{img:#2}
 \end{center}
@@ -42,7 +43,7 @@ Our path should consist of points from layer currently being printed. Tool have 
 \end{enumerate}
 We are assuming that our printing tool is a point moving on two perpendicular axes.
 
-Another task was to write an environment, which will deliver layers for algorithms, provide methods commonly used in finding path, and will save and show results in human-friendly way, including graphical representation on found path.
+Another task was to write an environment, which will deliver layers for algorithms, provide methods commonly used in finding path, and will save and show results in human-friendly way, including graphical representation on found path. It should be also open to addition of new algorithms.
 
 \pagebreak
 \section{Mathematic description of problem}
@@ -112,7 +113,7 @@ This algorithm is an improvement of Left-To-Right algorithm. Instead of going al
 
 \begin{figure}
 \begin{center}
-\includegraphics[scale=2]{ltr-vs-snake}
+\includegraphics[scale=2]{img/ltr-vs-snake}
 \caption{Left-To-Right algorithm on the left, Snake algorithm on the right}
 \label{img:ltr-vs-snake}
 \end{center}
@@ -123,6 +124,7 @@ This algorithm is an improvement of Left-To-Right algorithm. Instead of going al
 \section{Experiments}
 \subsection{Environment}
 \subsection{Test layers}
+Images shown on figures \ref{img:sp-1} - \ref{img:sp-9} were used as test layers.
 \includelayer{sp-1}
 \includelayer{sp-2}
 \includelayer{sp-3}
@@ -133,20 +135,20 @@ This algorithm is an improvement of Left-To-Right algorithm. Instead of going al
 \includelayer{sp-8}
 \includelayer{sp-9}
 
-Images shown on figures \ref{img:sp-1} - \ref{img:sp-9} were used as test layers.
-
 \section{Results}
 
 
 \section{Conclusion}
 \begin{figure}
 \begin{center}
-\includegraphics[scale=2]{costs}
+\includegraphics[scale=2]{img/costs}
 \end{center}
 \caption{Points with cost from red point equal to 3.\\Orange for distance, green for time, and violet for energy}
 \label{cost_function_representation}
 \end{figure}
 As we can see on figure \ref{cost_function_representation}, when algorithm is seeking for closest point, it finds different ones, depending on cost function type. Therefore, if algorithm makes use of this, the results will vary.
+
+Snake algorithm usually provides almost 2 times better results than Left-to-Right, in similar time. For some layers it also provides optimal (or close to it) paths, whereas for other it can give results multiple times worse than optimal.
 
 \section{Own contribution}
 My own contribution was:
