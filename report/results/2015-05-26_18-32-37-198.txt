@@ -1,6 +1,0 @@
-cost_type : TIME
-time_cost : 221,00
-dist_cost : 224,07
-layer_size : 190
-algorithm_name : EdgeFollowing
-ener_cost : 230,00

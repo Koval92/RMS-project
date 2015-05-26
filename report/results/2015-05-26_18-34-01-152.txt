@@ -1,6 +1,0 @@
-cost_type : ENERGY
-time_cost : 640,00
-dist_cost : 666,44
-layer_size : 404
-algorithm_name : EdgeFollowing
-ener_cost : 739,00
