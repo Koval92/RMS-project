@@ -43,7 +43,7 @@ Our path should consist of points from layer currently being printed. Tool have 
 \end{enumerate}
 We are assuming that our printing tool is a point moving on two perpendicular axes.
 
-Another task was to write an environment, which will deliver layers for algorithms, provide methods commonly used in finding path, and will save and show results in human-friendly way, including graphical representation on found path. It should be also open to addition of new algorithms.
+Another task was to write an environment, which will deliver layers for algorithms, provide methods commonly used in finding path, and will save and show results in human-friendly way, including graphical representation of found path. It should also be open to addition of new algorithms.
 
 \pagebreak
 \section{Mathematic description of problem}
@@ -88,14 +88,14 @@ such that length of path and time of calculations are minimized.
 
 \pagebreak
 \section{Algorithms}
-Since main effort/task was to create an environment, there are implemented 3 simple algorithms. Those algorithms are:
+Following algorithm were implemented:
 \begin{itemize}
 \item Left-To-Right algorithm
 \item Snake algorithm
 \item Edge Following algorithm
 \end{itemize}
 
-All implementations of algorithms are based on class, which makes all necessary communication between environment and algorithm, like:
+All implementations of algorithms are based on superclass, which makes all necessary communication between environment and algorithm, like:
 \begin{itemize}
 \item setting up an algorithm, e.g. getting a layer to print,
 \item sending results of algorithm to rest of application,
@@ -104,7 +104,7 @@ All implementations of algorithms are based on class, which makes all necessary 
 Therefore algorithms only have to do all calculations in method returning a path, and optionally set up all variables in separate method. It also simplifies adding new algorithms, because all they have to do is implement this method, and they have to be added to list of algorithms.
 
 \subsection{Left-To-Right algorithm}
-This algorithm was created mostly for testing purposes. It had to be as simple as possible, and still find correct route, so it allows to test how environment works with algorithms.
+This algorithm was created mostly for testing purposes. It had to be as simple as possible, and still find correct route, so it allows to test how environment works with algorithms in general.
 
 Algorithm starts in top-left corner and goes line-by-line from left to right, adding to route all points on its way. And because only point to print are on found route, printer will go straight from last point in one line, to first in next one containing any points. Behaviour of this algorithm is similar to traditional paper printes.
 
@@ -120,6 +120,7 @@ This algorithm is an improvement of Left-To-Right algorithm. Instead of going al
 \end{figure}
 
 \subsection{Edge Following algorithm}
+This algorithm starts from edge of a shape on a layer, and tries to get to the middle of it, and later choose next shape.
 
 \section{Experiments}
 \subsection{Environment}
@@ -153,7 +154,7 @@ Snake algorithm usually provides almost 2 times better results than Left-to-Righ
 Not only count of points, but also size of whole layer (even if points are only in the middle) can have influence on results or time of calculations, e.g. when algorithm is searching for closest point.
 
 \section{Own contribution}
-Michał's contribution was:
+Michał's contribution:
 \begin{itemize}
 \item application for tests and graphical representation of results,
 \item Left-To-Right algorithm,
@@ -163,8 +164,7 @@ Michał's contribution was:
 \item time and energy cost functions,
 \item experiments and this report.
 \end{itemize}
-
-Piotr's contribution was:
+Piotr's contribution:
 \begin{itemize}
 \item layers from sp-7 to sp-9,
 \item experiments and this report. 
