@@ -7,11 +7,12 @@
 %\usepackage[nottoc, notlof, numbib]{tocbibind} % wyswietlenie bibliografii w spisie tresci
 \usepackage{url}
 \usepackage[justification=centering]{caption}
+\usepackage{subfigure}
 
 \newcommand{\includelayer}[2][c]{
 \begin{figure}
 \begin{center}
-\fbox{\includegraphics[scale = 2]{../img/#2}}
+\fbox{\includegraphics[width = 0.8\textwidth, height = 0.4\textheight, keepaspectratio]{../img/#2}}
 \caption{#2}
 \label{img:#2}
 \end{center}
@@ -19,7 +20,11 @@
 }
 
 \title{Research Skills and Methodologies\\Path Optimization of 3D Printer}
+<<<<<<< HEAD
 \author{Michał Kowalski, 195447 \\ Piotr Lechowicz, 195651}
+=======
+\author{Michał Kowalski, 195447\\Piotr Lechowicz, 195651}
+>>>>>>> 626c49daf3663b81219e3b1b35116af5835f7d01
 \date{}
 
 \begin{document}
@@ -42,7 +47,7 @@ Our path should consist of points from layer currently being printed. Tool have 
 \end{enumerate}
 We are assuming that our printing tool is a point moving on two perpendicular axes.
 
-Another task was to write an environment, which will deliver layers for algorithms, provide methods commonly used in finding path, and will save and show results in human-friendly way, including graphical representation on found path.
+Another task was to write an environment, which will deliver layers for algorithms, provide methods commonly used in finding path, and will save and show results in human-friendly way, including graphical representation of found path. It should also be open to addition of new algorithms.
 
 \pagebreak
 \section{Mathematic description of problem}
@@ -87,14 +92,14 @@ such that length of path and time of calculations are minimized.
 
 \pagebreak
 \section{Algorithms}
-Since main effort/task was to create an environment, there are implemented 3 simple algorithms. Those algorithms are:
+Following algorithm were implemented:
 \begin{itemize}
 \item Left-To-Right algorithm
 \item Snake algorithm
 \item Edge Following algorithm
 \end{itemize}
 
-All implementations of algorithms are based on class, which makes all necessary communication between environment and algorithm, like:
+All implementations of algorithms are based on superclass, which makes all necessary communication between environment and algorithm, like:
 \begin{itemize}
 \item setting up an algorithm, e.g. getting a layer to print,
 \item sending results of algorithm to rest of application,
@@ -103,7 +108,7 @@ All implementations of algorithms are based on class, which makes all necessary 
 Therefore algorithms only have to do all calculations in method returning a path, and optionally set up all variables in separate method. It also simplifies adding new algorithms, because all they have to do is implement this method, and they have to be added to list of algorithms.
 
 \subsection{Left-To-Right algorithm}
-This algorithm was created mostly for testing purposes. It had to be as simple as possible, and still find correct route, so it allows to test how environment works with algorithms.
+This algorithm was created mostly for testing purposes. It had to be as simple as possible, and still find correct route, so it allows to test how environment works with algorithms in general.
 
 Algorithm starts in top-left corner and goes line-by-line from left to right, adding to route all points on its way. And because only point to print are on found route, printer will go straight from last point in one line, to first in next one containing any points. Behaviour of this algorithm is similar to traditional paper printes.
 
@@ -112,17 +117,19 @@ This algorithm is an improvement of Left-To-Right algorithm. Instead of going al
 
 \begin{figure}
 \begin{center}
-\includegraphics[scale=2]{ltr-vs-snake}
+\includegraphics[scale=2]{img/ltr-vs-snake}
 \caption{Left-To-Right algorithm on the left, Snake algorithm on the right}
 \label{img:ltr-vs-snake}
 \end{center}
 \end{figure}
 
 \subsection{Edge Following algorithm}
+This algorithm starts from edge of a shape on a layer, and tries to get to the middle of it, and later choose next shape.
 
 \section{Experiments}
 \subsection{Environment}
 \subsection{Test layers}
+Images shown on figures \ref{img:sp-1} - \ref{img:sp-9} were used as test layers.
 \includelayer{sp-1}
 \includelayer{sp-2}
 \includelayer{sp-3}
@@ -133,31 +140,40 @@ This algorithm is an improvement of Left-To-Right algorithm. Instead of going al
 \includelayer{sp-8}
 \includelayer{sp-9}
 
-Images shown on figures \ref{img:sp-1} - \ref{img:sp-9} were used as test layers.
-
 \section{Results}
-
+For very short calculations, measured time can have very big differences between one measurement and another one with the same algorithm/params.
 
 \section{Conclusion}
 \begin{figure}
 \begin{center}
-\includegraphics[scale=2]{costs}
+\includegraphics[scale=2]{img/costs}
 \end{center}
 \caption{Points with cost from red point equal to 3.\\Orange for distance, green for time, and violet for energy}
 \label{cost_function_representation}
 \end{figure}
 As we can see on figure \ref{cost_function_representation}, when algorithm is seeking for closest point, it finds different ones, depending on cost function type. Therefore, if algorithm makes use of this, the results will vary.
 
+Snake algorithm usually provides almost 2 times better results than Left-to-Right, in similar time. For some layers it also provides optimal (or close to it) paths, whereas for other it can give results multiple times worse than optimal.
+
+Not only count of points, but also size of whole layer (even if points are only in the middle) can have influence on results or time of calculations, e.g. when algorithm is searching for closest point.
+
 \section{Own contribution}
-My own contribution was:
+Michał's contribution:
 \begin{itemize}
 \item application for tests and graphical representation of results,
 \item Left-To-Right algorithm,
 \item Snake algorithm,
 \item Edge-Following algorithm,
 \item layers sp-5 and sp-6,
-\item time and energy cost functions
+\item time and energy cost functions,
 \item experiments and this report.
 \end{itemize}
+Piotr's contribution:
+\begin{itemize}
+\item layers from sp-7 to sp-9,
+\item experiments and this report. 
+\end{itemize}
+
+\section{References}
 
 \end{document}
