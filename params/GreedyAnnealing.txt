@@ -18,4 +18,4 @@ weightOfDistance: 0.32
 
 temperatureMin: 0.000001
 coolingRate: 0.995
-iterationsOnTemperature : 1800
+iterationsOnTemperature : 1500

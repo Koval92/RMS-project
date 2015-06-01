@@ -16,6 +16,6 @@ weightOfDistance: 0.32
 
 # --- harmony part (seed is common for both algorithms)
 
-memorySize : 5
+memorySize : 10
 nrOfIterations : 100000
-memoryProbability : 0.9
+memoryProbability : 0.95
