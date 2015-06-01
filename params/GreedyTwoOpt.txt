@@ -4,7 +4,7 @@ algorithm_name: Greedy Two Opt
 # --- Greedy part
 
 
-seed: 50
+seed: -1
 nrOfThreads: 10
 nrOfNeighboursForStartingPoint: 1
 sameStartingPoint: false

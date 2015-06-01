@@ -2,7 +2,7 @@ algorithm_name: Two Opt
 
 # params:
 
-seed : 50
+seed : -1
 memorySize : 10
 nrOfIterations : 1000000
 memoryProbability : 0.95

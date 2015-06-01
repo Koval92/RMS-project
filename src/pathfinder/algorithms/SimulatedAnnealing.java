@@ -11,7 +11,7 @@ import java.awt.Point;
 import java.util.Random;
 
 class SimulatedAnnealingParameters {
-    public static long SEED = 50;
+    public static long SEED = -1;
     public static double TEMPERATURE_MIN = 0.0001;
     public static double COOLING_RATE = 0.98;
     public static int ITERATIONS_ON_TEMPERATURE = 1000;
@@ -24,7 +24,7 @@ class SimulatedAnnealingParameters {
     }
 
     public static void setDefault() {
-        SEED = 50;
+        SEED = -1;
         TEMPERATURE_MIN = 0.0001;
         COOLING_RATE = 0.95;
         ITERATIONS_ON_TEMPERATURE = 300;
@@ -91,7 +91,10 @@ public class SimulatedAnnealing extends PathPlanner {
         currentRoute = new ArrayList<>();
         bestRoute = new ArrayList<>();
         temperature = 1.0;
-        random = new Random(SimulatedAnnealingParameters.SEED);
+        if (SimulatedAnnealingParameters.SEED < 0)
+            random = new Random();
+        else
+            random = new Random(SimulatedAnnealingParameters.SEED);
     }
 
     @Override

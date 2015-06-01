@@ -9,26 +9,30 @@ import java.util.Random;
 //static methods for route
 public class Route {
 
-    public static int SEED = 0;
+    public static int SEED = -1;
 
     // generate route randomly
     public static List<Point> generateRandomRoute(List<Point> route) {
-        Random random = new Random(SEED);
+        Random random;
+        if (SEED < 0)
+            random = new Random();
+        else
+            random = new Random(SEED);
         List<Point> generatedRoute = new ArrayList<>();
-        while(route.size() > 0)
-            generatedRoute.add((Point)route.remove(random.nextInt(route.size())).clone());
+        while (route.size() > 0)
+            generatedRoute.add((Point) route.remove(random.nextInt(route.size())).clone());
         return generatedRoute;
     }
 
     // calculate total distance of route
     public static double calculateTotalDistance(List<Point> route) {
         Iterator<Point> it = route.iterator();
-        if (! it.hasNext())
+        if (!it.hasNext())
             return -1;
         double disatnce = 0;
         Point currentPoint = it.next();
         Point nextPoint;
-        while(it.hasNext()) {
+        while (it.hasNext()) {
             nextPoint = it.next();
             disatnce += currentPoint.distance(nextPoint);
             currentPoint = nextPoint;
@@ -38,8 +42,8 @@ public class Route {
 
     public static List<Point> copyOfRoute(List<Point> route) {
         List<Point> copyRoute = new ArrayList<>();
-        for(Point point : route)
-            copyRoute.add((Point)point.clone());
+        for (Point point : route)
+            copyRoute.add((Point) point.clone());
         return copyRoute;
     }
 

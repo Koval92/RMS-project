@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 class HarmonySearchParameters {
-    public static long SEED = 50;
+    public static long SEED = -1;
     public static int MEMORY_SIZE = 10;
     public static int NR_OF_ITERATIONS = 1000;
     public static double MEMORY_PROBABILITY = 0.3;
@@ -27,7 +27,7 @@ class HarmonySearchParameters {
     }
 
     public static void setDefault() {
-        SEED = 50;
+        SEED = -1;
         MEMORY_SIZE = 10;
         NR_OF_ITERATIONS = 1000;
         MEMORY_PROBABILITY = 0.3;
@@ -143,7 +143,10 @@ public class HarmonySearch extends PathPlanner {
     private void initializeValues() {
         availablePoints = new ArrayList<>();
         memory = new Memory();
-        random = new Random(HarmonySearchParameters.SEED);
+        if (HarmonySearchParameters.SEED < 0)
+            random = new Random();
+        else
+            random = new Random(HarmonySearchParameters.SEED);
     }
 
     private void initializeAlgorithm() {
