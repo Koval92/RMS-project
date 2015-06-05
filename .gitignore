@@ -1,6 +1,6 @@
 .idea/workspace.xml
-report/rsm-raport.aux
-report/rsm-raport.log
-report/rsm-raport.synctex.gz
 *.class
 report/rsm-raport.toc
+report/rsm-report.synctex.gz
+report/rsm-report.aux
+report/rsm-report.log
