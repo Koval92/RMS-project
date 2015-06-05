@@ -1,4 +1,4 @@
-\documentclass[]{article}
+\documentclass[titlepage]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{amsthm}
 \usepackage{mathtools}
@@ -7,17 +7,6 @@
 %\usepackage[nottoc, notlof, numbib]{tocbibind} % wyswietlenie bibliografii w spisie tresci
 \usepackage{url}
 \usepackage[justification=centering]{caption}
-\usepackage{subfigure}
-
-\newcommand{\includelayer}[2][c]{
-\begin{figure}
-\begin{center}
-\fbox{\includegraphics[width = 0.8\textwidth, height = 0.4\textheight, keepaspectratio]{../img/#2}}
-\caption{#2}
-\label{img:#2}
-\end{center}
-\end{figure}
-}
 
 \title{Research Skills and Methodologies\\Path Optimization of 3D Printer}
 \author{Michał Kowalski, 195447\\Piotr Lechowicz, 195651}
@@ -25,7 +14,6 @@
 
 \begin{document}
 \maketitle
-\pagebreak
 
 \section{Introduction}
 Nowadays 3D printing is one of the fastest developing technologies. It allows us to convert digital 3D models into solid 3 dimensional objects. It is commonly used in prototyping because it allows to make 3D object without a need to use forms. The main advantages of 3D printing technology are: low cost of the printer, low cost of printing object, variety of materials and variety of technologies.
@@ -46,6 +34,7 @@ We are assuming that our printing tool is a point moving on two perpendicular ax
 Another task was to write an environment, which will deliver layers for algorithms, provide methods commonly used in finding path, and will save and show results in human-friendly way, including graphical representation of found path. It should also be open to addition of new algorithms.
 
 \pagebreak
+
 \section{Mathematic description of problem}
 Given:
 \begin{itemize}
@@ -59,17 +48,17 @@ X_{i,j}=\left\{ \begin{array}{rl}
 \end{equation}
 \item cost for move between two points calculated in one of three possible ways:
 \begin{itemize}
-\item for minimum distance
+\item minimum distance
 \begin{equation}
 \label{distance_cost}
 L_{P_{a,b}, P_{c,d}} = \sqrt{(a-c)^2+(b-d)^2}
 \end{equation}
-\item for minimum time (only axis which need to move more)
+\item minimum time (only axis which need to move more)
 \begin{equation}
 \label{time_cost}
 L_{P_{a,b}, P_{c,d}} = max(|a-c|, |b-d|)
 \end{equation}
-\item for minimum energy (both axes has separate engines)
+\item minimum energy (sum of movements, due to separate engines)
 \begin{equation}
 \label{energy_cost}
 L_{P_{a,b}, P_{c,d}} = |a-c|+|b-d|
@@ -125,19 +114,12 @@ This algorithm starts from edge of a shape on a layer, and tries to get to the m
 \section{Experiments}
 \subsection{Environment}
 \subsection{Test layers}
-Images shown on figures \ref{img:sp-1} - \ref{img:sp-9} were used as test layers.
-\includelayer{sp-1}
-\includelayer{sp-2}
-\includelayer{sp-3}
-\includelayer{sp-4}
-\includelayer{sp-5}
-\includelayer{sp-6}
-\includelayer{sp-7}
-\includelayer{sp-8}
-\includelayer{sp-9}
+Images used as test layers are in "img" directory added to this report.
 
 \section{Results}
-For very short calculations, measured time can have very big differences between one measurement and another one with the same algorithm/params.
+For very short calculations, measured time can has very big differences between one measurement and another one with the same algorithm/params.
+
+All result images and text files are added to this report in "results" directory.
 
 \section{Conclusion}
 \begin{figure}
