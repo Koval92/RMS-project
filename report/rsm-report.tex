@@ -7,6 +7,7 @@
 %\usepackage[nottoc, notlof, numbib]{tocbibind} % wyswietlenie bibliografii w spisie tresci
 \usepackage{url}
 \usepackage[justification=centering]{caption}
+\usepackage{float}
 
 \title{Research Skills and Methodologies\\Path Optimization of 3D Printer}
 \author{Michał Kowalski, 195447\\Piotr Lechowicz, 195651}
@@ -76,12 +77,19 @@ Find:
 such that length of path and time of calculations are minimized.
 
 \pagebreak
-\section{Algorithms}
+\section{Description of Algorithms}
 Following algorithm were implemented:
 \begin{itemize}
 \item Left-To-Right algorithm
 \item Snake algorithm
 \item Edge Following algorithm
+\item Greedy algorithm
+\item Two Opt algorithm
+\item Greedy Two Opt algorithm
+\item Harmony Search algorithm
+\item Greedy Harmony algorithm
+\item Simulated Annealing algorithm
+\item Greedy Annealing algorithm
 \end{itemize}
 
 All implementations of algorithms are based on superclass, which makes all necessary communication between environment and algorithm, like:
@@ -110,6 +118,54 @@ This algorithm is an improvement of Left-To-Right algorithm. Instead of going al
 
 \subsection{Edge Following algorithm}
 This algorithm starts from edge of a shape on a layer, and tries to get to the middle of it, and later choose next shape.
+
+%------------------------------------subsection greedy-------------------------
+
+\subsection{Greedy algorithm}
+
+A greedy algorithm is an algorithm which always makes the choice that looks best at the moment. It makes a locally optimal choice with the hope of finding a global optimum. Greedy algorithms do not always yield optimal solution nevertheless they may give solution that approximate a global optimal solution in a reasonable time. Commonly greedy strategy for the travelling salesman problem is as follows: at each stage visit an unvisited point nearest to the current city. In case of this particular problem of path finding in 3D printer, locally optimal solution was slightly modified.
+
+Lets consider an example where locally optimal solution is based only on distance between two points. In all examples distance between two adjacent points equals to one. Figure \ref{img:greedy/example-points-on-layer} shows example layer with few points. If optimal choice is made only by considering distance, the path would look as it is shown in the figure \ref{img:greedy/example-path-sol-1}.
+
+\begin{figure}[H]
+	\begin{center}
+		\begin{minipage}{.45\linewidth}
+			\includegraphics[width=\textwidth]{img/greedy/example-points-on-layer.png}
+			\caption{Example points on layer}
+			\label{img:greedy/example-points-on-layer}
+		\end{minipage}
+		\hspace{.05\linewidth}
+		\begin{minipage}{.45\linewidth}
+			\includegraphics[width=\textwidth]{img/greedy/example-path-sol-1}
+			\caption{Path number 1 for example layer}
+			\label{img:greedy/example-path-sol-1}
+		\end{minipage}
+	\end{center}
+\end{figure}
+
+\[ L = 5 \mbox{ ,where }L \mbox{ - length of the path}\]
+
+On the other hand if we begin to consider locally optimal solution not only based on distance between source and target points but also on number of adjacent points to target point, we can notice that in some cases it is better to choose point a little further but with lower number of adjacent points. It is illustrated in the figure \ref{img:greedy/example-path-sol-2}.
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=0.5\textwidth]{img/greedy/example-path-sol-2}
+		\caption{Path number 2 for example layer}
+		\label{img:greedy/example-path-sol-2}
+	\end{center}
+\end{figure}
+
+\subsection{Two Opt algorithm}
+
+\subsection{Greedy Two Opt algorithm}
+
+\subsection{Harmony Search algorithm}
+
+\subsection{Greedy Harmony algorithm}
+
+\subsection{Simulated Annealing algorithm}
+
+\subsection{Greedy Annealing algorithm}
 
 \section{Experiments}
 \subsection{Environment}
