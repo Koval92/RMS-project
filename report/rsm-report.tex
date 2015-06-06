@@ -83,6 +83,7 @@ Following algorithm were implemented:
 \item Left-To-Right algorithm
 \item Snake algorithm
 \item Edge Following algorithm
+<<<<<<< HEAD
 \item Greedy algorithm
 \item Two Opt algorithm
 \item Greedy Two Opt algorithm
@@ -90,15 +91,17 @@ Following algorithm were implemented:
 \item Greedy Harmony algorithm
 \item Simulated Annealing algorithm
 \item Greedy Annealing algorithm
+=======
+\item A tutaj kolega Piotr dopisze swoje algorytmy
+>>>>>>> d1622e5250558726d6a81ee33506d23189c0fc2a
 \end{itemize}
-
 All implementations of algorithms are based on superclass, which makes all necessary communication between environment and algorithm, like:
 \begin{itemize}
 \item setting up an algorithm, e.g. getting a layer to print,
 \item sending results of algorithm to rest of application,
 \item measuring time of calculations.
 \end{itemize}
-Therefore algorithms only have to do all calculations in method returning a path, and optionally set up all variables in separate method. It also simplifies adding new algorithms, because all they have to do is implement this method, and they have to be added to list of algorithms.
+Therefore, algorithms only have to do all calculations in method returning a path, and optionally set up all variables in separate method. It also simplifies adding new algorithms, because all they have to do is implement this method, and they have to be added to list of algorithms.
 
 \subsection{Left-To-Right algorithm}
 This algorithm was created mostly for testing purposes. It had to be as simple as possible, and still find correct route, so it allows to test how environment works with algorithms in general.
@@ -106,7 +109,7 @@ This algorithm was created mostly for testing purposes. It had to be as simple a
 Algorithm starts in top-left corner and goes line-by-line from left to right, adding to route all points on its way. And because only point to print are on found route, printer will go straight from last point in one line, to first in next one containing any points. Behaviour of this algorithm is similar to traditional paper printes.
 
 \subsection{Snake algorithm}
-This algorithm is an improvement of Left-To-Right algorithm. Instead of going always from left to right, it finds a closer end of next line containing points, and then goes to another end of it. Differences between them are show on figure \ref{img:ltr-vs-snake}
+This algorithm is an improvement of Left-To-Right algorithm. Instead of going always from left to right, it finds a closer end of next line containing points, and then goes to another end of it. Differences between them are show on figure \ref{img:ltr-vs-snake}.
 
 \begin{figure}
 \begin{center}
@@ -117,7 +120,22 @@ This algorithm is an improvement of Left-To-Right algorithm. Instead of going al
 \end{figure}
 
 \subsection{Edge Following algorithm}
-This algorithm starts from edge of a shape on a layer, and tries to get to the middle of it, and later choose next shape.
+This algorithm tries to start from edge of a shape on a layer, and tries to get to the middle of it, and later choose next shape.
+It's made in few steps:
+\begin{enumerate}
+\item Check, if there's any points left.
+\item Find all edges on layer.
+\item Go to closest point belonging to found edges.
+\item As long, as there is any neighbour of current point, go to it.
+\item Go back to 1.
+\end{enumerate}
+Finding edges and neighbours depend on chosen cost function. For example, diagonal neighbours exists only for time cost type.
+
+\subsection{Algorytm Piotrka nr 1}
+
+\subsection{Algorytm Piotrka nr 2}
+
+\subsection{Hmm... Algorytm nr 3?}
 
 %------------------------------------subsection greedy-------------------------
 
@@ -169,6 +187,15 @@ On the other hand if we begin to consider locally optimal solution not only base
 
 \section{Experiments}
 \subsection{Environment}
+Test environment was implemented, to provide:
+\begin{itemize}
+\item delivering chosen layers to algorithms,
+\item graphical representation of layer and path,
+\item displaying and showing to file results of algorithms,
+\item easy adding of new algorithms (by inheriting one class and adding it to algorithm's list),
+\item methods for reading algorithm's parameters from file.
+\end{itemize}
+
 \subsection{Test layers}
 Images used as test layers are in "img" directory added to this report.
 
@@ -189,7 +216,9 @@ As we can see on figure \ref{cost_function_representation}, when algorithm is se
 
 Snake algorithm usually provides almost 2 times better results than Left-to-Right, in similar time. For some layers it also provides optimal (or close to it) paths, whereas for other it can give results multiple times worse than optimal.
 
-Not only count of points, but also size of whole layer (even if points are only in the middle) can have influence on results or time of calculations, e.g. when algorithm is searching for closest point.
+At least for some algorithms, not only count of points, but also size of whole layer (even if points are only in the middle) can have influence on results or time of calculations, e.g. when algorithm is searching for closest point.
+
+Edge Following algorithm can provide very good results in very short time.
 
 \section{Own contribution}
 Michał's contribution:
