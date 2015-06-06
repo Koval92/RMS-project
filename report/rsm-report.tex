@@ -164,6 +164,31 @@ On the other hand if we begin to consider locally optimal solution not only base
 	\end{center}
 \end{figure}
 
+\[ L = 3 + \sqrt{2} \approx 4.41\]
+
+Comparing distances from figure \ref{img:greedy/example-path-sol-1} and \ref{img:greedy/example-path-sol-2}  we can notice that point which is further but has only one adjacent point is a better choice than point which is closer but has two adjacent points. That's why in algorithm was introduced parameters describing how much algorithm will prefer points which are further but has lower number of adjacent points. 
+
+ In all tests were used assumption that if distances are similar, it is each one of them isn't greater than the other one more than $0.42$ (it comes from distances of these two paths on figures \ref{img:greedy/example-path-sol-1} and \ref{img:greedy/example-path-sol-2}), the best choice is to visit point which has the lowest number of adjacent points. If there is a point which has no adjacent point, it is the optimal choice. This way of proceeding helps to eliminate isolated points, which may finally determine result to be unsatisfying. Explanation of this way of thinking is presented in figures \ref{img:greedy/example-path2-sol-1} and \ref{img:greedy/example-path2-sol-2}.
+ 
+ \begin{figure}[H]
+ 	\begin{center}
+ 		\begin{minipage}{.45\linewidth}
+ 			\includegraphics[width=\textwidth]{img/greedy/example-path2-sol-1.png}
+ 			\caption{Path computed without considering number of adjacent points (the red one is an inefficient part of path)}
+ 			\label{img:greedy/example-path2-sol-1}
+ 		\end{minipage}
+ 		\hspace{.05\linewidth}
+ 		\begin{minipage}{.45\linewidth}
+ 			\includegraphics[width=\textwidth]{img/greedy/example-path2-sol-2.png}
+ 			\caption{Path computed with considering number of adjacent points}
+ 			\label{img:greedy/example-path2-sol-2}
+
+ 		\end{minipage}
+ 	\end{center}
+ \end{figure}
+ 
+ 
+
 \subsection{Two Opt algorithm}
 
 \subsection{Greedy Two Opt algorithm}
