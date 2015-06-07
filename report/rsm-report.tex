@@ -6,11 +6,13 @@
 \usepackage{epstopdf} %obsluga eps
 %\usepackage[nottoc, notlof, numbib]{tocbibind} % wyswietlenie bibliografii w spisie tresci
 \usepackage{url}
+\usepackage{cite}
 \usepackage[justification=centering]{caption}
 \usepackage{float}
 \newcommand{\multifigcaption}{\captionsetup{justification=justified}}
 
 \usepackage{enumitem}
+\usepackage{url}
 
 
 \title{Research Skills and Methodologies\\Path Optimization of 3D Printer}
@@ -502,10 +504,25 @@ Michał's contribution:
 \end{itemize}
 Piotr's contribution:
 \begin{itemize}
+\item Greedy algorithm
+\item Two Opt algorithm
+\item Greedy Two Opt algorithm
+\item Harmony Search algorithm
+\item Greedy Harmony algorithm
+\item Simulated Annealing algorithm
+\item Greedy Annealing algorithm
 \item layers from sp-7 to sp-9,
 \item experiments and this report. 
 \end{itemize}
 
-\section{References}
+\nocite{*}
+
+
+\newpage
+\tableofcontents
+
+\newpage
+\bibliographystyle{abbrv}
+\bibliography{references}
 
 \end{document}
