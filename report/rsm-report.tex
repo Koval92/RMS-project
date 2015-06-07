@@ -136,7 +136,7 @@ Finding edges and neighbours depend on chosen cost function. For example, diagon
 
 \subsection{Greedy algorithm}
 
-A greedy algorithm is an algorithm which always makes the choice that looks best at the moment. It makes a locally optimal choice with the hope of finding a global optimum. Greedy algorithms do not always yield optimal solution nevertheless they may give solution that approximate a global optimal solution in a reasonable time. Commonly greedy strategy for the travelling salesman problem is as follows: at each stage visit an unvisited point nearest to the current city. In case of this particular problem of path finding in 3D printer, locally optimal solution was slightly modified. It has to be well described because of its good results it was used to construct further hybrid algorithms.
+A greedy algorithm is an algorithm which always makes the choice that looks best at the moment. It makes a locally optimal choice with the hope of finding a global optimum. Greedy algorithms do not always yield optimal solution nevertheless they may give solution that approximates a global optimal solution in a reasonable time. Commonly greedy strategy for the travelling salesman problem is as follows: at each stage visit an unvisited point nearest to the current city. In case of this particular problem of path finding in 3D printer, locally optimal solution was slightly modified. It has to be well described because of its good results it was used to construct further hybrid algorithms.
 
 \subsubsection{Greedy adjacent points modification}
 
@@ -270,7 +270,7 @@ Implemented greedy algorithm allows parametrization in order to adapt it to diff
 	
 \end{itemize}
 
-\subsubsection{Procedure of an algorithm}
+\subsubsection{Greedy procedure}
 
 The overall procedure of finding path realized by this algorithm:
 
@@ -312,7 +312,26 @@ Procedure of finding optimal point ($d[point]$ is the distance from current poin
 
 \subsection{Two Opt algorithm}
 
-This algorithm is based on the exchange or swap of a pair of edges. To swap two edges $(a, b)$ and $(c, d)$, the nodes of the pair of edges are rearranged as $(a, c)$ and $(b, d)$. The algorithm tries to untangle crossing edges. There were implemented two variety of this algorithm. In the first one it searches for first swap which will result in shortest total length of path and executes it. The procedure is repeated till no improvements are found. The difference between the second one and the first one is that it searches at each iteration for the best possible swap and then executes it.
+This algorithm is based on the exchange or swap of a pair of edges. To swap two edges $(a, b)$ and $(c, d)$, the nodes of the pair of edges are rearranged as $(a, c)$ and $(b, d)$. The algorithm tries to untangle crossing edges. There were implemented two variety of this algorithm. In the first one it searches for first swap which will result in shortest total length of path and executes it. The procedure is repeated till no improvements are found. The difference between the second one and the first one is that it searches at each iteration for the best possible swap and then executes it. The idea of the algorithm is presented in the figures \ref{img:twoopt/path1} and \ref{img:twoopt/path2}.
+
+\begin{figure}[H]
+	\begin{center}
+		\begin{minipage}{.45\linewidth}
+			\includegraphics[width=\textwidth]{img/twoopt/path1.png}
+			\multifigcaption
+			\caption{Path before swapping edges}
+			\label{img:twoopt/path1}
+		\end{minipage}
+		\hspace{.05\linewidth}
+		\begin{minipage}{.45\linewidth}
+			\includegraphics[width=\textwidth]{img/twoopt/path2.png}
+			\multifigcaption
+			\caption{Path after swapping edges}
+			\label{img:twoopt/path2}
+			
+		\end{minipage}
+	\end{center}
+\end{figure}
 
 \subsubsection{Two Opt parameters}
 
@@ -323,10 +342,55 @@ This algorithm is based on the exchange or swap of a pair of edges. To swap two 
 	
 \end{itemize}
 
+\subsubsection{Two Opt procedure}
+
+\begin{enumerate}
+	\item Find first random path
+	\item If \texttt{isGreedy} $==$ \texttt{true}: \\
+	\hspace*{5mm} find first beneficial pair of edges \\
+	else:\\
+	\hspace*{5mm} find the most profitable pair of edges
+	\item If wasn't find such a pair return from algorithm
+	\item Otherwise swap edges
+	\item If maximal number of iterations is not defined or is defined but $\mbox{\texttt{currentIteration}} < \mbox{\texttt{maxNrOfIterations}}$ jump to point 2
+	\item else return from algorithm
+\end{enumerate}
+
+%------------------------------------------------------subsection--------------------------------------------
 
 \subsection{Greedy Two Opt algorithm}
 
+Greedy Two Opt is composed of two algorithms. The first stage is to find path through Greedy algorithm. This path is passed as an initial path to Two Opt algorithm. The idea behind it is that it is much better to improve path close to the optimal solution than totally randomly selected. It takes much less iterations for Two Opt to finds path which it cannot improve any more. 
+
 \subsection{Harmony Search algorithm}
+
+The Harmony Search is an algorithm inspired by the improvisation process of Jazz musicians. If musician plays he can choose to select a sound from his memory or randomly select other note. If it 'sounded' good he can 'try' to remember it for future use. The memory is a list of travelling salesman problem solutions (they must start from the same point). Algorithm find new solution with the following way: it starts from the first point and with certain probability chooses next point from memory or chooses from rest of the available points. It is repeated till all points are used exactly once. If it is generated new solution it is compared to the solutions within the memory. If found solution is better than the worst from the memory, the one from the memory is removed, and this one is added. This steps are repeated for particular number of iterations (time of jazz improvisation).
+
+\subsubsection{Harmony Search parameters}
+
+\subsubsection{Harmony Search procedure}
+
+\begin{enumerate}
+	\item It chooses starting point
+	\item It fills memory with random paths, each starts from the starting point
+	\item Create a $new path$ containing only starting point
+	\item If next point is taken from memory:
+	\begin{enumerate}[label*=\arabic*.]
+		\item It randomly selects one of the paths within the memory
+		\item It takes point with the corresponding place, it is, if is searched $n-th$ point for the $new path$ it is taken $n-th$ point from path from memory
+		\item If that point is already in $new path$, the point is exchange with the one being chosen randomly from the rest of unvisited points in this iteration
+		\item point is added to the $new path$
+		\item if $new path$ is not containing all points algorithm jumps to point 4
+	\end{enumerate}
+	else
+	\begin{enumerate}[label*=\arabic*.]
+		\item it randomly selects point from the list of unvisited points in this iteration and adds it to $new path$
+		\item if $new path$ is not containing all points algorithm jumps to point 4
+	\end{enumerate}
+	\item If $new path$ is better than the worst one in the memory, they are swap, otherwise this new solution is rejected
+	\item Steps from the 3 to 5 are repeated \texttt{nrOfIterations} times
+	
+\end{enumerate}
 
 \subsection{Greedy Harmony algorithm}
 
