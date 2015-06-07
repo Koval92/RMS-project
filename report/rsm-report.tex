@@ -10,6 +10,9 @@
 \usepackage{float}
 \newcommand{\multifigcaption}{\captionsetup{justification=justified}}
 
+\usepackage{enumitem}
+
+
 \title{Research Skills and Methodologies\\Path Optimization of 3D Printer}
 \author{Michał Kowalski, 195447\\Piotr Lechowicz, 195651}
 \date{}
@@ -263,11 +266,53 @@ Implemented greedy algorithm allows parametrization in order to adapt it to diff
 	
 	\item \texttt{weightOfNeighbours} - weight of neighbours. It determines how much algorithm would prefer points which are further but have closer number of adjacent points to the parameter \texttt{bestNrOfNeighbours}. It is simply acceptable difference of distances between this point and the nearest one.
 	
-	\item \texttt{weightOfDistance} - weight of distances. It determines how much algorithm would prefer points which are nearer but their number of adjacent points is farer than defined in parameter \texttt{bestNrOfNeighbours}. It is simply acceptable difference of distances between the nearest point and the point with closer number of neighbours to the preferable one.
+	\item \texttt{weightOfDistance} - weight of distances. It determines how much algorithm would prefer points which are nearer but their number of adjacent points is greater than defined in parameter \texttt{bestNrOfNeighbours}. It is simply acceptable difference of distances between the nearest point and the point with closer number of neighbours to the preferable one.
 	
 \end{itemize}
 
+\subsubsection{Procedure of an algorithm}
+
+The overall procedure of finding path realized by this algorithm:
+
+\begin{enumerate}
+	\item Create and fill table of neighbours - the table which contains amount of adjacent points for each of them
+	\item Set starting point for each thread
+	\item Start threads:
+	\begin{enumerate}[label*=\arabic*.]
+		\item If there are more unvisited points than \texttt{nrOfPointsNeededToCheckArray}:
+		\begin{enumerate}[label*=\arabic*.]
+			\item Search for the nearest point in the neighbourhood
+			\item If point wasn't found search for optimal point in the list of all remaining points.
+		\end{enumerate}
+		\item Otherwise:
+		\begin{enumerate}[label*=\arabic*.]
+			\item Search for optimal point in the list of all remaining points
+		\end{enumerate}
+	\end{enumerate}
+	\item After joining threads get all result paths from them
+	\item Return path with lowest distance
+\end{enumerate}
+
+Procedure of finding optimal point ($d[point]$ is the distance from current point to that point, $n[point]$ is the number of adjacent points):
+
+\begin{enumerate}
+	\item Take distance and number of adjacent points from first point as a best ones ($best \leftarrow point$)
+	\item If $d[best] \leq 1 + \mbox{\texttt{weightOfNeighbours}}$ and $n[best] \leq \mbox{\texttt{bestNrOfNeighbours}}$, return this point as an optimal (\texttt{return} $best$)
+	\item While there are unchecked points:
+	
+	\begin{enumerate}[label*=\arabic*.]
+		\item If $d[next] < d[best] - \mbox{\texttt{weightOfDistance}}$ take this point as a best one ($best \leftarrow next$)
+		\item else if $d[next] < d[best] + \mbox{\texttt{weightOfNeighbours}}$ and $n[next] < n[best]$ take this point as a best one ($best \leftarrow next$)
+		\item if $d[best] \leq 1 + \mbox{\texttt{weightOfNeighbours}}$ and $n[best] \leq \mbox{\texttt{bestNrOfNeighbours}}$ return this point as an optimal one (\texttt{return} $best$)
+		\item else continue while loop
+	\end{enumerate}
+\end{enumerate}
+
+%--------------------------------------------------------subsection----------------------------------------------------------------
+
 \subsection{Two Opt algorithm}
+
+
 
 \subsection{Greedy Two Opt algorithm}
 
