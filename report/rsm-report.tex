@@ -8,6 +8,7 @@
 \usepackage{url}
 \usepackage[justification=centering]{caption}
 \usepackage{float}
+\newcommand{\multifigcaption}{\captionsetup{justification=justified}}
 
 \title{Research Skills and Methodologies\\Path Optimization of 3D Printer}
 \author{Michał Kowalski, 195447\\Piotr Lechowicz, 195651}
@@ -128,11 +129,13 @@ It's made in few steps:
 \end{enumerate}
 Finding edges and neighbours depend on chosen cost function. For example, diagonal neighbours exists only for time cost type.
 
-%------------------------------------subsection greedy-------------------------
+%------------------------------------subsection greedy----------------------------------------------------------------------------
 
 \subsection{Greedy algorithm}
 
 A greedy algorithm is an algorithm which always makes the choice that looks best at the moment. It makes a locally optimal choice with the hope of finding a global optimum. Greedy algorithms do not always yield optimal solution nevertheless they may give solution that approximate a global optimal solution in a reasonable time. Commonly greedy strategy for the travelling salesman problem is as follows: at each stage visit an unvisited point nearest to the current city. In case of this particular problem of path finding in 3D printer, locally optimal solution was slightly modified.
+
+\subsubsection{Greedy adjacent points modification}
 
 Lets consider an example where locally optimal solution is based only on distance between two points. In all examples distance between two adjacent points equals to one. Figure \ref{img:greedy/example-points-on-layer} shows example layer with few points. If optimal choice is made only by considering distance, the path would look as it is shown in the figure \ref{img:greedy/example-path-sol-1}.
 
@@ -140,19 +143,26 @@ Lets consider an example where locally optimal solution is based only on distanc
 	\begin{center}
 		\begin{minipage}{.45\linewidth}
 			\includegraphics[width=\textwidth]{img/greedy/example-points-on-layer.png}
-			\caption{Example points on layer}
+			\multifigcaption
+			\caption{Example points on layer \newline}
 			\label{img:greedy/example-points-on-layer}
 		\end{minipage}
 		\hspace{.05\linewidth}
 		\begin{minipage}{.45\linewidth}
 			\includegraphics[width=\textwidth]{img/greedy/example-path-sol-1}
+			\multifigcaption
 			\caption{Path number 1 for example layer}
 			\label{img:greedy/example-path-sol-1}
 		\end{minipage}
 	\end{center}
 \end{figure}
 
-\[ L = 5 \mbox{ ,where }L \mbox{ - length of the path}\]
+\begin{gather*}
+	L_1 = 5 \mbox{ ,} \\
+	\mbox{where }L_1 \mbox{ is length of the path in the figure \ref{img:greedy/example-path-sol-1}}
+\end{gather*}
+
+
 
 On the other hand if we begin to consider locally optimal solution not only based on distance between source and target points but also on number of adjacent points to target point, we can notice that in some cases it is better to choose point a little further but with lower number of adjacent points. It is illustrated in the figure \ref{img:greedy/example-path-sol-2}.
 
@@ -164,30 +174,79 @@ On the other hand if we begin to consider locally optimal solution not only base
 	\end{center}
 \end{figure}
 
-\[ L = 3 + \sqrt{2} \approx 4.41\]
+\begin{gather*}
+	L_2 = 3 + \sqrt{2} \approx 4.41 \mbox{ ,} \\
+	\mbox{where }L_2 \mbox{ is length of the path in the figure \ref{img:greedy/example-path-sol-2}}
+\end{gather*}
 
 Comparing distances from figure \ref{img:greedy/example-path-sol-1} and \ref{img:greedy/example-path-sol-2}  we can notice that point which is further but has only one adjacent point is a better choice than point which is closer but has two adjacent points. That's why in algorithm was introduced parameters describing how much algorithm will prefer points which are further but has lower number of adjacent points. 
 
- In all tests were used assumption that if distances are similar, it is each one of them isn't greater than the other one more than $0.42$ (it comes from distances of these two paths on figures \ref{img:greedy/example-path-sol-1} and \ref{img:greedy/example-path-sol-2}), the best choice is to visit point which has the lowest number of adjacent points. If there is a point which has no adjacent point, it is the optimal choice. This way of proceeding helps to eliminate isolated points, which may finally determine result to be unsatisfying. Explanation of this way of thinking is presented in figures \ref{img:greedy/example-path2-sol-1} and \ref{img:greedy/example-path2-sol-2}.
+ In all tests were used assumption that if distances are similar, it is each one of them isn't greater than the other one more than $0.42$ (it comes from subtraction of distances of these two paths on figures \ref{img:greedy/example-path-sol-1} and \ref{img:greedy/example-path-sol-2}), the best choice is to visit point which has the lowest number of adjacent points. If there is a point which has no adjacent point, it is the optimal choice. This way of proceeding helps to eliminate isolated points, which may finally determine result to be unsatisfying. Justification of this way of thinking is presented in figures \ref{img:greedy/example-path2-sol-1} and \ref{img:greedy/example-path2-sol-2}.
  
  \begin{figure}[H]
  	\begin{center}
  		\begin{minipage}{.45\linewidth}
  			\includegraphics[width=\textwidth]{img/greedy/example-path2-sol-1.png}
+			\multifigcaption
  			\caption{Path computed without considering number of adjacent points (the red one is an inefficient part of path)}
  			\label{img:greedy/example-path2-sol-1}
  		\end{minipage}
  		\hspace{.05\linewidth}
  		\begin{minipage}{.45\linewidth}
  			\includegraphics[width=\textwidth]{img/greedy/example-path2-sol-2.png}
- 			\caption{Path computed with considering number of adjacent points}
+			\multifigcaption
+ 			\caption{Path computed with considering number of adjacent points \newline \vspace{4mm}}
  			\label{img:greedy/example-path2-sol-2}
 
  		\end{minipage}
  	\end{center}
  \end{figure}
  
+ In the figure \ref{img:greedy/example-path2-sol-1} total length of path is $L \approx 47.87$ and in the figure \ref{img:greedy/example-path2-sol-2} is $L \approx 35.96$. As we can see with the greater number of points to print the importance of not leaving isolated ones increases.
  
+\subsubsection{Greedy neighbour searching modification}
+ 
+ Another introduced improvement in the algorithm is the modification of process of searching the nearest unvisited point from the currently visited one. Most of the printing layers have rather densely distributed points, e. g. most of them are located in the centre of the layer. In order to reduce time needed for checking distances to all possible point to find the nearest one, algorithm firstly search the neighbourhood of currently visited point, it is places for possible points, which are not further than one unit in each side. In case of negative result algorithm extends searches to two units in each side. If in that process any point was obtained, algorithm starts looking for next move by searching a list of all possible points. Figures from \ref{img:greedy/example-neighbours-stating} to \ref{img:greedy/example-neighbours-neigh-solv} illustrate this part of algorithm.
+ 
+\begin{figure}[H]
+ 	\begin{center}
+ 		\begin{minipage}{0.45\linewidth}
+ 			\includegraphics[width=\textwidth]{img/greedy/example-neighbours-starting.png}
+ 			\multifigcaption
+ 			\caption{Starting position for searching neighbourhood (green cross represent currently printed point)}
+ 			\label{img:greedy/example-neighbours-stating}
+ 		\end{minipage}
+ 		\hspace{.05\linewidth}
+ 		\begin{minipage}{.45\linewidth}
+ 			\includegraphics[width=\textwidth]{img/greedy/example-neighbours-neigh-1.png}
+ 			\multifigcaption
+ 			\caption{First iteration of searching \newline \vspace{4mm}}
+ 			\label{img:greedy/example-neighbours-neigh-1} 
+ 		\end{minipage}
+	\end{center}
+\end{figure}
+
+In the figure \ref{img:greedy/example-neighbours-stating} we have starting point which was the latest one visited. Algorithm starts to search neighbourhood of the point. In the figure \ref{img:greedy/example-neighbours-neigh-1} is shown first iteration. Because algorithm didn't find any point it extends searches which is presented in the figure \ref{img:greedy/example-neighbours-neigh-2}. Because there are three possible solutions for the next move, algorithm has to chose the most optimal one. It considers both criteria - distance and number of adjacent points. The result is the upper one (figure \ref{img:greedy/example-neighbours-neigh-solv}).
+
+\begin{figure}[H]
+ 	\begin{center}
+ 		\begin{minipage}{0.45\linewidth}
+ 			\includegraphics[width=\textwidth]{img/greedy/example-neighbours-neigh-2.png}
+ 			\multifigcaption
+ 			\caption{Second iteration of searching}
+ 			\label{img:greedy/example-neighbours-neigh-2}
+ 		\end{minipage}
+ 		\hspace{.05\linewidth}
+ 		\begin{minipage}{.45\linewidth}
+ 			\includegraphics[width=\textwidth]{img/greedy/example-neighbours-neigh-solv.png}
+ 			\multifigcaption
+ 			\caption{Move of the printing tool \newline}
+			\label{img:greedy/example-neighbours-neigh-solv} 
+		\end{minipage}
+	\end{center}
+\end{figure}
+
+\subsubsection{Greedy parameters}
 
 \subsection{Two Opt algorithm}
 
