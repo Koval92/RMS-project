@@ -133,7 +133,7 @@ Finding edges and neighbours depend on chosen cost function. For example, diagon
 
 \subsection{Greedy algorithm}
 
-A greedy algorithm is an algorithm which always makes the choice that looks best at the moment. It makes a locally optimal choice with the hope of finding a global optimum. Greedy algorithms do not always yield optimal solution nevertheless they may give solution that approximate a global optimal solution in a reasonable time. Commonly greedy strategy for the travelling salesman problem is as follows: at each stage visit an unvisited point nearest to the current city. In case of this particular problem of path finding in 3D printer, locally optimal solution was slightly modified.
+A greedy algorithm is an algorithm which always makes the choice that looks best at the moment. It makes a locally optimal choice with the hope of finding a global optimum. Greedy algorithms do not always yield optimal solution nevertheless they may give solution that approximate a global optimal solution in a reasonable time. Commonly greedy strategy for the travelling salesman problem is as follows: at each stage visit an unvisited point nearest to the current city. In case of this particular problem of path finding in 3D printer, locally optimal solution was slightly modified. It has to be well described because of its good results it was used to construct further hybrid algorithms.
 
 \subsubsection{Greedy adjacent points modification}
 
@@ -247,6 +247,25 @@ In the figure \ref{img:greedy/example-neighbours-stating} we have starting point
 \end{figure}
 
 \subsubsection{Greedy parameters}
+
+Implemented greedy algorithm allows parametrization in order to adapt it to different kinds of layers. The list of parameters with its description:
+
+\begin{itemize}
+	\item \texttt{seed} - seed of the random. Some parts of algorithm are randomized. Instance of Java class \texttt{Random} is used to generate a stream of pseudorandom numbers. It uses a 48-bit seed as the initial value of the internal state of pseudorandom number generator. If parameter is set to $-1$ the seed is the current time in miliseconds since January 1, 1970.
+	
+	\item \texttt{nrOfThreads} - number of threads. Algorithm can consider different points as a starting point. Number of threads determine the amount of concurrently finding solutions.
+	
+	\item \texttt{nrOfNeighboursForStartingPoint} - number of neighbours for starting point. Preferable amount of adjacent points for the starting one. If there are no more such points, remaining starting points are generated randomly.
+	
+	\item \texttt{nrOfPointsNeededToCheckArray} - number of points needed to check array. Normally algorithm searches neighbourhood for finding nearest point. When number of remaining points to print is lower than this parameter algorithm straight away starts checking all possible points for finding the nearest one, without considering neighbourhood of the point.
+	
+	\item \texttt{bestNrOfNeighours} - best number of neighbours. Sets preferable number of adjacent points for the next moves of printing tool.
+	
+	\item \texttt{weightOfNeighbours} - weight of neighbours. It determines how much algorithm would prefer points which are further but have closer number of adjacent points to the parameter \texttt{bestNrOfNeighbours}. It is simply acceptable difference of distances between this point and the nearest one.
+	
+	\item \texttt{weightOfDistance} - weight of distances. It determines how much algorithm would prefer points which are nearer but their number of adjacent points is farer than defined in parameter \texttt{bestNrOfNeighbours}. It is simply acceptable difference of distances between the nearest point and the point with closer number of neighbours to the preferable one.
+	
+\end{itemize}
 
 \subsection{Two Opt algorithm}
 
