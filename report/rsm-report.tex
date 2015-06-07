@@ -275,33 +275,33 @@ Implemented greedy algorithm allows parametrization in order to adapt it to diff
 The overall procedure of finding path realized by this algorithm:
 
 \begin{enumerate}
-	\item Create and fill table of neighbours - the table which contains amount of adjacent points for each of them
-	\item Set starting point for each thread
-	\item Start threads:
+	\item create and fill table of neighbours - the table which contains amount of adjacent points for each of them
+	\item set starting point for each thread
+	\item start threads:
 	\begin{enumerate}[label*=\arabic*.]
-		\item If there are more unvisited points than \texttt{nrOfPointsNeededToCheckArray}:
+		\item if there are more unvisited points than \texttt{nrOfPointsNeededToCheckArray}:
 		\begin{enumerate}[label*=\arabic*.]
-			\item Search for the nearest point in the neighbourhood
-			\item If point wasn't found search for optimal point in the list of all remaining points.
+			\item search for the nearest point in the neighbourhood
+			\item if point wasn't found search for optimal point in the list of all remaining points.
 		\end{enumerate}
-		\item Otherwise:
+		\item otherwise:
 		\begin{enumerate}[label*=\arabic*.]
-			\item Search for optimal point in the list of all remaining points
+			\item search for optimal point in the list of all remaining points
 		\end{enumerate}
 	\end{enumerate}
-	\item After joining threads get all result paths from them
-	\item Return path with lowest distance
+	\item after joining threads get all result paths from them
+	\item return path with lowest distance
 \end{enumerate}
 
 Procedure of finding optimal point ($d[point]$ is the distance from current point to that point, $n[point]$ is the number of adjacent points):
 
 \begin{enumerate}
-	\item Take distance and number of adjacent points from first point as a best ones ($best \leftarrow point$)
-	\item If $d[best] \leq 1 + \mbox{\texttt{weightOfNeighbours}}$ and $n[best] \leq \mbox{\texttt{bestNrOfNeighbours}}$, return this point as an optimal (\texttt{return} $best$)
-	\item While there are unchecked points:
+	\item take distance and number of adjacent points from first point as a best ones ($best \leftarrow point$)
+	\item if $d[best] \leq 1 + \mbox{\texttt{weightOfNeighbours}}$ and $n[best] \leq \mbox{\texttt{bestNrOfNeighbours}}$, return this point as an optimal (\texttt{return} $best$)
+	\item while there are unchecked points:
 	
 	\begin{enumerate}[label*=\arabic*.]
-		\item If $d[next] < d[best] - \mbox{\texttt{weightOfDistance}}$ take this point as a best one ($best \leftarrow next$)
+		\item if $d[next] < d[best] - \mbox{\texttt{weightOfDistance}}$ take this point as a best one ($best \leftarrow next$)
 		\item else if $d[next] < d[best] + \mbox{\texttt{weightOfNeighbours}}$ and $n[next] < n[best]$ take this point as a best one ($best \leftarrow next$)
 		\item if $d[best] \leq 1 + \mbox{\texttt{weightOfNeighbours}}$ and $n[best] \leq \mbox{\texttt{bestNrOfNeighbours}}$ return this point as an optimal one (\texttt{return} $best$)
 		\item else continue while loop
@@ -338,21 +338,20 @@ This algorithm is based on the exchange or swap of a pair of edges. To swap two 
 \begin{itemize}
 	\item \texttt{isGreedy} - is greedy flag. When \texttt{isGreedy} is \texttt{false} algorithm searches for the best possible swap, it is it checks all possible pairs of edges and chooses the most profitable. If flag is \texttt{true} it executes swap with first found pair of edges which will shorten the total length of path.
 	
-	\item \texttt{maxNrOfIterations} - maximal number of iterations. If it is set to $-1$ algorithm improves path till it cannot find any more beneficial swaps. If it is greater than $0$, algorithm makes exact number of swaps.
-	
+	\item \texttt{maxNrOfIterations} - maximal number of iterations. If it is set to $-1$ algorithm improves path till it cannot find any more beneficial swaps. If it is greater than $0$, algorithm makes exact number of swaps.	
 \end{itemize}
 
 \subsubsection{Two Opt procedure}
 
 \begin{enumerate}
-	\item Find first random path
-	\item If \texttt{isGreedy} $==$ \texttt{true}: \\
+	\item find first random path
+	\item if \texttt{isGreedy} $==$ \texttt{true}: \\
 	\hspace*{5mm} find first beneficial pair of edges \\
 	else:\\
 	\hspace*{5mm} find the most profitable pair of edges
-	\item If wasn't find such a pair return from algorithm
-	\item Otherwise swap edges
-	\item If maximal number of iterations is not defined or is defined but $\mbox{\texttt{currentIteration}} < \mbox{\texttt{maxNrOfIterations}}$ jump to point 2
+	\item if wasn't find such a pair return from algorithm
+	\item otherwise swap edges
+	\item if maximal number of iterations is not defined or is defined but $\mbox{\texttt{currentIteration}} < \mbox{\texttt{maxNrOfIterations}}$ jump to 2nd step
 	\item else return from algorithm
 \end{enumerate}
 
@@ -368,33 +367,48 @@ The Harmony Search is an algorithm inspired by the improvisation process of Jazz
 
 \subsubsection{Harmony Search parameters}
 
+\begin{itemize}
+	\item \texttt{seed} - seed of the random. Similarly to the Greedy algorithm's seed.
+	
+	\item \texttt{memorySize} - size of the memory. Amount of best paths being stored in the memory.
+	
+	\item \texttt{nrOfIterations} - number of iterations. How many times algorithm repeats finding path and comparing if it is better than paths in the memory.
+	
+	\item \texttt{memoryProbability} - probability that algorithm chooses point from the memory rather than randomly from the rest of unvisited points.
+\end{itemize}
+
 \subsubsection{Harmony Search procedure}
 
 \begin{enumerate}
-	\item It chooses starting point
-	\item It fills memory with random paths, each starts from the starting point
-	\item Create a $new path$ containing only starting point
-	\item If next point is taken from memory:
+	\item choose starting point
+	\item fill memory with random paths, each starts from the starting point
+	\item create a $new path$ containing only starting point
+	\item if next point is taken from memory:
 	\begin{enumerate}[label*=\arabic*.]
-		\item It randomly selects one of the paths within the memory
-		\item It takes point with the corresponding place, it is, if is searched $n-th$ point for the $new path$ it is taken $n-th$ point from path from memory
-		\item If that point is already in $new path$, the point is exchange with the one being chosen randomly from the rest of unvisited points in this iteration
-		\item point is added to the $new path$
-		\item if $new path$ is not containing all points algorithm jumps to point 4
+		\item randomly select one of the paths within the memory
+		\item take point with the corresponding place, it is, if is searched $n-th$ point for the $new path$ it is taken $n-th$ point from path from the memory
+		\item if that point is already in $new path$, the point is exchange with the one being chosen randomly from the rest of unvisited points in this iteration
+		\item add point to the $new path$
+		\item if $new path$ is not containing all points from the layer, algorithm jumps to 4th step
 	\end{enumerate}
 	else
 	\begin{enumerate}[label*=\arabic*.]
-		\item it randomly selects point from the list of unvisited points in this iteration and adds it to $new path$
-		\item if $new path$ is not containing all points algorithm jumps to point 4
+		\item randomly select point from the list of unvisited points in this iteration and add it to $new path$
+		\item if $new path$ is not containing all points from the layer, algorithm jumps to 4th step
 	\end{enumerate}
-	\item If $new path$ is better than the worst one in the memory, they are swap, otherwise this new solution is rejected
-	\item Steps from the 3 to 5 are repeated \texttt{nrOfIterations} times
+	\item if $new path$ is better than the worst one in the memory, they are swap, otherwise this new solution is rejected
+	\item steps from 3 to 5 are repeated \texttt{nrOfIterations} times
+	\item return best path from the memory
 	
 \end{enumerate}
 
 \subsection{Greedy Harmony algorithm}
 
+The first stage of this algorithm is to find solution with Greedy algorithm and then it is passed as an initial solution to Harmony Search. The same solution is added to the harmony's memory as many times as it is necessary. Then Harmony Search algorithm tries to find solution closer to optimal. Because of the highly randomness of Harmony Search, setting starting path as already close to optimal solution may highly improves results of an algorithm.
+
 \subsection{Simulated Annealing algorithm}
+
+Simulated Annealing algorithm is inspired by
 
 \subsection{Greedy Annealing algorithm}
 
