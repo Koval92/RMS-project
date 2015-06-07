@@ -408,9 +408,51 @@ The first stage of this algorithm is to find solution with Greedy algorithm and 
 
 \subsection{Simulated Annealing algorithm}
 
-Simulated Annealing algorithm is inspired by
+Simulated Annealing algorithm is inspired by annealing process in metallurgy. It emulates the physical process in which solid is firstly heated and then slowly cooled. With higher temperature metal is more vulnerable to deformation because of providing energy needed to break bonds. While the temperature becomes lower and lower it is harder to deform metal. In case of Simulated Annealing algorithm the temperature determines the probability of taken worse solution than currently obtained one in the future consideration. With lower temperature algorithm less likely takes worse solution. During whole process the best found solution is kept in memory, and replaced if better one is obtained. New solutions are found by swapping two randomly chosen edges. When temperature reaches earlier define minimum, algorithm stops. The probability of acceptance worse solution is calculated as follows:
+
+\[e^{-\frac{J(j)-J(i)}{T(t)}}\mbox{,}\]
+	where $J(i)$ is total distance of currently found solution, $J(i)$ is total distance of the best found solution and $T(t)$ is the temperature of time where the new solution was obtained.
+
+
+\subsubsection{Simulated Annealing parameters}
+
+\begin{itemize}
+	\item \texttt{seed} - seed of the random. Similarly to the Greedy algorithm's seed.
+	
+	\item \texttt{temperatureMin} - minimal temperature. Temperature at which algorithm stops.
+	
+	\item \texttt{coolingRate} - cooling rate. It determines how fast temperature is decreasing. New temperature is get by multiplying currently one by this factor.
+	
+	\item \texttt{iterationsOnTemperature} - how many iterations algorithm does on each temperature state, it is, how many times it tries to find better solution with the same probability of acceptance worse solution.
+\end{itemize}
+
+\subsubsection{Simulated Annealing procedure}
+
+\begin{enumerate}
+	\item obtain randomly first solution
+	\item set this solution as the $best$ one and as a $currentpath$
+	\item select randomly two edges and swap them ($newpath \leftarrow swap(currentpath)$)
+	\item if $distance[newpath] < distance[currentpath]$:
+	\begin{enumerate}[label*=\arabic*.]
+		\item $currentpath \leftarrow newpath$
+		\item if $distance[currentpath] < distance[best]$: \\
+		\hspace*{5mm} $best \leftarrow currentpath$
+	\end{enumerate}
+	else:
+	\begin{enumerate}[label*=\arabic*.]
+		\item take $newpath$ as a $currentpath$ with calculated probability for this temperature
+	\end{enumerate}
+	\item repeat steps 3 to 4 \texttt{iterationsOnTemperature} times
+	\item calculate new temperature ($temperature \leftarrow \mbox{\texttt{coolingRate}}*temperature)$)
+	\item assign best path to current path ($currentpath \leftarrow best$)
+	\item repeat steps 2 to 7 while $temperature > minimal\_temperature$
+	\item return $best$ path
+	
+\end{enumerate}
 
 \subsection{Greedy Annealing algorithm}
+
+In this algorithm initial path for Simulated Annealing is obtained by executing Greedy algorithm. All procedure steps and parameters are the same as in both of these algorithms. Simulated Annealing may be much more efficient if it starts with solution not o far from the optimal one. 
 
 \section{Experiments}
 \subsection{Environment}
