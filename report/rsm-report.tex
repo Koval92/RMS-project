@@ -312,6 +312,16 @@ Procedure of finding optimal point ($d[point]$ is the distance from current poin
 
 \subsection{Two Opt algorithm}
 
+This algorithm is based on the exchange or swap of a pair of edges. To swap two edges $(a, b)$ and $(c, d)$, the nodes of the pair of edges are rearranged as $(a, c)$ and $(b, d)$. The algorithm tries to untangle crossing edges. There were implemented two variety of this algorithm. In the first one it searches for first swap which will result in shortest total length of path and executes it. The procedure is repeated till no improvements are found. The difference between the second one and the first one is that it searches at each iteration for the best possible swap and then executes it.
+
+\subsubsection{Two Opt parameters}
+
+\begin{itemize}
+	\item \texttt{isGreedy} - is greedy flag. When \texttt{isGreedy} is \texttt{false} algorithm searches for the best possible swap, it is it checks all possible pairs of edges and chooses the most profitable. If flag is \texttt{true} it executes swap with first found pair of edges which will shorten the total length of path.
+	
+	\item \texttt{maxNrOfIterations} - maximal number of iterations. If it is set to $-1$ algorithm improves path till it cannot find any more beneficial swaps. If it is greater than $0$, algorithm makes exact number of swaps.
+	
+\end{itemize}
 
 
 \subsection{Greedy Two Opt algorithm}
