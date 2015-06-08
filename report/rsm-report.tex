@@ -22,6 +22,9 @@
 \begin{document}
 \maketitle
 
+\tableofcontents
+\newpage
+
 \section{Introduction}
 Nowadays 3D printing is one of the fastest developing technologies. It allows us to convert digital 3D models into solid 3 dimensional objects. It is commonly used in prototyping because it allows to make 3D object without a need to use forms. The main advantages of 3D printing technology are: low cost of the printer, low cost of printing object, variety of materials and variety of technologies.
 To use this technology, we need to:
@@ -426,6 +429,8 @@ Simulated Annealing algorithm is inspired by annealing process in metallurgy. It
 	\item \texttt{coolingRate} - cooling rate. It determines how fast temperature is decreasing. New temperature is get by multiplying currently one by this factor.
 	
 	\item \texttt{iterationsOnTemperature} - how many iterations algorithm does on each temperature state, it is, how many times it tries to find better solution with the same probability of acceptance worse solution.
+	
+	\item \texttt{maxNrOfIterationsWithNoImprovement} - maximal number of algorithm's iterations without finding better path. It prevents from pointless execution of algorithm when it cant find better solution.
 \end{itemize}
 
 \subsubsection{Simulated Annealing procedure}
@@ -447,7 +452,7 @@ Simulated Annealing algorithm is inspired by annealing process in metallurgy. It
 	\item repeat steps 3 to 4 \texttt{iterationsOnTemperature} times
 	\item calculate new temperature ($temperature \leftarrow \mbox{\texttt{coolingRate}}*temperature)$)
 	\item assign best path to current path ($currentpath \leftarrow best$)
-	\item repeat steps 2 to 7 while $temperature > minimal\_temperature$
+	\item repeat steps 2 to 7 while $temperature > minimal\_temperature$ or algorithm doesn't find better solution for \texttt{maxNrOfIterationsWithNoImprovement} iterations
 	\item return $best$ path
 	
 \end{enumerate}
@@ -518,8 +523,6 @@ Piotr's contribution:
 \nocite{*}
 
 
-\newpage
-\tableofcontents
 
 \newpage
 \bibliographystyle{abbrv}
