@@ -30,26 +30,26 @@
 \newpage
 
 \section{Introduction}
-Nowadays 3D printing is one of the fastest developing technologies. It allows us to convert digital 3D models into solid 3 dimensional objects. It is commonly used in prototyping because it allows to make 3D object without a need to use forms. The main advantages of 3D printing technology are: low cost of the printer, low cost of printing object, variety of materials and variety of technologies.
+Nowadays 3D printing is one of the fastest developing technologies. It allows us to convert digital 3D models into solid 3 dimensional objects. It is commonly used in prototyping because it allows to make 3D object without the need to use forms. The main advantages of 3D printing technology are: low cost of the printer, low cost of printing object, variety of materials and variety of technologies.
 To use this technology, we need to:
 \begin{enumerate}
 \item create a 3D model of our object,
-\item "cut" (convert) it into set of very thin layers,
-\item choose path for printing tool.
+\item "cut" (convert) it into a set of very thin layers,
+\item choose a path for printing tool.
 \end{enumerate}
-Our path should consist of points from layer currently being printed. Tool have to visit each point exactly once and can move without printing. Task is to minimize "cost" of moving between all succeding points in our path. We can calculate it for each pair in (at least) three ways:
+Our path should consist of points from layer currently being printed. Tool has to visit each point exactly once and can move without printing. The task is to minimize "cost" of moving between all succeeding points in our path. We can calculate it for each pair in (at least) three ways:
 \begin{enumerate}
 \item distance between points,
-\item time needed for move from one to next,
+\item time needed to move from one to the next,
 \item energy needed for that move.
 \end{enumerate}
 We are assuming that our printing tool is a point moving on two perpendicular axes.
 
-Another task was to write an environment, which will deliver layers for algorithms, provide methods commonly used in finding path, and will save and show results in human-friendly way, including graphical representation of found path. It should also be open to addition of new algorithms.
+Another task was to write an environment, which will deliver layers for algorithms, provide methods commonly used in finding path, and will save and show results in human-friendly way, including graphical representation of found path. It should also be open to the addition of new algorithms.
 
 \pagebreak
 
-\section{Mathematic description of problem}
+\section{Mathematical description of problem}
 Given:
 \begin{itemize}
 \item printing layer as an array (size n x m) of binary points, where
@@ -67,7 +67,7 @@ X_{i,j}=\left\{ \begin{array}{rl}
 \label{distance_cost}
 L_{P_{a,b}, P_{c,d}} = \sqrt{(a-c)^2+(b-d)^2}
 \end{equation}
-\item minimum time (only axis which need to move more)
+\item minimum time (only axis which needs to move more)
 \begin{equation}
 \label{time_cost}
 L_{P_{a,b}, P_{c,d}} = max(|a-c|, |b-d|)
@@ -91,7 +91,7 @@ such that length of path and time of calculations are minimized.
 
 \pagebreak
 \section{Description of Algorithms}
-Following algorithm were implemented:
+Following algorithms were implemented:
 \begin{itemize}
 \item Left-To-Right algorithm
 \item Snake algorithm
@@ -108,18 +108,18 @@ Following algorithm were implemented:
 All implementations of algorithms are based on superclass, which makes all necessary communication between environment and algorithm, like:
 \begin{itemize}
 \item setting up an algorithm, e.g. getting a layer to print,
-\item sending results of algorithm to rest of application,
+\item sending results of algorithm to the rest of the application,
 \item measuring time of calculations.
 \end{itemize}
-Therefore, algorithms only have to do all calculations in method returning a path, and optionally set up all variables in separate method. It also simplifies adding new algorithms, because all they have to do is implement this method, and they have to be added to list of algorithms.
+Therefore, algorithms only have to do all calculations in method returning a path, and optionally set up all variables in separate method. It also simplifies adding new algorithms, because all they have to do is implement this method, and they have to be added to the list of algorithms.
 
 \subsection{Left-To-Right algorithm}
 This algorithm was created mostly for testing purposes. It had to be as simple as possible, and still find correct route, so it allows to test how environment works with algorithms in general.
 
-Algorithm starts in top-left corner and goes line-by-line from left to right, adding to route all points on its way. And because only point to print are on found route, printer will go straight from last point in one line, to first in next one containing any points. Behaviour of this algorithm is similar to traditional paper printes.
+Algorithm starts in top-left corner and goes line-by-line from left to right, adding to route all points on its way. And because only point to print are on the found route, printer will go straight from last point in one line, to the first in next one containing any points. Behaviour of this algorithm is similar to traditional paper printers.
 
 \subsection{Snake algorithm}
-This algorithm is an improvement of Left-To-Right algorithm. Instead of going always from left to right, it finds a closer end of next line containing points, and then goes to another end of it. Differences between them are show on figure \ref{img:ltr-vs-snake}.
+This algorithm is an improvement of Left-To-Right algorithm. Instead of going always from left to right, it finds a closer end of next line containing points, and then goes to another end of it. Differences between them are shown on figure \ref{img:ltr-vs-snake}.
 
 \begin{figure}
 \begin{center}
@@ -130,7 +130,7 @@ This algorithm is an improvement of Left-To-Right algorithm. Instead of going al
 \end{figure}
 
 \subsection{Edge Following algorithm}
-This algorithm tries to start from edge of a shape on a layer, and tries to get to the middle of it, and later choose next shape.
+This algorithm tries to start from the edge of a shape on a layer, and tries to get to the middle of it, and later chooses next shape.
 It's made in few steps:
 \begin{enumerate}
 \item Check, if there's any points left.
@@ -139,17 +139,17 @@ It's made in few steps:
 \item As long, as there is any neighbour of current point, go to it.
 \item Go back to 1.
 \end{enumerate}
-Finding edges and neighbours depend on chosen cost function. For example, diagonal neighbours exists only for time cost type.
+Finding edges and neighbours depends on chosen cost function. For example, diagonal neighbours exist only for time cost type.
 
 %------------------------------------subsection greedy----------------------------------------------------------------------------
 
 \subsection{Greedy algorithm}
 
-A greedy algorithm is an algorithm which always makes the choice that looks best at the moment. It makes a locally optimal choice with the hope of finding a global optimum. Greedy algorithms do not always yield optimal solution nevertheless they may give solution that approximates a global optimal solution in a reasonable time. Commonly greedy strategy for the travelling salesman problem is as follows: at each stage visit an unvisited point nearest to the current city. In case of this particular problem of path finding in 3D printer, locally optimal solution was slightly modified. It has to be well described because of its good results it was used to construct further hybrid algorithms.
+A greedy algorithm is an algorithm which always makes the choice that looks best at the moment. It makes a locally optimal choice with the hope of finding a global optimum. Greedy algorithms do not always yield optimal solution nevertheless they may give solution that approximates a global optimal solution in a reasonable time. Commonly greedy strategy for the travelling salesman problem is as follows: at each stage visit an unvisited point nearest to the current city. In case of this particular problem of path finding in 3D printer, locally optimal solution was slightly modified. It has to be well described, because its results were so good, that it was used to construct further hybrid algorithms.
 
 \subsubsection{Greedy adjacent points modification}
 
-Lets consider an example where locally optimal solution is based only on distance between two points. In all examples distance between two adjacent points equals to one. Figure \ref{img:greedy/example-points-on-layer} shows example layer with few points. If optimal choice is made only by considering distance, the path would look as it is shown in the figure \ref{img:greedy/example-path-sol-1}.
+Let's consider an example where locally optimal solution is based only on distance between two points. In all examples distance between two adjacent points equals to one. Figure \ref{img:greedy/example-points-on-layer} shows example layer with few points. If optimal choice would be made only by considering distance, the path would look as it is shown in the figure \ref{img:greedy/example-path-sol-1}.
 
 \begin{figure}[H]
 	\begin{center}
@@ -176,7 +176,7 @@ Lets consider an example where locally optimal solution is based only on distanc
 
 
 
-On the other hand if we begin to consider locally optimal solution not only based on distance between source and target points but also on number of adjacent points to target point, we can notice that in some cases it is better to choose point a little further but with lower number of adjacent points. It is illustrated in the figure \ref{img:greedy/example-path-sol-2}.
+On the other hand, if we begin to consider locally optimal solution not only based on a distance between source and target points, but also on the number of adjacent points to the target point, we can notice that in some cases it is better to choose point a little further, but with lower number of adjacent points. It is illustrated in the figure \ref{img:greedy/example-path-sol-2}.
 
 \begin{figure}[H]
 	\begin{center}
@@ -191,9 +191,9 @@ On the other hand if we begin to consider locally optimal solution not only base
 	\mbox{where }L_2 \mbox{ is length of the path in the figure \ref{img:greedy/example-path-sol-2}}
 \end{gather*}
 
-Comparing distances from figure \ref{img:greedy/example-path-sol-1} and \ref{img:greedy/example-path-sol-2}  we can notice that point which is further but has only one adjacent point is a better choice than point which is closer but has two adjacent points. That's why in algorithm was introduced parameters describing how much algorithm will prefer points which are further but has lower number of adjacent points. 
+Comparing distances from figure \ref{img:greedy/example-path-sol-1} and \ref{img:greedy/example-path-sol-2}  we can notice that point which is further, but has only one adjacent point, is a better choice than a point, which is closer but has two adjacent points. That's why in the algorithm there were introduced parameters describing if the algorithm would prefer points which are further but have lower number of adjacent points. 
 
- In all tests were used assumption that if distances are similar, it is each one of them isn't greater than the other one more than $0.42$ (it comes from subtraction of distances of these two paths on figures \ref{img:greedy/example-path-sol-1} and \ref{img:greedy/example-path-sol-2}), the best choice is to visit point which has the lowest number of adjacent points. If there is a point which has no adjacent point, it is the optimal choice. This way of proceeding helps to eliminate isolated points, which may finally determine result to be unsatisfying. Justification of this way of thinking is presented in figures \ref{img:greedy/example-path2-sol-1} and \ref{img:greedy/example-path2-sol-2}.
+ In all tests there was used an assumption that if the distances are similar, (it is each one of them isn't greater than the other one more than $0.42$; it comes from subtraction of distances of these two paths on figures \ref{img:greedy/example-path-sol-1} and \ref{img:greedy/example-path-sol-2}), the best choice is to visit a point which has the lowest number of adjacent points. If there is a point which has no adjacent point, it is the optimal choice. This way of proceeding helps to eliminate isolated points, which may finally determine result to be unsatisfying. Justification of this way of thinking is presented in the figures \ref{img:greedy/example-path2-sol-1} and \ref{img:greedy/example-path2-sol-2}.
  
  \begin{figure}[H]
  	\begin{center}
@@ -218,14 +218,14 @@ Comparing distances from figure \ref{img:greedy/example-path-sol-1} and \ref{img
  
 \subsubsection{Greedy neighbour searching modification}
  
- Another introduced improvement in the algorithm is the modification of process of searching the nearest unvisited point from the currently visited one. Most of the printing layers have rather densely distributed points, e. g. most of them are located in the centre of the layer. In order to reduce time needed for checking distances to all possible point to find the nearest one, algorithm firstly search the neighbourhood of currently visited point, it is places for possible points, which are not further than one unit in each side. In case of negative result algorithm extends searches to two units in each side. If in that process any point was obtained, algorithm starts looking for next move by searching a list of all possible points. Figures from \ref{img:greedy/example-neighbours-stating} to \ref{img:greedy/example-neighbours-neigh-solv} illustrate this part of algorithm.
+ Another introduced improvement in the algorithm is the modification of process of searching the nearest unvisited point from the currently visited one. Most of the printing layers have rather densely distributed points, e. g. most of them are located in the centre of the layer. In order to reduce time needed for check distances to all possible points to find the nearest one, algorithm firstly searches the neighbourhood of a currently visited point (it is places for possible points, which are not further than one unit on each side). In case of negative result, algorithm extends searches to two units on each side. If in that process any point is obtained, algorithm starts looking for the next move by searching a list of all possible points. Figures from \ref{img:greedy/example-neighbours-stating} to \ref{img:greedy/example-neighbours-neigh-solv} illustrate this part of algorithm.
  
 \begin{figure}[H]
  	\begin{center}
  		\begin{minipage}{0.45\linewidth}
  			\includegraphics[width=\textwidth]{img/greedy/example-neighbours-starting.png}
  			\multifigcaption
- 			\caption{Starting position for searching neighbourhood (green cross represent currently printed point)}
+ 			\caption{Starting position for searching neighbourhood (green cross represents currently printed point)}
  			\label{img:greedy/example-neighbours-stating}
  		\end{minipage}
  		\hspace{.05\linewidth}
@@ -238,7 +238,7 @@ Comparing distances from figure \ref{img:greedy/example-path-sol-1} and \ref{img
 	\end{center}
 \end{figure}
 
-In the figure \ref{img:greedy/example-neighbours-stating} we have starting point which was the latest one visited. Algorithm starts to search neighbourhood of the point. In the figure \ref{img:greedy/example-neighbours-neigh-1} is shown first iteration. Because algorithm didn't find any point it extends searches which is presented in the figure \ref{img:greedy/example-neighbours-neigh-2}. Because there are three possible solutions for the next move, algorithm has to chose the most optimal one. It considers both criteria - distance and number of adjacent points. The result is the upper one (figure \ref{img:greedy/example-neighbours-neigh-solv}).
+In the figure \ref{img:greedy/example-neighbours-stating} we have the starting point which was the latest one visited. Algorithm starts to search the neighbourhood of the point. In the figure \ref{img:greedy/example-neighbours-neigh-1} is shown first iteration. Because algorithm didn't find any point, it extends searches which is presented in the figure \ref{img:greedy/example-neighbours-neigh-2}. Because there are three possible solutions for the next move, algorithm has to choose the most optimal one. It considers both criteria - distance and number of adjacent points. The result is the upper one (figure \ref{img:greedy/example-neighbours-neigh-solv}).
 
 \begin{figure}[H]
  	\begin{center}
@@ -260,7 +260,7 @@ In the figure \ref{img:greedy/example-neighbours-stating} we have starting point
 
 \subsubsection{Greedy parameters}
 
-Implemented greedy algorithm allows parametrization in order to adapt it to different kinds of layers. The list of parameters with its description:
+Implemented greedy algorithm allows parametrization in order to adapt it to different kinds of layers. The list of the parameters with its description:
 
 \begin{itemize}
 	\item \texttt{seed} - seed of the random. Some parts of algorithm are randomized. Instance of Java class \texttt{Random} is used to generate a stream of pseudorandom numbers. It uses a 48-bit seed as the initial value of the internal state of pseudorandom number generator. If parameter is set to $-1$ the seed is the current time in miliseconds since January 1, 1970.
@@ -269,13 +269,13 @@ Implemented greedy algorithm allows parametrization in order to adapt it to diff
 	
 	\item \texttt{nrOfNeighboursForStartingPoint} - number of neighbours for starting point. Preferable amount of adjacent points for the starting one. If there are no more such points, remaining starting points are generated randomly.
 	
-	\item \texttt{nrOfPointsNeededToCheckArray} - number of points needed to check array. Normally algorithm searches neighbourhood for finding nearest point. When number of remaining points to print is lower than this parameter algorithm straight away starts checking all possible points for finding the nearest one, without considering neighbourhood of the point.
+	\item \texttt{nrOfPointsNeededToCheckArray} - number of points needed to check array. Normally algorithm searches neighbourhood to find the nearest point. When number of remaining points to print is lower than this parameter algorithm straight away starts checking all possible points to find the nearest one, without considering neighbourhood of the point.
 	
-	\item \texttt{bestNrOfNeighours} - best number of neighbours. Sets preferable number of adjacent points for the next moves of printing tool.
+	\item \texttt{bestNrOfNeighours} - best number of neighbours. Sets preferable number of adjacent points for the next move of printing tool.
 	
-	\item \texttt{weightOfNeighbours} - weight of neighbours. It determines how much algorithm would prefer points which are further but have closer number of adjacent points to the parameter \texttt{bestNrOfNeighbours}. It is simply acceptable difference of distances between this point and the nearest one.
+	\item \texttt{weightOfNeighbours} - weight of neighbours. It determines how much the algorithm would prefer points which are further but have closer number of adjacent points to the parameter \texttt{bestNrOfNeighbours}. It is simply acceptable difference of distances between this point and the nearest one.
 	
-	\item \texttt{weightOfDistance} - weight of distances. It determines how much algorithm would prefer points which are nearer but their number of adjacent points is greater than defined in parameter \texttt{bestNrOfNeighbours}. It is simply acceptable difference of distances between the nearest point and the point with closer number of neighbours to the preferable one.
+	\item \texttt{weightOfDistance} - weight of distances. It determines how much algorithm would prefer points which are nearer but their number of adjacent points is greater than defined in the parameter \texttt{bestNrOfNeighbours}. It is simply acceptable difference of distances between the nearest point and the point with closer number of neighbours to the preferable one.
 	
 \end{itemize}
 
@@ -291,7 +291,7 @@ The overall procedure of finding path realized by this algorithm:
 		\item if there are more unvisited points than \texttt{nrOfPointsNeededToCheckArray}:
 		\begin{enumerate}[label*=\arabic*.]
 			\item search for the nearest point in the neighbourhood
-			\item if point wasn't found search for optimal point in the list of all remaining points.
+			\item if point isn't found, search for optimal point in the list of all remaining points.
 		\end{enumerate}
 		\item otherwise:
 		\begin{enumerate}[label*=\arabic*.]
@@ -299,7 +299,7 @@ The overall procedure of finding path realized by this algorithm:
 		\end{enumerate}
 	\end{enumerate}
 	\item after joining threads get all result paths from them
-	\item return path with lowest distance
+	\item return path with the lowest distance
 \end{enumerate}
 
 Procedure of finding optimal point ($d[point]$ is the distance from current point to that point, $n[point]$ is the number of adjacent points):
@@ -321,7 +321,7 @@ Procedure of finding optimal point ($d[point]$ is the distance from current poin
 
 \subsection{Two Opt algorithm}
 
-This algorithm is based on the exchange or swap of a pair of edges. To swap two edges $(a, b)$ and $(c, d)$, the nodes of the pair of edges are rearranged as $(a, c)$ and $(b, d)$. The algorithm tries to untangle crossing edges. There were implemented two variety of this algorithm. In the first one it searches for first swap which will result in shortest total length of path and executes it. The procedure is repeated till no improvements are found. The difference between the second one and the first one is that it searches at each iteration for the best possible swap and then executes it. The idea of the algorithm is presented in the figures \ref{img:twoopt/path1} and \ref{img:twoopt/path2}.
+This algorithm is based on the exchange or swap of a pair of edges. To swap two edges $(a, b)$ and $(c, d)$, the nodes of the pair of edges are rearranged as $(a, c)$ and $(b, d)$. The algorithm tries to untangle crossing edges. There were implemented two varieties of this algorithm. In the first one it searches for the first swap which will result in shortest total length of path and executes it. The procedure is repeated till no improvements are found. The difference between the second one and the first one is that it searches at each iteration for the best possible swap and then executes it. The idea of the algorithm is presented in the figures \ref{img:twoopt/path1} and \ref{img:twoopt/path2}.
 
 \begin{figure}[H]
 	\begin{center}
@@ -345,7 +345,7 @@ This algorithm is based on the exchange or swap of a pair of edges. To swap two 
 \subsubsection{Two Opt parameters}
 
 \begin{itemize}
-	\item \texttt{isGreedy} - is greedy flag. When \texttt{isGreedy} is \texttt{false} algorithm searches for the best possible swap, it is it checks all possible pairs of edges and chooses the most profitable. If flag is \texttt{true} it executes swap with first found pair of edges which will shorten the total length of path.
+	\item \texttt{isGreedy} - is greedy flag. When \texttt{isGreedy} is \texttt{false}, the algorithm searches for the best possible swap, it is it checks all possible pairs of edges and chooses the most profitable. If flag is \texttt{true} it executes swap with the first found pair of edges which will shorten the total length of path.
 	
 	\item \texttt{maxNrOfIterations} - maximal number of iterations. If it is set to $-1$ algorithm improves path till it cannot find any more beneficial swaps. If it is greater than $0$, algorithm makes exact number of swaps.	
 \end{itemize}
@@ -358,7 +358,7 @@ This algorithm is based on the exchange or swap of a pair of edges. To swap two 
 	\hspace*{5mm} find first beneficial pair of edges \\
 	else:\\
 	\hspace*{5mm} find the most profitable pair of edges
-	\item if wasn't find such a pair return from algorithm
+	\item if such a pair isn't found, return from algorithm
 	\item otherwise swap edges
 	\item if maximal number of iterations is not defined or is defined but $\mbox{\texttt{currentIteration}} < \mbox{\texttt{maxNrOfIterations}}$ jump to 2nd step
 	\item else return from algorithm
@@ -368,11 +368,11 @@ This algorithm is based on the exchange or swap of a pair of edges. To swap two 
 
 \subsection{Greedy Two Opt algorithm}
 
-Greedy Two Opt is composed of two algorithms. The first stage is to find path through Greedy algorithm. This path is passed as an initial path to Two Opt algorithm. The idea behind it is that it is much better to improve path close to the optimal solution than totally randomly selected. It takes much less iterations for Two Opt to finds path which it cannot improve any more. 
+Greedy Two Opt is composed of two algorithms. The first stage is to find path through Greedy algorithm. This path is passed as an initial path to Two Opt algorithm. The idea behind it is that it is much better to improve path close to the optimal solution than totally randomly selected one. It takes much less iterations for Two Opt to finds path which it cannot improve any more. 
 
 \subsection{Harmony Search algorithm}
 
-The Harmony Search is an algorithm inspired by the improvisation process of Jazz musicians. If musician plays he can choose to select a sound from his memory or randomly select other note. If it 'sounded' good he can 'try' to remember it for future use. The memory is a list of travelling salesman problem solutions (they must start from the same point). Algorithm find new solution with the following way: it starts from the first point and with certain probability chooses next point from memory or chooses from rest of the available points. It is repeated till all points are used exactly once. If it is generated new solution it is compared to the solutions within the memory. If found solution is better than the worst from the memory, the one from the memory is removed, and this one is added. This steps are repeated for particular number of iterations (time of jazz improvisation). Because of its high randomness of beginning paths added to memory, it is used as a part of a hybrid algorithm.
+The Harmony Search is an algorithm inspired by the improvisation process of Jazz musicians. When musician plays, he can choose to select a sound from his memory or randomly select other note. If it 'sounded' good he can 'try' to remember it for future use. The memory is a list of travelling salesman problem solutions (they must start from the same point). Algorithm finds new solution with the following way: it starts from the first point and with certain probability chooses next point from memory or chooses from the rest of the available points. It is repeated till all points are used exactly once. If it generates new solution it is compared to the solutions within the memory. If found solution is better than the worst from the memory, the one from the memory is removed, and this one is added. This steps are repeated for particular number of iterations (time of jazz improvisation). Because of its high randomness of beginning paths added to memory, it is used as a part of a hybrid algorithm.
 
 \subsubsection{Harmony Search parameters}
 
@@ -405,7 +405,7 @@ The Harmony Search is an algorithm inspired by the improvisation process of Jazz
 		\item randomly select point from the list of unvisited points in this iteration and add it to $new path$
 		\item if $new path$ is not containing all points from the layer, algorithm jumps to 4th step
 	\end{enumerate}
-	\item if $new path$ is better than the worst one in the memory, they are swap, otherwise this new solution is rejected
+	\item if $new path$ is better than the worst one in the memory, they are swapped, otherwise this new solution is rejected
 	\item steps from 3 to 5 are repeated \texttt{nrOfIterations} times
 	\item return best path from the memory
 	
@@ -413,11 +413,11 @@ The Harmony Search is an algorithm inspired by the improvisation process of Jazz
 
 \subsection{Greedy Harmony algorithm}
 
-The first stage of this algorithm is to find solution with Greedy algorithm and then it is passed as an initial solution to Harmony Search. The same solution is added to the harmony's memory as many times as it is necessary. Then Harmony Search algorithm tries to find solution closer to optimal. Because of the highly randomness of Harmony Search, setting starting path as already close to optimal solution may highly improves results of an algorithm.
+The first stage of this algorithm is to find solution with Greedy algorithm and then pass it as an initial solution to Harmony Search. The same solution is added to the harmony's memory as many times as it is necessary. Then Harmony Search algorithm tries to find solution closer to the optimal. Because of the high randomness of Harmony Search, setting starting path as already close to optimal solution may highly improves results of an algorithm.
 
 \subsection{Simulated Annealing algorithm}
 
-Simulated Annealing algorithm is inspired by annealing process in metallurgy. It emulates the physical process in which solid is firstly heated and then slowly cooled. With higher temperature metal is more vulnerable to deformation because of providing energy needed to break bonds. While the temperature becomes lower and lower it is harder to deform metal. In case of Simulated Annealing algorithm the temperature determines the probability of taken worse solution than currently obtained one in the future consideration. With lower temperature algorithm less likely takes worse solution. During whole process the best found solution is kept in memory, and replaced if better one is obtained. New solutions are found by swapping two randomly chosen edges. When temperature reaches earlier define minimum, algorithm stops. The probability of acceptance worse solution is calculated as follows:
+Simulated Annealing algorithm is inspired by annealing process in metallurgy. It emulates the physical process in which solid is firstly heated and then slowly cooled. With higher temperature metal is more vulnerable to deformation because of the heat delivery that provides energy needed to break bonds. While the temperature becomes lower and lower it is harder to deform metal. In case of Simulated Annealing algorithm the temperature determines the probability of taking worse solution than currently obtained one in the future consideration. With lower temperature algorithm is less likely to take worse solution. During whole process the best found solution is kept in memory, and replaced if better one is obtained. New solutions are found by swapping two randomly chosen edges. When temperature reaches earlier defined minimum, algorithm stops. The probability of accepting worse solution is calculated as follows:
 
 \[e^{-\frac{J(j)-J(i)}{T(t)}}\mbox{,}\]
 	where $J(i)$ is total distance of currently found solution, $J(i)$ is total distance of the best found solution and $T(t)$ is the temperature of time where the new solution was obtained.
@@ -430,11 +430,11 @@ Simulated Annealing algorithm is inspired by annealing process in metallurgy. It
 	
 	\item \texttt{temperatureMin} - minimal temperature. Temperature at which algorithm stops.
 	
-	\item \texttt{coolingRate} - cooling rate. It determines how fast temperature is decreasing. New temperature is get by multiplying currently one by this factor.
+	\item \texttt{coolingRate} - cooling rate. It determines how fast the temperature is decreasing. New temperature is get by multiplying current one by this factor.
 	
-	\item \texttt{iterationsOnTemperature} - how many iterations algorithm does on each temperature state, it is, how many times it tries to find better solution with the same probability of acceptance worse solution.
+	\item \texttt{iterationsOnTemperature} - how many iterations algorithm does on each temperature state, (it is, how many times it tries to find better solution with the same probability of accepting worse solution).
 	
-	\item \texttt{maxNrOfIterationsWithNoImprovement} - maximal number of algorithm's iterations without finding better path. It prevents from pointless execution of algorithm when it cant find better solution.
+	\item \texttt{maxNrOfIterationsWithNoImprovement} - maximal number of algorithm's iterations without finding better path. It prevents from pointless execution of algorithm when it can't find a better solution.
 \end{itemize}
 
 \subsubsection{Simulated Annealing procedure}
@@ -463,7 +463,7 @@ Simulated Annealing algorithm is inspired by annealing process in metallurgy. It
 
 \subsection{Greedy Annealing algorithm}
 
-In this algorithm initial path for Simulated Annealing is obtained by executing Greedy algorithm. All procedure steps and parameters are the same as in both of these algorithms. Simulated Annealing may be much more efficient if it starts with solution not o far from the optimal one. 
+In this algorithm initial path for Simulated Annealing is obtained by executing Greedy algorithm. All procedure steps and parameters are the same as in both of these algorithms. Simulated Annealing may be much more efficient if it starts with solution not so far from the optimal one. 
 
 \section{Experiments}
 
@@ -474,7 +474,7 @@ Test environment was implemented, to provide:
 \item graphical representation of layer and path,
 \item displaying and showing to file results of algorithms,
 \item easy adding of new algorithms (by inheriting one class and adding it to algorithm's list),
-\item methods for reading algorithm's parameters from file.
+\item methods of reading algorithm's parameters from file.
 \end{itemize}
 
 \subsection{Test layers}
@@ -482,16 +482,16 @@ Images used as test layers are in "img" directory added to this report.
 
 \subsection{Methodology}
 
-During tests with layers were taken following assumptions. If algorithms are tested on the same layer they should be running with the same parameters, e. g. if Greedy algorithm and Simulated Annealing algorithm were used to find path in the specific layer, the Greedy Annealing algorithm should run with parameters the same as in each of the partial algorithm. It allows to objectively decide whether there are advantages coming from hybrid algorithms.
+During tests with layers there were taken following assumptions. If algorithms are tested on the same layer they should be running with the same parameters, e. g. if Greedy algorithm and Simulated Annealing algorithm are used to find path in the specific layer, the Greedy Annealing algorithm should run with parameters the same as in each of the partial algorithm. It allows to objectively decide whether there are advantages coming from hybrid algorithms.
 
 \section{Results}
-For very short calculations, measured time can has very big differences between one measurement and another one with the same algorithm/params.
+For very short calculations, measured time can have very big differences between one measurement and another one with the same algorithm/parameters.
 
 All result images and text files are added to this report in "results" directory.
 
-In tables \ref{tab:results-sp-4}, \ref{tab:results-sp-9} and \ref{tab:results-sp-10} are presented example results of comparison of algorithms three different layers.
+In tables \ref{tab:results-sp-4}, \ref{tab:results-sp-9} and \ref{tab:results-sp-10} there are presented example results of a comparison of algorithms which are executed on three different layers.
 
-Picture "sp-4.png" which is presented on the figure \ref{img:results/sp-4} has many points and each one has many adjacent point. In table \ref{tab:results-sp-4} are presented results. In figures \ref{img:results/sp-4-ef-time}, \ref{img:results/sp-4-greedy-two-opt} and \ref{img:results/sp-4-greedy-harmony} are shown example paths.
+Picture "sp-4.png" which is presented on the figure \ref{img:results/sp-4} has many points and each one has many adjacent points. In table \ref{tab:results-sp-4} are presented results. In figures \ref{img:results/sp-4-ef-time}, \ref{img:results/sp-4-greedy-two-opt} and \ref{img:results/sp-4-greedy-harmony} are shown example paths.
 
 \begin{figure}[H]
 	\begin{center}
@@ -793,15 +793,15 @@ Third example is  a layer with widely spread points. It is presented in figure \
 \caption{Points with cost from red point equal to 3.\\Orange for distance, green for time, and violet for energy}
 \label{cost_function_representation}
 \end{figure}
-As we can see on figure \ref{cost_function_representation}, when algorithm is seeking for closest point, it finds different ones, depending on cost function type. Therefore, if algorithm makes use of this, the results will vary.
+As we can see on figure \ref{cost_function_representation}, when algorithm is seeking for the closest point, it finds different ones, depending on cost function type. Therefore, if algorithm makes use of this, the results will vary.
 
 Snake algorithm usually provides almost 2 times better results than Left-to-Right, in similar time. For some layers it also provides optimal (or close to it) paths, whereas for other it can give results multiple times worse than optimal.
 
-At least for some algorithms, not only count of points, but also size of whole layer (even if points are only in the middle) can have influence on results or time of calculations, e.g. when algorithm is searching for closest point.
+At least for some algorithms, not only count of points, but also size of the whole layer (even if points are only in the middle) can have influence on results or time of calculations, e.g. when algorithm is searching for the closest point.
 
 Edge Following algorithm can provide very good results in very short time.
 
-When layer is covered with plenty of densely located points, metaheuristic algorithms are time-consuming. But simpler  algorithms provides good results in very short time. On the other hand if layer is covered with widely spread points, metaheuristic algorithms give better results. Interesting are hybrid algorithms. As it can be notice, using greedy algorithm for finding initial path for other algorithms can not only results in shorter path but also in shorter time. It happens that because the Two Opt makes iteration till it cannot improve path any more or the Simulated Annealing terminates execution if the same path was obtained after $n-th$ iteration. Greedy initial solution cause that other algorithm doesn't waist time for unproductive iterations.
+When layer is covered with plenty of densely located points, metaheuristic algorithms are time-consuming. But simpler  algorithms provides good results in very short time. On the other hand if layer is covered with widely spread points, metaheuristic algorithms give better results. Interesting are hybrid algorithms. As it can be noticed, using greedy algorithm for finding initial path for other algorithms can not only result in shorter path but also in shorter time. It happens like that, because the Two Opt makes iteration till it cannot improve path any more or the Simulated Annealing terminates execution if the same path was obtained after $n-th$ iteration. Greedy initial solution causes that other algorithm doesn't waste time for unproductive iterations.
 
 \section{Own contribution}
 Michał's contribution:
