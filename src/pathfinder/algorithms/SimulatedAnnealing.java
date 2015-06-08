@@ -15,12 +15,14 @@ class SimulatedAnnealingParameters {
     public static double TEMPERATURE_MIN = 0.0001;
     public static double COOLING_RATE = 0.98;
     public static int ITERATIONS_ON_TEMPERATURE = 1000;
+    public static int MAX_NR_OF_ITERATIONS_WITH_NO_IMPROVEMENT = 100000;
 
-    public static void set(long seed, double temperatureMin, double coolingRate, int iterationsOnTemperature) {
+    public static void set(long seed, double temperatureMin, double coolingRate, int iterationsOnTemperature, int maxNrOfIterationsWithNoImprovement) {
         SEED = seed;
         TEMPERATURE_MIN = temperatureMin;
         COOLING_RATE = coolingRate;
         ITERATIONS_ON_TEMPERATURE = iterationsOnTemperature;
+        MAX_NR_OF_ITERATIONS_WITH_NO_IMPROVEMENT = maxNrOfIterationsWithNoImprovement;
     }
 
     public static void setDefault() {
@@ -28,6 +30,7 @@ class SimulatedAnnealingParameters {
         TEMPERATURE_MIN = 0.0001;
         COOLING_RATE = 0.95;
         ITERATIONS_ON_TEMPERATURE = 300;
+        MAX_NR_OF_ITERATIONS_WITH_NO_IMPROVEMENT = 100000;
     }
 
 }
@@ -84,7 +87,8 @@ public class SimulatedAnnealing extends PathPlanner {
         SimulatedAnnealingParameters.set(Long.parseLong(params.get("seed")),
                 Double.parseDouble(params.get("temperatureMin")),
                 Double.parseDouble(params.get("coolingRate")),
-                Integer.parseInt(params.get("iterationsOnTemperature")));
+                Integer.parseInt(params.get("iterationsOnTemperature")),
+                Integer.parseInt(params.get("maxNrOfIterationsWithNoImprovement")));
     }
 
     private void initializeValues() {
@@ -102,6 +106,10 @@ public class SimulatedAnnealing extends PathPlanner {
         initializeValues();
         findFirstSolution();
         setCurrentRouteAsBest();
+
+        int nrOfIterationsWithNoImprovement = 0;
+
+        outer:
         while (isStillHot()) {
             //how many times on each temperature
             for (int i = 0; i < SimulatedAnnealingParameters.ITERATIONS_ON_TEMPERATURE; i++) {
@@ -117,7 +125,11 @@ public class SimulatedAnnealing extends PathPlanner {
                 if (currentDistance < bestDistance) {
                     bestRoute = Route.copyOfRoute(currentRoute);
                     bestDistance = currentDistance;
+                    nrOfIterationsWithNoImprovement = 0;
                 }
+                if (nrOfIterationsWithNoImprovement >= SimulatedAnnealingParameters.MAX_NR_OF_ITERATIONS_WITH_NO_IMPROVEMENT)
+                    break outer;
+                nrOfIterationsWithNoImprovement++;
             }
             temperature *= SimulatedAnnealingParameters.COOLING_RATE;
             currentRoute = Route.copyOfRoute(bestRoute);

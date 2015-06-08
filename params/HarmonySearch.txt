@@ -1,4 +1,4 @@
-algorithm_name: Two Opt
+algorithm_name: Harmony Search
 
 # params:
 
