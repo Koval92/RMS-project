@@ -13,6 +13,10 @@
 
 \usepackage{enumitem}
 \usepackage{url}
+\usepackage[colorlinks=false]{hyperref}
+\usepackage{microtype}
+\usepackage{array}
+\usepackage[table]{xcolor}
 
 
 \title{Research Skills and Methodologies\\Path Optimization of 3D Printer}
@@ -368,7 +372,7 @@ Greedy Two Opt is composed of two algorithms. The first stage is to find path th
 
 \subsection{Harmony Search algorithm}
 
-The Harmony Search is an algorithm inspired by the improvisation process of Jazz musicians. If musician plays he can choose to select a sound from his memory or randomly select other note. If it 'sounded' good he can 'try' to remember it for future use. The memory is a list of travelling salesman problem solutions (they must start from the same point). Algorithm find new solution with the following way: it starts from the first point and with certain probability chooses next point from memory or chooses from rest of the available points. It is repeated till all points are used exactly once. If it is generated new solution it is compared to the solutions within the memory. If found solution is better than the worst from the memory, the one from the memory is removed, and this one is added. This steps are repeated for particular number of iterations (time of jazz improvisation).
+The Harmony Search is an algorithm inspired by the improvisation process of Jazz musicians. If musician plays he can choose to select a sound from his memory or randomly select other note. If it 'sounded' good he can 'try' to remember it for future use. The memory is a list of travelling salesman problem solutions (they must start from the same point). Algorithm find new solution with the following way: it starts from the first point and with certain probability chooses next point from memory or chooses from rest of the available points. It is repeated till all points are used exactly once. If it is generated new solution it is compared to the solutions within the memory. If found solution is better than the worst from the memory, the one from the memory is removed, and this one is added. This steps are repeated for particular number of iterations (time of jazz improvisation). Because of its high randomness of beginning paths added to memory, it is used as a part of a hybrid algorithm.
 
 \subsubsection{Harmony Search parameters}
 
@@ -462,6 +466,7 @@ Simulated Annealing algorithm is inspired by annealing process in metallurgy. It
 In this algorithm initial path for Simulated Annealing is obtained by executing Greedy algorithm. All procedure steps and parameters are the same as in both of these algorithms. Simulated Annealing may be much more efficient if it starts with solution not o far from the optimal one. 
 
 \section{Experiments}
+
 \subsection{Environment}
 Test environment was implemented, to provide:
 \begin{itemize}
@@ -475,10 +480,204 @@ Test environment was implemented, to provide:
 \subsection{Test layers}
 Images used as test layers are in "img" directory added to this report.
 
+\subsection{Methodology}
+
+During tests with layers were taken following assumptions. If algorithms are tested on the same layer they should be running with the same parameters, e. g. if Greedy algorithm and Simulated Annealing algorithm were used to find path in the specific layer, the Greedy Annealing algorithm should run with parameters the same as in each of the partial algorithm. It allows to objectively decide whether there are advantages coming from hybrid algorithms.
+
 \section{Results}
 For very short calculations, measured time can has very big differences between one measurement and another one with the same algorithm/params.
 
 All result images and text files are added to this report in "results" directory.
+
+In tables ... ... are presented example results of comparison of algorithms three different layers.
+
+Picture "sp-4.png" which is presented on the figure \ref{img:results/sp-4} has many points and each one has many adjacent point. In table \ref{tab:results-sp-4} are presented results. In figures \ref{img:results/sp-4-ef-time}, \ref{img:results/sp-4-greedy-two-opt} and \ref{img:results/sp-4-greedy-harmony} are shown example paths.
+
+\begin{figure}[H]
+	\begin{center}
+		\begin{minipage}{.45\linewidth}
+			\includegraphics[width=\textwidth]{img/results/sp-4.png}
+			\multifigcaption
+			\caption{Layer sp-4 \newline}
+			\label{img:results/sp-4}
+		\end{minipage}
+		\hspace{.05\linewidth}
+		\begin{minipage}{.45\linewidth}
+			\includegraphics[width=\textwidth]{img/results/sp-4-ef-energy.png}
+			\multifigcaption
+			\caption{Edge Follower solution for layer sp-4}
+			\label{img:results/sp-4-ef-energy}
+		\end{minipage}
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\begin{minipage}{.45\linewidth}
+			\includegraphics[width=\textwidth]{img/results/sp-4-greedy-two-opt.png}
+			\multifigcaption
+			\caption{Greedy Two Opt solution for layer sp-4}
+			\label{img:results/sp-4-greedy-two-opt}
+		\end{minipage}
+		\hspace{.05\linewidth}
+		\begin{minipage}{.45\linewidth}
+			\includegraphics[width=\textwidth]{img/results/sp-4-greedy-harmony.png}
+			\multifigcaption
+			\caption{Greedy Harmony solution for layer sp-4}
+			\label{img:results/sp-4-greedy-harmony}
+		\end{minipage}
+	\end{center}
+\end{figure}
+
+\begin{table}[H]
+	\begin{center}
+		\begin{tabular}{|m{4cm}||r|r|r|r|}
+			\hline
+
+			\multicolumn{3}{|c|}{ 			\cellcolor[gray]{0.7} \textbf{Image}} & \multicolumn{2}{|c|}{sp-4} \\ \hline
+			\multicolumn{3}{|c|}{ \cellcolor[gray]{0.7} \textbf{Number of points}} & \multicolumn{2}{|c|}{2448} \\ \hline \hline
+			
+			\rowcolor{gray!30}
+			
+			\textbf{Algorithm} & \multicolumn{1}{|c|}{\textbf{Time}} & \multicolumn{1}{|c|}{\textbf{Distance}} & \multicolumn{1}{|c|}{\textbf{Energy}} & \multicolumn{1}{|p{2.5cm}|}{\textbf{Calculation Time $[ms]$}} \\ \hline
+				
+			Left-to-Right	 & 10913,00 	& 10913,50		& 10985,00 	& 0,26
+			 \\ \cline{2-5}
+			
+			Snake	 & 5574,00		& 5583,19		& 5601,00		& 0,26
+			 \\ \cline{2-5}
+			
+			EF - Time & 2694,00	& 2751,39	& \cellcolor{yellow!80} 2879,00	& 2,46
+			  \\ \cline{2-5}
+			
+			EF - Distance & 2771,00	& 2823,41	& 2944,00 &	19,33
+			  \\ \cline{2-5}
+			
+			EF - Energy & 2789,00 &	2835,24	& 2935,00	& 14,60
+			 \\ \cline{2-5}
+			
+			Greedy &   2547,00	& 2809,71 & 	3194,00	& 663,02
+			 \\ \cline{2-5}
+			
+			Two Opt & 2518,00 &	2705,01	& 2984,00	& 873271,53
+			 \\ \cline{2-5}
+			
+			 Greedy Two Opt & \cellcolor{yellow!80} 2485,00	& \cellcolor{yellow!80} 2703,66	& 3017,00	& 27494,09
+			  \\ \cline{2-5}
+			
+			Harmony Search & 81686,00	& 90773,45	& 115397,00	& 1771093,39
+			  \\ \cline{2-5}
+			
+			Greedy Harmony & 2563,00	& 2811,81	& 3186,00	& 2270588,38
+			  \\ \cline{2-5}
+			
+			Simulated Annealing & 3388,00	& 3745,04	& 4417,00	& 3071234,07
+			  \\ \cline{2-5}
+			
+			Greedy Annealing & 2563,00	& 2802,67	& 3159,00	& 534441,31
+			 \\ \hline
+			
+		\end{tabular}
+		\caption{Results for layer sp-4}
+		\label{tab:results-sp-4}
+	\end{center}
+\end{table}
+
+
+
+As a second example is chosen a layer with widely spread points. It is presented in figure \ref{img:results/sp-9}. In table \ref{tab:results-sp-9} are presented results. In figures \ref{img:results/sp-9-ef}, \ref{img:results/sp-9-greedy} and \ref{img:results/sp-9-greedy-annealing} are shown example paths.
+
+\begin{figure}[H]
+	\begin{center}
+		\begin{minipage}{.45\linewidth}
+			\includegraphics[width=\textwidth]{img/results/sp-9.png}
+			\multifigcaption
+			\caption{Layer sp-9 \newline}
+			\label{img:results/sp-9}
+		\end{minipage}
+		\hspace{.05\linewidth}
+		\begin{minipage}{.45\linewidth}
+			\includegraphics[width=\textwidth]{img/results/sp-9-ef-time.png}
+			\multifigcaption
+			\caption{Edge Follower solution for layer sp-9 }
+			\label{img:results/sp-9-ef}
+		\end{minipage}	
+		
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\begin{minipage}{.45\linewidth}
+			\includegraphics[width=\textwidth]{img/results/sp-9-greedy.png}
+			\multifigcaption
+			\caption{Greedy solution for layer sp-9 }
+			\label{img:results/sp-9-greedy}
+		\end{minipage}
+		\hspace{.05\linewidth}
+		\begin{minipage}{.45\linewidth}
+			\includegraphics[width=\textwidth]{img/results/sp-9-greedy-annealing.png}
+			\multifigcaption
+			\caption{Greedy Annealing solution for layer sp-9}
+			\label{img:results/sp-9-greedy-annealing}
+		\end{minipage}	
+		
+	\end{center}
+\end{figure}
+
+\begin{table}[H]
+	\begin{center}
+		\begin{tabular}{|m{4cm}||r|r|r|r|}
+			\hline
+			
+			\multicolumn{3}{|c|}{ 			\cellcolor[gray]{0.7} \textbf{Image}} & \multicolumn{2}{|c|}{sp-9} \\ \hline
+			\multicolumn{3}{|c|}{ \cellcolor[gray]{0.7} \textbf{Number of points}} & \multicolumn{2}{|c|}{404} \\ \hline \hline
+			
+			\rowcolor{gray!30}
+			
+			\textbf{Algorithm} & \multicolumn{1}{|c|}{\textbf{Time}} & \multicolumn{1}{|c|}{\textbf{Distance}} & \multicolumn{1}{|c|}{\textbf{Energy}} & \multicolumn{1}{|p{2.5cm}|}{\textbf{Calculation Time $[ms]$}} \\ \hline
+			
+			Left-to-Right	 & 8666,00	& 8666,53	& 8727,00	& 0,14
+			  \\ \cline{2-5}
+			
+			Snake & 4448,00	& 4452,43	& 4461,00& 	0,06
+			  \\ \cline{2-5}
+			
+			EF - Time & 625,00	& 683,90& 	796,00&	0,40
+			  \\ \cline{2-5}
+			
+			EF - Distance & 612,00	&  646,02	& 719,00	& 0,64
+			  \\ \cline{2-5}
+			
+			EF - Energy & 640,00	& 666,44	& 739,00	& 0,67
+			  \\ \cline{2-5}
+			
+			Greedy & 621,00	& 651,45	& 718,00	& 24,14
+			  \\ \cline{2-5}
+			
+			Two Opt & 619,00	& 671,69	& 778,00	& 4071,94
+			  \\ \cline{2-5}
+			
+			Greedy Two Opt & 582,00	& 614,54& 	686,00	& 210,73
+			  \\ \cline{2-5}
+			
+			Harmony Search & 12481,00	& 13661,09& 	16949,00	& 75540,56
+			  \\ \cline{2-5}
+			
+			Greedy Harmony & 621,00	& 651,45	& 718,00	& 85273,00
+			  \\ \cline{2-5}
+			
+			Simulated Annealing & 645,00	& 682,56& 	770,00	& 52702,26
+			  \\ \cline{2-5}
+			
+			Greedy Annealing & \cellcolor{yellow!80} 568,00	& \cellcolor{yellow!80}606,87	& \cellcolor{yellow!80}685,00	& 34044,14
+			  \\ \hline
+			
+		\end{tabular}
+		\caption{Results for layer sp-9}
+		\label{tab:results-sp-9}
+	\end{center}
+\end{table}
 
 \section{Conclusion}
 \begin{figure}
@@ -516,7 +715,7 @@ Piotr's contribution:
 \item Greedy Harmony algorithm
 \item Simulated Annealing algorithm
 \item Greedy Annealing algorithm
-\item layers from sp-7 to sp-9,
+\item layers from sp-7 to sp-10,
 \item experiments and this report. 
 \end{itemize}
 

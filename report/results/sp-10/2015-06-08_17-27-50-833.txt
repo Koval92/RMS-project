@@ -1,0 +1,6 @@
+cost_type : TIME
+time_cost : 4746,00
+dist_cost : 4752,20
+layer_size : 411
+algorithm_name : Snake
+ener_cost : 4805,00

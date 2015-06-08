@@ -1,0 +1,17 @@
+seed : -1
+cost_type : TIME
+nrOfThreads : 10
+bestNrOfNeighbours : 0
+layer_size : 88
+sameStartingPoint : false
+algorithm_name : Greedy Harmony
+weightOfNeighbours : 0.42
+weightOfDistance : 0.32
+nrOfIterations : 100000
+memoryProbability : 0.95
+memorySize : 10
+nrOfNeighboursForStartingPoint : 1
+nrOfPointsNeededToCheckArray : 40
+time_cost : 88,00
+dist_cost : 95,87
+ener_cost : 107,00

@@ -1,0 +1,27 @@
+\begin{thebibliography}{1}
+
+\bibitem{ComarisonOfTSP}
+M.~Z. Byung-In~Kim, Jae-Ik~Shim.
+\newblock \emph{Comparison of TSP Algorithms}, December 1998.
+\newblock [Online; accessed 08-June-2015].
+
+\bibitem{Algorithms}
+T.~H. Cormen.
+\newblock \emph{Introduction to Algorithms}, 2009.
+
+\bibitem{Simulated:1}
+J.~T. Dimitris~Bertsimas.
+\newblock \emph{Simulated Annealing}, 1993.
+\newblock [Online; accessed 08-June-2015].
+
+\bibitem{Harmony:1}
+M.~E.~R. Morad~Bouzidi.
+\newblock \emph{Adaptation of the Harmony Search Algorithm to Solve the
+  Travelling Salesman Problem}, April 2014.
+\newblock [Online; accessed 08-June-2015].
+
+\bibitem{ResearchSkills}
+M.~Wójcik.
+\newblock \emph{Path Optimization in 3D Printing}, June 2014.
+
+\end{thebibliography}

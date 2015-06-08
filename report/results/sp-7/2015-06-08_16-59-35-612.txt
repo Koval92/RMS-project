@@ -1,0 +1,10 @@
+nrOfIterations : 100000
+memoryProbability : 0.95
+memorySize : 10
+seed : -1
+cost_type : TIME
+time_cost : 3346,00
+dist_cost : 3749,10
+layer_size : 163
+algorithm_name : Harmony Search
+ener_cost : 4777,00
