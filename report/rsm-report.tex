@@ -232,7 +232,7 @@ Comparing distances from figure \ref{img:greedy/example-path-sol-1} and \ref{img
  		\begin{minipage}{.45\linewidth}
  			\includegraphics[width=\textwidth]{img/greedy/example-neighbours-neigh-1.png}
  			\multifigcaption
- 			\caption{First iteration of searching \newline \vspace{4mm}}
+ 			\caption{First iteration of searching \newline \newline \vspace{4mm}}
  			\label{img:greedy/example-neighbours-neigh-1} 
  		\end{minipage}
 	\end{center}
@@ -489,7 +489,7 @@ For very short calculations, measured time can has very big differences between 
 
 All result images and text files are added to this report in "results" directory.
 
-In tables ... ... are presented example results of comparison of algorithms three different layers.
+In tables \ref{tab:results-sp-4}, \ref{tab:results-sp-9} and \ref{tab:results-sp-10} are presented example results of comparison of algorithms three different layers.
 
 Picture "sp-4.png" which is presented on the figure \ref{img:results/sp-4} has many points and each one has many adjacent point. In table \ref{tab:results-sp-4} are presented results. In figures \ref{img:results/sp-4-ef-time}, \ref{img:results/sp-4-greedy-two-opt} and \ref{img:results/sp-4-greedy-harmony} are shown example paths.
 
@@ -585,7 +585,7 @@ Picture "sp-4.png" which is presented on the figure \ref{img:results/sp-4} has m
 
 
 
-As a second example is chosen a layer with widely spread points. It is presented in figure \ref{img:results/sp-9}. In table \ref{tab:results-sp-9} are presented results. In figures \ref{img:results/sp-9-ef}, \ref{img:results/sp-9-greedy} and \ref{img:results/sp-9-greedy-annealing} are shown example paths.
+As a second example is chosen a layer with widely spread points concentrated in small groups. It is presented in figure \ref{img:results/sp-9}. In table \ref{tab:results-sp-9} are presented results. In figures \ref{img:results/sp-9-ef}, \ref{img:results/sp-9-greedy} and \ref{img:results/sp-9-greedy-annealing} are shown example paths.
 
 \begin{figure}[H]
 	\begin{center}
@@ -679,6 +679,112 @@ As a second example is chosen a layer with widely spread points. It is presented
 	\end{center}
 \end{table}
 
+Third example is  a layer with widely spread points. It is presented in figure \ref{img:results/sp-10}. In table \ref{tab:results-sp-10} are presented results. In figures \ref{img:results/sp-10-greedy-two-opt}, \ref{img:results/sp-10-greedy-harmony} and \ref{img:results/sp-10-greedy-annealing} are shown example paths.
+
+\begin{figure}[H]
+	\begin{center}
+		\begin{minipage}{.45\linewidth}
+			\includegraphics[width=\textwidth]{img/results/sp-10.png}
+			\multifigcaption
+			\caption{Layer sp-10 \newline}
+			\label{img:results/sp-10}
+		\end{minipage}
+		\hspace{.05\linewidth}
+		\begin{minipage}{.45\linewidth}
+			\includegraphics[width=\textwidth]{img/results/sp-10-greedy-two-opt.png}
+			\multifigcaption
+			\caption{Greedy Two Opt solution for layer sp-10 }
+			\label{img:results/sp-10-greedy-two-opt}
+		\end{minipage}	
+		
+	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\begin{minipage}{.45\linewidth}
+			\includegraphics[width=\textwidth]{img/results/sp-10-greedy-harmony.png}
+			\multifigcaption
+			\caption{Greedy Harmony solution for layer sp-10 }
+			\label{img:results/sp-10-greedy-harmony}
+		\end{minipage}
+		\hspace{.05\linewidth}
+		\begin{minipage}{.45\linewidth}
+			\includegraphics[width=\textwidth]{img/results/sp-10-greedy-annealing.png}
+			\multifigcaption
+			\caption{Greedy Annealing solution for layer sp-10}
+			\label{img:results/sp-10-greedy-annealing}
+		\end{minipage}	
+		
+	\end{center}
+\end{figure}
+
+\begin{table}[H]
+	\begin{center}
+		\begin{tabular}{|m{4cm}||r|r|r|r|}
+			\hline
+			
+			\multicolumn{3}{|c|}{ 			\cellcolor[gray]{0.7} \textbf{Image}} & \multicolumn{2}{|c|}{sp-10} \\ \hline
+			\multicolumn{3}{|c|}{ \cellcolor[gray]{0.7} \textbf{Number of points}} & \multicolumn{2}{|c|}{411} \\ \hline \hline
+			
+			\rowcolor{gray!30}
+			
+			\textbf{Algorithm} & \multicolumn{1}{|c|}{\textbf{Time}} & \multicolumn{1}{|c|}{\textbf{Distance}} & \multicolumn{1}{|c|}{\textbf{Energy}} & \multicolumn{1}{|p{2.5cm}|}{\textbf{Calculation Time $[ms]$}} \\ \hline
+			
+			Left-to-Right	 & 8066,00	& 8066,56& 	8129,00	& 0,57
+			
+			\\ \cline{2-5}
+			
+			Snake & 4746,00	& 4752,20& 	4805,00	& 0,73
+			
+			\\ \cline{2-5}
+			
+			EF - Time & 1115,00	& 1286,15	& 1657,00	& 160,58
+			
+			\\ \cline{2-5}
+			
+			EF - Distance & 1164,00	& 1300,52	& 1636,00& 	121,84
+			
+			\\ \cline{2-5}
+			
+			EF - Energy & 1299,00	& 1401,41	& 1677,00& 	40,33
+			
+			\\ \cline{2-5}
+			
+			Greedy & 1139,00& 	1282,61	& 1605,00& 	54,67
+			
+			\\ \cline{2-5}
+			
+			Two Opt & 1066,00	& 1202,24	& 1517,00& 	4027,74
+			
+			\\ \cline{2-5}
+			
+			Greedy Two Opt & 1031,00& 	\cellcolor{yellow!50}1165,99	& 1469,00& 	494,88
+			
+			\\ \cline{2-5}
+			
+			Harmony Search & 11678,00	& 12900,52& 	16312,00	& 81021,33
+			
+			\\ \cline{2-5}
+			
+			Greedy Harmony & 1139,00	& 1282,61	& 1605,00& 	78065,78
+			
+			\\ \cline{2-5}
+			
+			Simulated Annealing & 1125,00	& 1259,12	& 1580,00	& 51364,94
+			
+			\\ \cline{2-5}
+			
+			Greedy Annealing & \cellcolor{yellow!50}1049,00	& 1173,07& 	\cellcolor{yellow!50}1465,00	& 16749,67
+			
+			\\ \hline
+			
+		\end{tabular}
+		\caption{Results for layer sp-10}
+		\label{tab:results-sp-10}
+	\end{center}
+\end{table}
+
 \section{Conclusion}
 \begin{figure}
 \begin{center}
@@ -694,6 +800,8 @@ Snake algorithm usually provides almost 2 times better results than Left-to-Righ
 At least for some algorithms, not only count of points, but also size of whole layer (even if points are only in the middle) can have influence on results or time of calculations, e.g. when algorithm is searching for closest point.
 
 Edge Following algorithm can provide very good results in very short time.
+
+When layer is covered with plenty of densely located points, metaheuristic algorithms are time-consuming. But simpler  algorithms provides good results in very short time. On the other hand if layer is covered with widely spread points, metaheuristic algorithms give better results. Interesting are hybrid algorithms. As it can be notice, using greedy algorithm for finding initial path for other algorithms can not only results in shorter path but also in shorter time. It happens that because the Two Opt makes iteration till it cannot improve path any more or the Simulated Annealing terminates execution if the same path was obtained after $n-th$ iteration. Greedy initial solution cause that other algorithm doesn't waist time for unproductive iterations.
 
 \section{Own contribution}
 Michał's contribution:
@@ -726,5 +834,12 @@ Piotr's contribution:
 \newpage
 \bibliographystyle{abbrv}
 \bibliography{references}
+
+\newpage
+
+\listoffigures
+
+\newpage
+\listoftables
 
 \end{document}

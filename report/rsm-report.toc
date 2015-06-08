@@ -26,5 +26,5 @@
 \contentsline {subsection}{\numberline {4.2}Test layers}{16}{subsection.4.2}
 \contentsline {subsection}{\numberline {4.3}Methodology}{16}{subsection.4.3}
 \contentsline {section}{\numberline {5}Results}{17}{section.5}
-\contentsline {section}{\numberline {6}Conclusion}{19}{section.6}
-\contentsline {section}{\numberline {7}Own contribution}{21}{section.7}
+\contentsline {section}{\numberline {6}Conclusion}{21}{section.6}
+\contentsline {section}{\numberline {7}Own contribution}{23}{section.7}
