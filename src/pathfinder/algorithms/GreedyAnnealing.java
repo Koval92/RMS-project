@@ -43,7 +43,8 @@ public class GreedyAnnealing extends PathPlanner {
         SimulatedAnnealingParameters.set(Long.parseLong(params.get("seed")),
                 Double.parseDouble(params.get("temperatureMin")),
                 Double.parseDouble(params.get("coolingRate")),
-                Integer.parseInt(params.get("iterationsOnTemperature")));
+                Integer.parseInt(params.get("iterationsOnTemperature")),
+                Integer.parseInt(params.get("maxNrOfIterationsWithNoImprovement")));
     }
 
     @Override

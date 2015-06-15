@@ -16,7 +16,7 @@ algorithm_name: Greedy
 #                                           of neighbours closest to value of best number of neighbours
 #-----------------------------------------------------------------------------------------
 
-seed: 50
+seed: -1
 nrOfThreads: 10
 nrOfNeighboursForStartingPoint: 1
 sameStartingPoint: false

@@ -11,7 +11,7 @@ import java.util.concurrent.locks.Lock;
 
 class GreedyParameters {
     //seed of the random
-    public static long SEED = 50;
+    public static long SEED = -1;
     //nr of greedy threads
     public static int NR_OF_THREADS = 10;
     //best nr of neighbours for the starting point
@@ -59,7 +59,7 @@ class GreedyParameters {
     }
 
     public static void setDefault() {
-        SEED = 50;
+        SEED = -1;
         NR_OF_THREADS = 20;
         NR_OF_NEIGHBOURS_FOR_STARTING_POINT = 1;
         SAME_STARTING_POINT = false;
@@ -147,7 +147,11 @@ public class Greedy extends PathPlanner {
 
     //wybiera losowo punkty rozpoczecia sciezki
     private void setRandomStartingPoints(int numberOfStartingPoints) {
-        Random random = new Random(GreedyParameters.SEED);
+        Random random;
+        if (GreedyParameters.SEED < 0)
+            random = new Random();
+        else
+            random = new Random(GreedyParameters.SEED);
         for (int i = 0; i < numberOfStartingPoints; i++)
             startingPoints.add(allPointsToPrint.get(random.nextInt(nrOfPoints)));
     }
@@ -174,7 +178,11 @@ public class Greedy extends PathPlanner {
 
     // ustawia wszystkie punkty na to samo
     private void setSameStartingPoint() {
-        Random random = new Random(GreedyParameters.SEED);
+        Random random;
+        if (GreedyParameters.SEED < 0)
+            random = new Random();
+        else
+            random = new Random(GreedyParameters.SEED);
         Point point = allPointsToPrint.get(random.nextInt(nrOfPoints));
         for (int i = 0; i < GreedyParameters.NR_OF_THREADS; i++)
             startingPoints.add((Point) point.clone());

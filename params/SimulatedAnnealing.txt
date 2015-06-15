@@ -5,7 +5,8 @@ algorithm_name: Simulated Annealing
 #-----------------------------------------------
 
 
-seed: 10
-temperatureMin: 0.0000001
-coolingRate: 0.99
+seed: -1
+temperatureMin: 0.000001
+coolingRate: 0.995
 iterationsOnTemperature : 1500
+maxNrOfIterationsWithNoImprovement : 100000
