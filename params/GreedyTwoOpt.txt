@@ -1,0 +1,20 @@
+algorithm_name: Greedy Two Opt
+
+
+# --- Greedy part
+
+
+seed: -1
+nrOfThreads: 10
+nrOfNeighboursForStartingPoint: 1
+sameStartingPoint: false
+
+nrOfPointsNeededToCheckArray: 40
+bestNrOfNeighbours: 0
+weightOfNeighbours: 0.42
+weightOfDistance: 0.32
+
+# ---- Two Opt part
+
+isGreedy : False
+maxNrOfIterations : -1

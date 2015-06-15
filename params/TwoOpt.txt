@@ -1,0 +1,10 @@
+algorithm_name: Two Opt
+
+# params:
+# isGreedy                              is algorithm greedy - swap vertex when he find first swap which will make route shorter,
+#                                       or find best swap from all vertex
+# maxNrOfIterations                     how many times algorithm should search better solution,
+#                                       if -1 it will be searching till it finds no improvements
+
+isGreedy : False
+maxNrOfIterations : -1

@@ -1,0 +1,21 @@
+algorithm_name: Greedy Harmony
+
+# --- greedy part
+
+seed: -1
+nrOfThreads: 10
+nrOfNeighboursForStartingPoint: 1
+
+# this parameter has no matter, but it has to be for algorithm correctly working
+sameStartingPoint: false
+
+nrOfPointsNeededToCheckArray: 40
+bestNrOfNeighbours: 0
+weightOfNeighbours: 0.42
+weightOfDistance: 0.32
+
+# --- harmony part (seed is common for both algorithms)
+
+memorySize : 10
+nrOfIterations : 100000
+memoryProbability : 0.95

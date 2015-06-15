@@ -82,6 +82,9 @@ public class MainWindow extends JFrame {
         timeTextField.setText(String.format("%.2f", costs.get(CostFunctionType.TIME)));
         distanceTextField.setText(String.format("%.2f", costs.get(CostFunctionType.DISTANCE)));
         energyTextField.setText(String.format("%.2f", costs.get(CostFunctionType.ENERGY)));
+        logger.log("Time: " + String.format("%.2f", costs.get(CostFunctionType.TIME)));
+        logger.log("Distance: " + String.format("%.2f", costs.get(CostFunctionType.DISTANCE)));
+        logger.log("Energy: " + String.format("%.2f", costs.get(CostFunctionType.ENERGY)));
     }
 
     void resetStats() {
@@ -113,6 +116,15 @@ public class MainWindow extends JFrame {
         algorithms.add(new LeftToRight());
         algorithms.add(new Snake());
         algorithms.add(new EdgeFollowing());
+        Greedy greedy = new Greedy();
+        algorithms.add(greedy);
+        algorithms.add(new TwoOpt());
+        algorithms.add(new GreedyTwoOpt(greedy));
+        HarmonySearch harmonySearch = new HarmonySearch();
+        algorithms.add(harmonySearch);
+        algorithms.add(new GreedyHarmony(greedy, harmonySearch));
+        algorithms.add(new SimulatedAnnealing());
+        algorithms.add(new GreedyAnnealing(greedy));
         // add other algorithms below
     }
 
@@ -154,7 +166,7 @@ public class MainWindow extends JFrame {
             }
         };
 
-        algorithmPanel = new JPanel(new GridLayout(0, 1, 5, 5));
+        algorithmPanel = new JPanel(new GridLayout(0, 2, 5, 5));
     }
 
     private void add(PathPlanner algorithm) {
@@ -291,8 +303,9 @@ class Connection implements PathPlanningConnection {
     }
 
     @Override
-    public void setCalcTime(double calcTimeInMillis) {
-        mainWindow.calcTimeTextField.setText(String.format("%.2f", calcTimeInMillis) + " ms");
+    public void setCalcTime(double calcTimeInNano) {
+        mainWindow.calcTimeTextField.setText(String.format("%.2f", calcTimeInNano / 1_000_000) + " ms");
+        logger.log("Calc time: " + (calcTimeInNano /1000000)+ " ms");
     }
 
     @Override
@@ -343,4 +356,3 @@ class Connection implements PathPlanningConnection {
         return null;
     }
 }
-
