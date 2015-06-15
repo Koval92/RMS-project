@@ -1,0 +1,14 @@
+seed : -1
+cost_type : TIME
+nrOfThreads : 10
+bestNrOfNeighbours : 0
+layer_size : 404
+sameStartingPoint : false
+algorithm_name : Greedy
+weightOfNeighbours : 0.42
+weightOfDistance : 0.32
+nrOfNeighboursForStartingPoint : 1
+nrOfPointsNeededToCheckArray : 40
+time_cost : 621,00
+dist_cost : 651,45
+ener_cost : 718,00

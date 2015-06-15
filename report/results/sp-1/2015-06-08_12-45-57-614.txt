@@ -1,0 +1,11 @@
+coolingRate : 0.995
+seed : -1
+cost_type : TIME
+maxNrOfIterationsWithNoImprovement : 100000
+time_cost : 53,00
+dist_cost : 55,07
+temperatureMin : 0.000001
+layer_size : 54
+algorithm_name : Simulated Annealing
+iterationsOnTemperature : 1500
+ener_cost : 58,00

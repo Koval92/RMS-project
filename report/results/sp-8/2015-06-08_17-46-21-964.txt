@@ -1,0 +1,8 @@
+cost_type : TIME
+time_cost : 1454,00
+dist_cost : 1573,69
+layer_size : 1359
+algorithm_name : Two Opt
+isGreedy : False
+ener_cost : 1762,00
+maxNrOfIterations : -1

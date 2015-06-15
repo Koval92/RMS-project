@@ -1,0 +1,18 @@
+seed : -1
+cost_type : TIME
+nrOfThreads : 10
+maxNrOfIterationsWithNoImprovement : 100000
+bestNrOfNeighbours : 0
+temperatureMin : 0.000001
+layer_size : 190
+sameStartingPoint : false
+algorithm_name : Greedy Annealing
+weightOfNeighbours : 0.42
+iterationsOnTemperature : 1500
+weightOfDistance : 0.32
+coolingRate : 0.995
+nrOfNeighboursForStartingPoint : 1
+nrOfPointsNeededToCheckArray : 40
+time_cost : 193,00
+dist_cost : 194,76
+ener_cost : 198,00

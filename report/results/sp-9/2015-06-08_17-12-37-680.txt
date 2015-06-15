@@ -1,0 +1,16 @@
+seed : -1
+cost_type : TIME
+nrOfThreads : 10
+bestNrOfNeighbours : 0
+layer_size : 404
+sameStartingPoint : false
+algorithm_name : Greedy Two Opt
+weightOfNeighbours : 0.42
+isGreedy : False
+maxNrOfIterations : -1
+weightOfDistance : 0.32
+nrOfNeighboursForStartingPoint : 1
+nrOfPointsNeededToCheckArray : 40
+time_cost : 582,00
+dist_cost : 614,54
+ener_cost : 686,00
