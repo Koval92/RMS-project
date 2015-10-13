@@ -1,6 +1,8 @@
 # Path optimization of 3D printer
 ### Usage of hybrid algorithms in traveling salesman problem
 
+##### Path finding based on one layer of 3D printer
+
 There is given layer to print which is described as an array of binary points, which  has a size of `a * b`. Value of each point can be either 1, which means that it is a point to print, or 0 otherwise. On each layer the printing tool has to visit exactly once each point which should be printed and then go back to the starting position. The printing tool can also make moves without printing.
 
 In tests where made an assumption that printing tool is using to move two perpendicular axes. The cost of the path can be considered in three different approaches: minimum distance, minimum printing time and minimum energy.
