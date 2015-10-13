@@ -4,3 +4,6 @@ report/rsm-raport.log
 report/rsm-raport.synctex.gz
 *.class
 report/rsm-raport.toc
+out/
+results/
+*~
